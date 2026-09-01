@@ -24,6 +24,7 @@ jobs:
       - run: node --check src/pipeline.mjs
       - run: node --check scripts/editorial-polish.mjs
       - run: node --check scripts/live-overrides.mjs
+      - run: node --check scripts/sync-pages-root.mjs
       - run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
@@ -37,6 +38,7 @@ jobs:
       - run: node --check scripts/apply-brand.mjs
       - run: node scripts/apply-brand.mjs
       - run: node scripts/test-brand-policy.mjs
+      - run: node scripts/sync-pages-root.mjs --check
       - run: node scripts/test-ollama-transport.mjs
       - run: node scripts/test-ollama-depth-repair.mjs
       - run: node scripts/test-korean-language-policy.mjs
