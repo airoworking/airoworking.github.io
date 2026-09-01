@@ -1,0 +1,57 @@
+name: Deploy Blog Pages
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'public/**'
+      - 'data/**'
+      - 'brand-assets/**'
+      - 'scripts/editorial-polish.mjs'
+      - 'scripts/live-overrides.mjs'
+      - 'scripts/apply-brand.mjs'
+      - 'scripts/test-brand-policy.mjs'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_run:
+    workflows: ['Automated Blog Publisher']
+    types: [completed]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout latest published site
+        uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Apply editorial polish
+        run: |
+          node scripts/editorial-polish.mjs
+          node scripts/live-overrides.mjs
+      - name: Apply resilient homepage brand
+        run: |
+          node scripts/apply-brand.mjs
+          node scripts/test-brand-policy.mjs
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ github.token }}
