@@ -24,6 +24,7 @@ jobs:
       - run: node --check src/pipeline.mjs
       - run: node --check scripts/editorial-polish.mjs
       - run: node --check scripts/live-overrides.mjs
+      - run: node --check scripts/apply-adsense.mjs
       - run: node --check scripts/sync-pages-root.mjs
       - run: |
           node scripts/editorial-polish.mjs
@@ -38,6 +39,13 @@ jobs:
       - run: node --check scripts/apply-brand.mjs
       - run: node scripts/apply-brand.mjs
       - run: node scripts/test-brand-policy.mjs
+      - run: node scripts/apply-adsense.mjs
+      - run: node scripts/apply-adsense.mjs --check
+      - run: |
+          grep -q 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4656276132296488' public/index.html
+          grep -q 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4656276132296488' public/privacy.html
+          grep -q 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4656276132296488' public/disclosure.html
+          grep -q 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4656276132296488' public/posts/crm.html
       - run: node scripts/sync-pages-root.mjs --check
       - run: node scripts/test-ollama-transport.mjs
       - run: node scripts/test-ollama-depth-repair.mjs
