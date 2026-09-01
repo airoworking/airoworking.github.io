@@ -1,0 +1,14 @@
+{
+  "adsense": {
+    "client": "ca-pub-REPLACE_ME",
+    "slot": "REPLACE_ME"
+  },
+  "affiliateLinks": [
+    {
+      "label": "Example tool",
+      "url": "https://example.com/?ref=your-id",
+      "match": ["example tool", "example"]
+    }
+  ],
+  "affiliateDisclosure": "이 글에는 제휴 링크가 포함될 수 있으며, 링크를 통한 구매 시 추가 비용 없이 운영자에게 수수료가 지급될 수 있습니다."
+}

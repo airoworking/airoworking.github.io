@@ -1,0 +1,77 @@
+name: Automated Blog Publisher
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: Optional topic override
+        required: false
+        type: string
+  schedule:
+    - cron: '30 22 * * *' # 07:30 Asia/Seoul
+permissions:
+  contents: write
+concurrency:
+  group: blog-publisher
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Zero-cost guard
+        run: |
+          if [ "${{ github.event.repository.private }}" = "true" ]; then
+            echo "Refusing to run in a private repository to avoid billable Actions usage."
+            exit 1
+          fi
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate repository
+        run: npm run validate
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+      - name: Start local Ollama
+        env:
+          OLLAMA_NUM_PARALLEL: '1'
+          OLLAMA_MAX_LOADED_MODELS: '1'
+          OLLAMA_KEEP_ALIVE: '30s'
+        run: |
+          nohup ollama serve >/tmp/ollama.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; then break; fi
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:11434/api/tags >/dev/null || { cat /tmp/ollama.log; exit 1; }
+      - name: Discover, research, write, cross-check, and publish
+        env:
+          OLLAMA_BASE_URL: http://127.0.0.1:11434
+          BLOG_TOPIC: ${{ github.event.inputs.topic || '' }}
+          GITHUB_TOKEN: ${{ github.token }}
+          ADSENSE_CLIENT: ${{ secrets.ADSENSE_CLIENT }}
+          ADSENSE_SLOT: ${{ secrets.ADSENSE_SLOT }}
+          ADSENSE_SLOT_MID: ${{ secrets.ADSENSE_SLOT_MID }}
+          AFFILIATE_LINKS_JSON: ${{ secrets.AFFILIATE_LINKS_JSON }}
+          AFFILIATE_DISCLOSURE: ${{ vars.AFFILIATE_DISCLOSURE }}
+        run: |
+          timeout 240m npm run publish:blog
+          node scripts/apply-brand.mjs
+          node scripts/test-brand-policy.mjs
+          npm run validate
+      - name: Commit generated content
+        run: |
+          git config user.name "blog-automation[bot]"
+          git config user.email "blog-automation[bot]@users.noreply.github.com"
+          git add public data
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git commit -m "chore(blog): publish automated article"
+          git push
+      - name: Deployment handoff
+        run: |
+          echo "Content generation is complete."
+          echo "GitHub Pages deployment is handled by the separate 'Deploy Blog Pages' workflow."

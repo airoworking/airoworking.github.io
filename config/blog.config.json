@@ -1,0 +1,226 @@
+{
+  "site": {
+    "name": "AI로 일하는 법",
+    "description": "AI와 자동화로 일, 콘텐츠, 소규모 비즈니스의 시간·비용·반복업무를 줄이는 실용 가이드",
+    "author": "Yun Jinyong",
+    "language": "ko-KR",
+    "baseUrl": "https://airoworking.github.io"
+  },
+  "content": {
+    "niche": "practical AI and automation for work, small business, freelancing, content creation, and software development",
+    "audience": "한국어를 읽는 직장인·지식근로자, 프리랜서·1인 사업자, 콘텐츠 제작자, 소규모 사업자, 개발자·AI 실무자",
+    "minimumQualityScore": 85,
+    "recentTitleWindow": 40,
+    "maxPostsOnIndex": 60,
+    "portfolio": {
+      "balanceWindow": 30,
+      "audienceTargets": {
+        "knowledge-worker": 0.3,
+        "small-business": 0.2,
+        "freelancer": 0.15,
+        "creator": 0.15,
+        "developer": 0.2
+      },
+      "contentRoleTargets": {
+        "reach": 0.45,
+        "commercial": 0.35,
+        "authority": 0.2
+      }
+    },
+    "disallowedTopics": [
+      "medical diagnosis or treatment",
+      "personalized legal advice",
+      "personalized investment or trading advice",
+      "gambling",
+      "adult content",
+      "weapons",
+      "illegal activity"
+    ]
+  },
+  "localModel": {
+    "provider": "ollama",
+    "baseUrl": "http://127.0.0.1:11434",
+    "cleanupAfterStage": true,
+    "stages": {
+      "topic": {
+        "model": "qwen3:1.7b",
+        "temperature": 0.1,
+        "contextWindow": 8192,
+        "maxOutputTokens": 1700,
+        "timeoutMs": 600000
+      },
+      "research": {
+        "model": "qwen3:4b",
+        "temperature": 0.1,
+        "contextWindow": 12288,
+        "maxOutputTokens": 2400,
+        "timeoutMs": 900000
+      },
+      "draft": {
+        "model": "qwen3:8b",
+        "temperature": 0.2,
+        "contextWindow": 16384,
+        "maxOutputTokens": 3800,
+        "timeoutMs": 1200000
+      },
+      "qa": {
+        "model": "gemma3:4b",
+        "temperature": 0.0,
+        "contextWindow": 12288,
+        "maxOutputTokens": 3400,
+        "timeoutMs": 900000
+      }
+    }
+  },
+  "research": {
+    "audienceSegments": [
+      {
+        "id": "knowledge-worker",
+        "label": "직장인·지식근로자",
+        "searchPhrase": "office workers knowledge workers",
+        "needs": [
+          "email and document automation",
+          "spreadsheet automation",
+          "meeting notes automation",
+          "task and calendar automation",
+          "research and summarization"
+        ]
+      },
+      {
+        "id": "small-business",
+        "label": "소규모 사업자",
+        "searchPhrase": "small business owners",
+        "needs": [
+          "customer support automation",
+          "CRM and lead automation",
+          "booking and scheduling automation",
+          "marketing workflow automation",
+          "back office automation"
+        ]
+      },
+      {
+        "id": "freelancer",
+        "label": "프리랜서·1인 사업자",
+        "searchPhrase": "freelancers solo business owners",
+        "needs": [
+          "client management automation",
+          "proposal and invoice automation",
+          "research workflow automation",
+          "content repurposing",
+          "admin automation"
+        ]
+      },
+      {
+        "id": "creator",
+        "label": "콘텐츠 제작자",
+        "searchPhrase": "content creators marketers",
+        "needs": [
+          "content planning automation",
+          "video and podcast workflow automation",
+          "social media automation",
+          "newsletter automation",
+          "asset organization"
+        ]
+      },
+      {
+        "id": "developer",
+        "label": "개발자·AI 실무자",
+        "searchPhrase": "developers AI practitioners",
+        "needs": [
+          "AI coding tools",
+          "local LLM automation",
+          "RAG workflow",
+          "developer productivity automation",
+          "self hosted AI"
+        ]
+      }
+    ],
+    "problemAreas": [
+      "repetitive office work",
+      "email and document automation",
+      "spreadsheet automation",
+      "meeting notes and knowledge management",
+      "customer support automation",
+      "sales and CRM automation",
+      "booking and scheduling automation",
+      "content workflow automation",
+      "social media workflow automation",
+      "AI tool selection",
+      "no-code automation",
+      "privacy friendly AI",
+      "developer automation",
+      "local AI and self hosting"
+    ],
+    "topicPillars": [
+      "AI productivity",
+      "workflow automation",
+      "AI assistants for work",
+      "no-code and low-code automation",
+      "AI tools for small business",
+      "AI tools for freelancers",
+      "AI tools for creators",
+      "document and spreadsheet automation",
+      "customer support automation",
+      "content automation",
+      "AI tool comparison",
+      "open source AI",
+      "local LLM",
+      "AI agents",
+      "AI coding tools",
+      "RAG and knowledge systems",
+      "self-hosted AI",
+      "AI security and privacy"
+    ],
+    "intentTemplates": [
+      "{problem} AI automation for {segment}",
+      "best AI tools for {problem}",
+      "{problem} automation how to",
+      "{problem} tools comparison",
+      "{problem} alternatives",
+      "{problem} cost ROI",
+      "free AI tools for {problem}",
+      "{problem} privacy security",
+      "{pillar} for {segment}",
+      "{pillar} beginner guide",
+      "{pillar} comparison 2026",
+      "{pillar} alternatives 2026"
+    ],
+    "discoveryQueryCount": 10,
+    "candidateCount": 8,
+    "maxQueries": 10,
+    "maxSearchResultsPerQuery": 5,
+    "maxDocuments": 10,
+    "maxCharsPerDocument": 2600,
+    "requestTimeoutMs": 15000
+  },
+  "monetization": {
+    "adsensePolicy": {
+      "reachPlacements": 2,
+      "commercialPlacements": 1,
+      "authorityPlacements": 1
+    }
+  },
+  "publishing": {
+    "dailyPostLimit": 1,
+    "timezone": "Asia/Seoul"
+  },
+  "visuals": {
+    "enabled": true,
+    "generateCover": true,
+    "generateSummary": true,
+    "commonsPhotos": {
+      "enabled": true,
+      "onlyWhenNeeded": true,
+      "maxSearchResults": 8,
+      "thumbWidth": 1200,
+      "maxBytes": 3500000,
+      "requestTimeoutMs": 20000,
+      "allowedLicenseFamilies": [
+        "CC0",
+        "Public domain",
+        "CC BY",
+        "CC BY-SA"
+      ]
+    }
+  }
+}
