@@ -7,9 +7,11 @@ on:
       - 'public/**'
       - 'data/**'
       - 'brand-assets/**'
+      - 'config/adsense.json'
       - 'scripts/editorial-polish.mjs'
       - 'scripts/live-overrides.mjs'
       - 'scripts/apply-brand.mjs'
+      - 'scripts/apply-adsense.mjs'
       - 'scripts/test-brand-policy.mjs'
       - '.github/workflows/deploy-pages.yml'
   workflow_run:
@@ -42,6 +44,10 @@ jobs:
         run: |
           node scripts/apply-brand.mjs
           node scripts/test-brand-policy.mjs
+      - name: Apply AdSense site loader
+        run: |
+          node scripts/apply-adsense.mjs
+          node scripts/apply-adsense.mjs --check
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
