@@ -63,6 +63,42 @@ function normalizeForDedupe(value) {
   return String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
 }
 
+function mergeParagraphText(section, value) {
+  const text = String(value || '').trim();
+  const normalized = normalizeForDedupe(text);
+  if (!normalized) return false;
+
+  for (let index = 0; index < section.paragraphs.length; index += 1) {
+    const existing = normalizeForDedupe(section.paragraphs[index]);
+    if (!existing) continue;
+    if (existing === normalized || existing.includes(normalized)) return false;
+    if (normalized.includes(existing) && normalized.length > existing.length + 20) {
+      section.paragraphs[index] = text;
+      return true;
+    }
+  }
+
+  if (section.paragraphs.length < 5) {
+    section.paragraphs.push(text);
+    return true;
+  }
+
+  // The schema caps each section at five paragraphs. A complete expansion used to be
+  // silently discarded whenever the primary QA already occupied all five slots.
+  // Keep the expansion by folding new, non-duplicate prose into the shortest existing
+  // paragraph instead of dropping it. This preserves every model-written fact-checked
+  // sentence without breaking the schema or making another LLM call.
+  let shortestIndex = 0;
+  for (let index = 1; index < section.paragraphs.length; index += 1) {
+    if (String(section.paragraphs[index] || '').length < String(section.paragraphs[shortestIndex] || '').length) {
+      shortestIndex = index;
+    }
+  }
+  const current = String(section.paragraphs[shortestIndex] || '').trim();
+  section.paragraphs[shortestIndex] = current ? `${current} ${text}` : text;
+  return true;
+}
+
 function promoteUsefulBulletsToParagraphs(sections, minimum = QA_MIN_PARAGRAPH_CHARS) {
   const next = (sections || []).map((section) => ({
     ...section,
@@ -74,14 +110,10 @@ function promoteUsefulBulletsToParagraphs(sections, minimum = QA_MIN_PARAGRAPH_C
 
   for (const section of next) {
     const kept = [];
-    const seen = new Set(section.paragraphs.map(normalizeForDedupe));
     for (const bullet of section.bullets) {
       const text = String(bullet || '').trim();
-      const normalized = normalizeForDedupe(text);
-      if (chars < minimum && text.length >= 80 && normalized && !seen.has(normalized) && section.paragraphs.length < 5) {
-        section.paragraphs.push(text);
-        seen.add(normalized);
-        chars += text.length;
+      if (chars < minimum && text.length >= 80 && mergeParagraphText(section, text)) {
+        chars = paragraphChars(next);
       } else {
         kept.push(text);
       }
@@ -106,20 +138,16 @@ function mergeExpandedSections(current, expanded) {
       if (merged.length < 9) merged.push({ ...candidate, paragraphs: [...(candidate.paragraphs || [])], bullets: [...(candidate.bullets || [])] });
       continue;
     }
+
     const target = merged[index];
-    const seenParagraphs = new Set(target.paragraphs.map(normalizeForDedupe));
-    for (const paragraph of candidate.paragraphs || []) {
-      const text = String(paragraph || '').trim();
-      const normalized = normalizeForDedupe(text);
-      if (!text || !normalized || seenParagraphs.has(normalized) || target.paragraphs.length >= 5) continue;
-      target.paragraphs.push(text);
-      seenParagraphs.add(normalized);
-    }
+    for (const paragraph of candidate.paragraphs || []) mergeParagraphText(target, paragraph);
+
+    const paragraphSet = new Set(target.paragraphs.map(normalizeForDedupe));
     const seenBullets = new Set(target.bullets.map(normalizeForDedupe));
     for (const bullet of candidate.bullets || []) {
       const text = String(bullet || '').trim();
       const normalized = normalizeForDedupe(text);
-      if (!text || !normalized || seenBullets.has(normalized) || target.bullets.length >= 8) continue;
+      if (!text || !normalized || paragraphSet.has(normalized) || seenBullets.has(normalized) || target.bullets.length >= 8) continue;
       target.bullets.push(text);
       seenBullets.add(normalized);
     }
@@ -127,6 +155,12 @@ function mergeExpandedSections(current, expanded) {
 
   return merged;
 }
+
+export const __ollamaDepthTest = {
+  paragraphChars,
+  promoteUsefulBulletsToParagraphs,
+  mergeExpandedSections
+};
 
 function assertQaLanguage(schema, data) {
   const issues = koreanLanguageIssues(schema, data);
@@ -166,7 +200,7 @@ export async function structuredResponse(args) {
     const { sections, ...rest } = primary.data;
     let data = { ...rest, revisedSections: promoteUsefulBulletsToParagraphs(sections) };
     let chars = paragraphChars(data.revisedSections);
-    console.log(`[quality] final QA composed depth=${chars} paragraph chars after promoting substantive list content where appropriate.`);
+    console.log(`[quality] final QA composed depth=${chars} paragraph chars after folding substantive list content into section prose where appropriate.`);
 
     if (chars < QA_MIN_PARAGRAPH_CHARS) {
       console.warn(`[quality] final QA depth=${chars} is below ${QA_MIN_PARAGRAPH_CHARS}; requesting one complete section expansion instead of legacy append-only repair.`);
@@ -178,10 +212,11 @@ export async function structuredResponse(args) {
         instructions: `${HUMAN_EDITORIAL_RULES}\n\nYou are completing the final reader-facing Korean article after fact checking. Return only a complete replacement 'sections' array matching the schema. Use only the supplied original QA input and the current fact-checked result. Preserve supported conclusions, but deepen practical explanations, trade-offs, decision criteria, setup steps, caveats, and failure modes. Do not invent any fact, price, date, benchmark, URL, personal experience, or example not supported by the input. Write enough substantive prose for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters.`,
         input: `ORIGINAL QA INPUT:\n${args.input}\n\nCURRENT FACT-CHECKED QA RESULT:\n${JSON.stringify(data)}\n\nExpand the article sections once. Do not return summaries or commentary outside JSON.`
       });
+      const beforeMerge = chars;
       const merged = mergeExpandedSections(data.revisedSections, expansion.data.sections);
       data = { ...data, revisedSections: promoteUsefulBulletsToParagraphs(merged) };
       chars = paragraphChars(data.revisedSections);
-      console.log(`[quality] final QA depth after one complete section expansion=${chars} paragraph chars.`);
+      console.log(`[quality] final QA depth after one complete section expansion=${chars} paragraph chars (${Math.max(0, chars - beforeMerge)} chars preserved from expansion).`);
     }
 
     if (chars < QA_MIN_PARAGRAPH_CHARS) {

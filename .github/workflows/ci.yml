@@ -49,6 +49,7 @@ jobs:
       - run: node scripts/sync-pages-root.mjs --check
       - run: node scripts/test-ollama-transport.mjs
       - run: node scripts/test-ollama-depth-repair.mjs
+      - run: node scripts/test-qa-depth-merge-cap.mjs
       - run: node scripts/test-korean-language-policy.mjs
       - run: node scripts/test-research-source-diversity.mjs
       - run: node scripts/test-commons-policy.mjs
