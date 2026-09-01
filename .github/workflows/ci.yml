@@ -25,6 +25,7 @@ jobs:
       - run: node --check scripts/editorial-polish.mjs
       - run: node --check scripts/live-overrides.mjs
       - run: node --check scripts/apply-adsense.mjs
+      - run: node --check scripts/apply-mascot.mjs
       - run: node --check scripts/sync-pages-root.mjs
       - run: |
           node scripts/editorial-polish.mjs
@@ -38,6 +39,8 @@ jobs:
           grep -q '소규모 사업자의 CRM 자동화, 어디서부터 시작해야 할까?' public/posts/crm.html
       - run: node --check scripts/apply-brand.mjs
       - run: node scripts/apply-brand.mjs
+      - run: node scripts/apply-mascot.mjs
+      - run: node scripts/apply-mascot.mjs --check
       - run: node scripts/test-brand-policy.mjs
       - run: node scripts/apply-adsense.mjs
       - run: node scripts/apply-adsense.mjs --check
