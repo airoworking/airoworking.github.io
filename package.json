@@ -1,0 +1,11 @@
+{
+  "name": "profitable-blog-automation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "publish:blog": "node src/pipeline.mjs && node scripts/editorial-polish.mjs && node scripts/live-overrides.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}

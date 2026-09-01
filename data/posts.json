@@ -1,0 +1,59 @@
+[
+  {
+    "title": "소규모 사업자의 CRM 자동화, 어디서부터 시작해야 할까?",
+    "slug": "crm",
+    "description": "고객 정보가 흩어지고 후속 연락을 놓치기 시작했다면 CRM 자동화를 검토할 때입니다. 소규모 팀이 필요한 기능만 고르고, 데이터를 정리하고, 자동화를 단계적으로 붙이는 방법을 정리했습니다.",
+    "category": "비즈니스",
+    "tags": [
+      "CRM automation",
+      "소규모 사업자",
+      "실전 가이드",
+      "도구 선택",
+      "실행 계획"
+    ],
+    "date": "2026-08-31",
+    "primaryKeyword": "CRM automation",
+    "audienceSegment": "small-business",
+    "contentRole": "reach",
+    "monetizationRoute": "adsense",
+    "readerProblem": "소규모 사업자가 CRM automation를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "CRM automation의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 77,
+    "qualityScore": 98,
+    "verificationSummary": "제공된 연구 자료와 Toolradar, Nimble, Zoho CRM, Salesforce 등의 공식 문서를 기반으로 소규모 사업자를 위한 CRM 자동화 가이드를 작성했습니다. 각 솔루션의 특징과 장단점을 비교하고, 단계별 실행 계획을 제시하여 실제 업무에 적용할 수 있도록 구성했습니다.",
+    "sources": [
+      {
+        "title": "10 Best CRM for Small Business in 2026 — Compared | Toolradar Blog",
+        "url": "https://toolradar.com/blog/best-crm-for-small-business"
+      },
+      {
+        "title": "Best CRM for Small Business Owners: Top 6 Ranked for 2026",
+        "url": "https://www.nimble.com/blog/top-crms-for-small-business-owners/"
+      },
+      {
+        "title": "Welcome to Zoho CRM's Documentation",
+        "url": "https://www.zoho.com/crm/help/"
+      },
+      {
+        "title": "CRM Automation: Definition, Benefits & Examples | Salesforce",
+        "url": "https://www.salesforce.com/crm/automation/"
+      },
+      {
+        "title": "Lapsula — Your business appointments under control",
+        "url": "https://www.lapsula.com/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:4b",
+      "draft": "qwen3:8b",
+      "qa": "gemma3:4b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/crm-cover.svg",
+      "summary": "assets/posts/crm-summary.svg"
+    },
+    "media": null
+  }
+]
