@@ -30,9 +30,9 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/yunjinyong730/Profitable-Blog-Automation.git /tmp/source-blog
 
-      - name: Copy complete repository contents
+      - name: Copy complete repository contents except workflows
         run: |
-          rsync -a --delete --exclude='.git/' /tmp/source-blog/ ./
+          rsync -a --delete --exclude='.git/' --exclude='.github/workflows/' /tmp/source-blog/ ./
 
       - name: Rebase site identity and URLs
         run: |
@@ -56,13 +56,12 @@ jobs:
               ('Practical AI &amp; Automation', 'AI로 일하는 법'),
           ]
 
-          skip_dirs = {'.git', 'node_modules'}
+          skip_dirs = {'.git', 'node_modules', 'workflows'}
           for path in root.rglob('*'):
               if not path.is_file() or any(part in skip_dirs for part in path.parts):
                   continue
               try:
-                  raw = path.read_bytes()
-                  text = raw.decode('utf-8')
+                  text = path.read_bytes().decode('utf-8')
               except (UnicodeDecodeError, OSError):
                   continue
               changed = text
@@ -76,20 +75,6 @@ jobs:
           config['site']['name'] = new_brand
           config['site']['baseUrl'] = new_site
           config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          # Let configure-pages enable the new org Pages site when possible.
-          deploy_path = Path('.github/workflows/deploy-pages.yml')
-          deploy = deploy_path.read_text(encoding='utf-8')
-          needle = '      - name: Configure GitHub Pages\n        uses: actions/configure-pages@v5\n'
-          replacement = '      - name: Configure GitHub Pages\n        uses: actions/configure-pages@v5\n        with:\n          enablement: true\n'
-          if needle in deploy and 'enablement: true' not in deploy:
-              deploy = deploy.replace(needle, replacement)
-          deploy_path.write_text(deploy, encoding='utf-8')
-
-          # The one-time migration workflow removes itself before the migration commit.
-          migration = Path('.github/workflows/migrate-from-old-repo.yml')
-          if migration.exists():
-              migration.unlink()
           PY
 
       - name: Verify migration invariants
@@ -101,8 +86,8 @@ jobs:
           test -f public/assets/brand/hero-banner-2048.avif
           grep -q 'https://airoworking.github.io' config/blog.config.json
           grep -q 'AI로 일하는 법' config/blog.config.json
-          ! grep -R --exclude-dir=.git -n 'https://yunjinyong730.github.io/Profitable-Blog-Automation' .
-          ! grep -R --exclude-dir=.git -n 'https://github.com/yunjinyong730/Profitable-Blog-Automation' .
+          ! grep -R --exclude-dir=.git --exclude-dir=.github -n 'https://yunjinyong730.github.io/Profitable-Blog-Automation' .
+          ! grep -R --exclude-dir=.git --exclude-dir=.github -n 'https://github.com/yunjinyong730/Profitable-Blog-Automation' .
 
       - name: Validate migrated repository
         run: |
@@ -116,6 +101,6 @@ jobs:
         run: |
           git config user.name "blog-migration[bot]"
           git config user.email "blog-migration[bot]@users.noreply.github.com"
-          git add -A
+          git add -A -- ':!.github/workflows'
           git commit -m "chore: migrate blog to airoworking.github.io"
           git push origin HEAD:migration/full-site
