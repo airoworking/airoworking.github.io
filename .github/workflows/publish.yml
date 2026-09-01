@@ -58,8 +58,10 @@ jobs:
         run: |
           timeout 240m npm run publish:blog
           node scripts/apply-brand.mjs
+          node scripts/apply-mascot.mjs
           node scripts/apply-adsense.mjs
           node scripts/test-brand-policy.mjs
+          node scripts/apply-mascot.mjs --check
           node scripts/apply-adsense.mjs --check
           npm run validate
           node scripts/sync-pages-root.mjs
