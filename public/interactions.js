@@ -3,7 +3,7 @@
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const root = document.documentElement;
   const header = document.querySelector('.site-header');
-  const hero = document.querySelector('.brand-banner-image-wrap');
+  const hero = document.querySelector('.mascot-stage');
   const revealTargets = [
     ...document.querySelectorAll('.home-section, .launch-note, .section-heading, .audience-card, .featured-card, .post-card')
   ];
@@ -44,7 +44,7 @@
     }, { passive: true });
     hero.addEventListener('pointerleave', () => {
       hero.style.setProperty('--pointer-x', '50%');
-      hero.style.setProperty('--pointer-y', '50%');
+      hero.style.setProperty('--pointer-y', '42%');
     });
   }
 })();
