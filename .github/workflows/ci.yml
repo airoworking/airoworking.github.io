@@ -1,0 +1,48 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --check src/language.mjs
+      - run: node --check src/ollama-base.mjs
+      - run: node --check src/ollama.mjs
+      - run: node --check src/research.mjs
+      - run: node --check src/research-brief.mjs
+      - run: node --check src/commons.mjs
+      - run: node --check src/visuals.mjs
+      - run: node --check src/render.mjs
+      - run: node --check src/pipeline.mjs
+      - run: node --check scripts/editorial-polish.mjs
+      - run: node --check scripts/live-overrides.mjs
+      - run: |
+          node scripts/editorial-polish.mjs
+          node scripts/live-overrides.mjs
+      - run: |
+          test -f public/assets/posts/crm-context.svg
+          grep -q 'contextual-visual' public/posts/crm.html
+          ! grep -q '\*\*1단계' public/posts/crm.html
+          ! grep -q 'Korean characters' public/posts/crm.html
+          grep -q 'AI로 일하는 법' public/posts/crm.html
+          grep -q '소규모 사업자의 CRM 자동화, 어디서부터 시작해야 할까?' public/posts/crm.html
+      - run: node --check scripts/apply-brand.mjs
+      - run: node scripts/apply-brand.mjs
+      - run: node scripts/test-brand-policy.mjs
+      - run: node scripts/test-ollama-transport.mjs
+      - run: node scripts/test-ollama-depth-repair.mjs
+      - run: node scripts/test-korean-language-policy.mjs
+      - run: node scripts/test-research-source-diversity.mjs
+      - run: node scripts/test-commons-policy.mjs
+      - run: node scripts/test-discovery-policy.mjs
+      - run: node scripts/test-render-policy.mjs
+      - run: node scripts/test-design-policy.mjs
+      - run: npm run validate
