@@ -1,21 +1,28 @@
 import { readFile, stat } from 'node:fs/promises';
 
 const html = await readFile('public/index.html', 'utf8');
+const article = await readFile('public/posts/crm.html', 'utf8');
 const css = await readFile('public/brand.css', 'utf8');
 const interactions = await readFile('public/interactions.js', 'utf8');
 const bannerPath = 'public/assets/brand/hero-banner-2048.avif';
-const banner = await stat(bannerPath);
-const bannerBytes = await readFile(bannerPath);
+const mascotPath = 'public/assets/brand/mascot-character.webp';
+const [banner, mascot] = await Promise.all([stat(bannerPath), stat(mascotPath)]);
+const [bannerBytes, mascotBytes] = await Promise.all([readFile(bannerPath), readFile(mascotPath)]);
 
 for (const required of [
-  'data-brand-patched="v6"',
-  'class="brand-banner-image-wrap"',
-  '<picture>',
-  'class="brand-banner-image"',
-  'src="./assets/brand/hero-banner-2048.avif"',
-  './assets/brand/hero-banner.avif 800w, ./assets/brand/hero-banner-2048.avif 2048w',
-  'sizes="(max-width: 800px) calc(100vw - 32px), 1200px"',
-  'width="2048" height="682"',
+  'data-brand-patched="v7"',
+  'class="hero brand-hero mascot-hero"',
+  'class="mascot-hero-copy"',
+  'class="mascot-kicker">AI 업무 파트너',
+  'class="mascot-title">AI로 일하는 법',
+  'class="mascot-lede"',
+  'class="mascot-stage"',
+  'class="mascot-character"',
+  'src="./assets/brand/mascot-character.webp"',
+  'width="640" height="640"',
+  'class="mascot-note"',
+  '복잡한 AI를 일의 언어로.',
+  'class="brand-avatar"',
   'href="./brand.css"',
   'src="./interactions.js" defer',
   'data-audience-icon="knowledge-worker"',
@@ -24,7 +31,21 @@ for (const required of [
   'data-audience-icon="creator"',
   'data-audience-icon="developer"'
 ]) {
-  if (!html.includes(required)) throw new Error(`Brand patch missing ${required}`);
+  if (!html.includes(required)) throw new Error(`Mascot brand patch missing ${required}`);
+}
+
+for (const required of [
+  'class="brand-avatar"',
+  'src="../assets/brand/mascot-character.webp"',
+  'href="../brand.css"',
+  'rel="icon" href="../assets/brand/mascot-character.webp"'
+]) {
+  if (!article.includes(required)) throw new Error(`Article mascot identity missing ${required}`);
+}
+
+if (mascot.size < 10_000) throw new Error(`Mascot WebP looks unexpectedly small (${mascot.size} bytes).`);
+if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subarray(8, 12).toString('ascii') !== 'WEBP') {
+  throw new Error('Mascot asset is not a valid WebP container.');
 }
 
 if (banner.size < 16_000) throw new Error(`High-resolution banner asset looks unexpectedly small (${banner.size} bytes).`);
@@ -32,20 +53,25 @@ const ispeIndex = bannerBytes.indexOf(Buffer.from('ispe'));
 if (ispeIndex < 0) throw new Error('Could not find AVIF image spatial extents (ispe).');
 const width = bannerBytes.readUInt32BE(ispeIndex + 8);
 const height = bannerBytes.readUInt32BE(ispeIndex + 12);
-if (width !== 2048 || height !== 682) throw new Error(`Expected 2048x682 high-resolution banner, found ${width}x${height}.`);
+if (width !== 2048 || height !== 682) throw new Error(`Expected 2048x682 retained banner asset, found ${width}x${height}.`);
 
-if (html.includes('width="800" height="267"')) throw new Error('Homepage must not use the old 800px banner as the primary source.');
+if (html.includes('class="brand-banner-image-wrap"')) throw new Error('Legacy banner hero should not remain after mascot conversion.');
 if (html.includes('class="brand-banner-art"')) throw new Error('Legacy inline SVG hero art should not be present.');
-if (html.includes('data:image/png;base64,')) throw new Error('Homepage banner must use repository assets, not an inline base64 payload.');
+if (html.includes('data:image/png;base64,')) throw new Error('Homepage must use repository mascot assets, not inline base64 payloads.');
 
 const iconCount = (html.match(/data-audience-icon=/g) || []).length;
 if (iconCount !== 5) throw new Error(`Expected exactly 5 audience icons, found ${iconCount}`);
 
 for (const required of [
   '.hero::before{content:none!important',
-  '.brand-banner-image-wrap picture{display:block;width:100%}',
-  '.brand-banner-image{display:block;width:100%;max-width:100%;height:auto;object-fit:contain',
-  '.brand-banner-image-wrap::after',
+  '.mascot-hero{display:grid!important',
+  '.mascot-hero-copy{position:relative',
+  '.mascot-title{position:static!important',
+  '.mascot-stage{--pointer-x:50%',
+  '.mascot-character{position:relative',
+  '.mascot-note{position:absolute',
+  '.brand-avatar{position:relative',
+  '.brand-avatar img{position:absolute',
   '.audience-card:hover',
   '.primary-nav a::after',
   '.effects-ready .reveal-target',
@@ -62,6 +88,7 @@ for (const required of [
 for (const required of [
   "matchMedia('(prefers-reduced-motion: reduce)')",
   "matchMedia('(hover: hover) and (pointer: fine)')",
+  "document.querySelector('.mascot-stage')",
   "IntersectionObserver",
   "root.classList.add('effects-ready')",
   "classList.add('is-revealed')",
@@ -72,6 +99,5 @@ for (const required of [
 }
 
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
-if (css.includes('aspect-ratio:3/1')) throw new Error('Banner CSS must preserve the source image ratio instead of forcing a low-resolution aspect box.');
 
-console.log(`Brand policy OK: responsive 2048x682 AVIF banner (${banner.size} bytes), five unified icons, subtle progressive interactions, reduced-motion support, and mobile layout are enforced.`);
+console.log(`Brand policy OK: ${mascot.size}-byte mascot WebP drives the responsive hero and all-page identity; five audience icons, progressive interactions, reduced-motion support, and retained high-resolution banner source are enforced.`);
