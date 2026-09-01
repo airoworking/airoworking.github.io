@@ -18,7 +18,7 @@ async function htmlFilesUnder(dir) {
 }
 
 const settings = JSON.parse(await readFile(CONFIG, 'utf8'));
-const client = String(process.env.ADSENSE_CLIENT || settings.client || '').trim();
+const client = String(settings.client || '').trim();
 if (!/^ca-pub-\d+$/.test(client)) {
   throw new Error(`Invalid AdSense client id: ${client || '(empty)'}`);
 }
