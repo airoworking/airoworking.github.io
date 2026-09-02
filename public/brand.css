@@ -16,16 +16,16 @@
 .hero-actions .button:active{transform:translateY(0) scale(.985)}
 .hero-actions .button-primary:hover{box-shadow:0 10px 24px rgba(0,0,0,.14)}
 
-/* The mascot supports the brand instead of competing with the hero. */
-.mascot-guide{display:grid;grid-template-columns:82px minmax(0,1fr) auto;gap:18px;align-items:center;margin:18px 0 0;padding:15px 18px;border:1px solid #d9d9d6;border-radius:16px;background:rgba(255,255,255,.86);box-shadow:0 8px 24px rgba(0,0,0,.035)}
-.mascot-guide-avatar{position:relative;width:76px;height:76px;overflow:hidden;border:1px solid #d4d4d0;border-radius:50%;background:linear-gradient(145deg,#fff,#efefed)}
-.mascot-guide-avatar img{position:absolute;inset:0;display:block;width:100%!important;max-width:none!important;height:100%!important;object-fit:cover;object-position:50% 22%;transform:scale(1.82);transform-origin:50% 22%}
-.mascot-guide-copy{min-width:0}
-.mascot-guide-copy>span{display:block;margin-bottom:2px;color:#777;font-size:11px;font-weight:850;letter-spacing:.035em}
-.mascot-guide-copy strong{display:block;font-size:16px;line-height:1.42;letter-spacing:-.025em}
-.mascot-guide-copy p{margin:3px 0 0;max-width:690px;color:#666;font-size:13px;line-height:1.58}
-.mascot-guide-link{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:0 13px;border:1px solid #c8c8c4;border-radius:9px;background:#fff;text-decoration:none;font-size:12px;font-weight:850;white-space:nowrap;transition:border-color .18s ease,background .18s ease}
-.mascot-guide-link:hover,.mascot-guide-link:focus-visible{border-color:#111;background:#f5f5f3}
+/* Small floating mascot guide: present, but never competes with the page content. */
+.mascot-float{position:fixed;right:max(12px,calc((100vw - var(--max))/2 - 86px));top:52%;z-index:80;transform:translateY(-50%);pointer-events:none}
+.mascot-float-link{display:flex;align-items:center;gap:8px;pointer-events:auto;text-decoration:none;animation:mascot-float-drift 4.6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.08))}
+.mascot-float-avatar{position:relative;display:block;flex:0 0 auto;width:58px;height:58px;overflow:hidden;border:1px solid #cfcfcb;border-radius:50%;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.06);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.mascot-float-avatar img{position:absolute;inset:0;display:block;width:100%!important;max-width:none!important;height:100%!important;object-fit:cover;object-position:50% 22%;transform:scale(1.92);transform-origin:50% 22%}
+.mascot-float-bubble{position:relative;display:inline-flex;align-items:center;min-height:34px;max-width:170px;padding:7px 10px;border:1px solid #d8d8d4;border-radius:11px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#333;font-size:11px;font-weight:780;line-height:1.35;white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.045);transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
+.mascot-float-bubble::after{content:"";position:absolute;right:-5px;top:50%;width:9px;height:9px;border-top:1px solid #d8d8d4;border-right:1px solid #d8d8d4;background:rgba(255,255,255,.94);transform:translateY(-50%) rotate(45deg)}
+.mascot-float-link:hover .mascot-float-avatar,.mascot-float-link:focus-visible .mascot-float-avatar{transform:scale(1.06);border-color:#aaa;box-shadow:0 7px 18px rgba(0,0,0,.09)}
+.mascot-float-link:hover .mascot-float-bubble,.mascot-float-link:focus-visible .mascot-float-bubble{transform:translateX(-3px);border-color:#bcbcb8;background:#fff}
+@keyframes mascot-float-drift{0%,100%{transform:translate3d(0,-5px,0) rotate(-.6deg)}50%{transform:translate3d(-6px,5px,0) rotate(.6deg)}}
 
 .site-header{transition:background-color .22s ease,box-shadow .22s ease,border-color .22s ease}
 .site-header.is-scrolled{background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(0,0,0,.055);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -63,9 +63,10 @@
 @media(max-width:800px){
   .brand-banner-image-wrap picture,.brand-banner-image{width:100%;height:auto}
   .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
-  .mascot-guide{grid-template-columns:68px minmax(0,1fr);gap:14px;padding:14px 15px}
-  .mascot-guide-avatar{width:64px;height:64px}
-  .mascot-guide-link{grid-column:2;justify-self:start;min-height:38px;margin-top:-5px}
+  .mascot-float{right:10px;top:auto;bottom:20px;transform:none}
+  .mascot-float-link{gap:7px}
+  .mascot-float-avatar{width:52px;height:52px}
+  .mascot-float-bubble{max-width:150px;min-height:32px;padding:6px 9px;font-size:10.5px}
   .audience-card{grid-template-columns:72px minmax(0,1fr)!important;column-gap:15px!important;padding:18px!important;min-height:154px!important;will-change:auto}
   .audience-icon{width:68px;height:68px;padding:8px;border-radius:17px}
   .audience-card:hover{transform:none;box-shadow:none!important}
@@ -79,11 +80,9 @@
   .brand-banner-image{width:100%;height:auto;min-height:0;object-fit:contain}
   .hero-copy{padding:10px!important}
   .hero-actions{grid-template-columns:1fr!important}
-  .mascot-guide{grid-template-columns:54px minmax(0,1fr);gap:11px;margin-top:12px;padding:12px;border-radius:13px}
-  .mascot-guide-avatar{width:52px;height:52px}
-  .mascot-guide-copy strong{font-size:14px}
-  .mascot-guide-copy p{font-size:12px;line-height:1.5}
-  .mascot-guide-link{grid-column:2;min-height:36px;padding:0 10px;font-size:11px}
+  .mascot-float{right:8px;bottom:14px}
+  .mascot-float-avatar{width:46px;height:46px}
+  .mascot-float-bubble{display:none}
   .audience-card{grid-template-columns:60px minmax(0,1fr)!important;column-gap:13px!important;padding:16px!important;min-height:144px!important}
   .audience-icon{width:56px;height:56px;padding:7px;border-radius:15px}
 }
@@ -92,18 +91,19 @@
   .brand-banner-image-wrap::after{display:none}
   .audience-card:hover,.hero-actions .button:hover,.launch-note:hover{transform:none}
   .audience-card:hover .audience-icon{transform:none}
+  .mascot-float-link:hover .mascot-float-avatar,.mascot-float-link:hover .mascot-float-bubble{transform:none}
 }
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto!important}
-  .hero,.brand-banner-image,.hero-actions .button,.site-header,.primary-nav a::after,.audience-card,.audience-icon,.audience-count,.section-heading h2::after,.launch-note,.mascot-guide-link,.reveal-target{transition:none!important;animation:none!important;transform:none!important}
+  .hero,.brand-banner-image,.hero-actions .button,.site-header,.primary-nav a::after,.audience-card,.audience-icon,.audience-count,.section-heading h2::after,.launch-note,.mascot-float-link,.mascot-float-avatar,.mascot-float-bubble,.reveal-target{transition:none!important;animation:none!important;transform:none!important}
   .effects-ready .reveal-target{opacity:1!important;transform:none!important}
   .brand-banner-image-wrap::after{display:none!important}
 }
 
 @media(prefers-contrast:more){
-  .brand-avatar,.mascot-guide-avatar,.audience-icon{border-color:#555}
-  .mascot-guide{border-color:#777}
+  .brand-avatar,.mascot-float-avatar,.audience-icon{border-color:#555}
+  .mascot-float-bubble{border-color:#777}
   .audience-card:hover{border-color:#111!important}
   .primary-nav a::after{height:2px}
 }
