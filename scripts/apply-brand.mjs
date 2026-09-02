@@ -35,8 +35,8 @@ function heroHtml(html) {
   return `<section class="hero brand-hero" aria-labelledby="hero-title"><h1 id="hero-title" class="hero-sr-only">실무에 바로 쓰는 AI 자동화 가이드</h1><div class="brand-banner-image-wrap"><picture><source type="image/avif" srcset="${srcset}" sizes="${sizes}"><img class="brand-banner-image" src="./assets/brand/hero-banner-2048.avif" srcset="${srcset}" sizes="${sizes}" width="2048" height="682" alt="실무에 바로 쓰는 AI 자동화. 업무 자동화, 비즈니스 자동화, AI 도구 활용법을 한눈에 소개하는 실무 가이드 배너" fetchpriority="high" decoding="async"></picture></div><div class="hero-copy"><div class="hero-actions"><a class="button button-primary" href="#audiences">분야별 가이드 보기</a><a class="button button-secondary" href="${secondaryHref}">${secondaryLabel}</a></div></div></section>`;
 }
 
-function mascotGuideHtml() {
-  return `<aside class="mascot-guide" aria-label="AI로 일하는 법 안내"><div class="mascot-guide-avatar" aria-hidden="true"><img src="./assets/brand/mascot-character.webp" alt="" width="640" height="640" decoding="async"></div><div class="mascot-guide-copy"><span>AI 업무 파트너</span><strong>복잡한 AI를 일의 언어로 정리합니다.</strong><p>과장된 기능 소개보다, 실제 업무에서 무엇을 줄이고 어디에 적용할지 판단할 수 있는 가이드를 만듭니다.</p></div><a class="mascot-guide-link" href="#featured">추천 글부터 보기 <span aria-hidden="true">→</span></a></aside>`;
+function mascotFloatHtml() {
+  return `<aside class="mascot-float" aria-label="추천 글 안내"><a class="mascot-float-link" href="#featured"><span class="mascot-float-bubble">처음이라면 추천 글부터 <span aria-hidden="true">→</span></span><span class="mascot-float-avatar" aria-hidden="true"><img src="./assets/brand/mascot-character.webp" alt="" width="640" height="640" decoding="async"></span></a></aside>`;
 }
 
 function injectIcon(html, id) {
@@ -52,18 +52,18 @@ await decodeParts(bannerParts, highResBannerPath, 'avif');
 await decodeParts(mascotParts, mascotPath, 'webp');
 
 let html = await readFile(target, 'utf8');
-html = html.replace(/\sdata-brand-patched="v[2345678]"/g, '');
-html = html.replace('<body>', '<body data-brand-patched="v8">');
+html = html.replace(/\sdata-brand-patched="v[23456789]"/g, '');
+html = html.replace('<body>', '<body data-brand-patched="v9">');
 
 if (!html.includes('href="./brand.css"')) html = html.replace('</head>', '<link rel="stylesheet" href="./brand.css"></head>');
 
-html = html.replace(/<aside class="mascot-guide"[\s\S]*?<\/aside>/g, '');
+html = html.replace(/<aside class="mascot-(?:guide|float)"[\s\S]*?<\/aside>/g, '');
 const heroPattern = /<section class="hero(?: brand-hero)?(?: mascot-hero)?"[^>]*>[\s\S]*?<\/section>/;
 if (!heroPattern.test(html)) throw new Error('Could not find homepage hero section for brand patch.');
-html = html.replace(heroPattern, `${heroHtml(html)}${mascotGuideHtml()}`);
+html = html.replace(heroPattern, `${heroHtml(html)}${mascotFloatHtml()}`);
 
 for (const id of Object.keys(icons)) html = injectIcon(html, id);
 if (!html.includes('src="./interactions.js"')) html = html.replace('</body>', '<script src="./interactions.js" defer></script></body>');
 
 await writeFile(target, html);
-console.log(`[brand] restored banner-first hero, placed mascot in a compact guide card, and applied ${Object.keys(icons).length} audience icons to ${target}`);
+console.log(`[brand] restored banner-first hero, placed mascot as a small floating side guide, and applied ${Object.keys(icons).length} audience icons to ${target}`);
