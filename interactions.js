@@ -51,129 +51,110 @@
     });
   }
 
-  if (mascotImage && !reducedMotion && typeof mascotImage.animate === 'function') {
-    const base = 'scale(1.92)';
-    let mascotTimer = 0;
-    let activeAnimation = null;
-    let mascotHovering = false;
+  if (!mascotImage) return;
 
-    const playAction = (frames, duration, easing = 'ease-in-out') => {
-      activeAnimation?.cancel();
-      activeAnimation = mascotImage.animate(frames, {
-        duration,
-        easing,
-        iterations: 1,
-        fill: 'none'
-      });
-      return activeAnimation.finished.catch(() => undefined);
-    };
+  const currentMascotUrl = new URL(mascotImage.getAttribute('src') || './assets/brand/mascot-character.webp', document.baseURI);
+  const mascotAssetDir = new URL('./', currentMascotUrl);
+  const frameUrl = (name) => new URL(`mascot-frame-${name}.webp?v=3`, mascotAssetDir).href;
+  const frames = {
+    idle: frameUrl('idle'),
+    blink: frameUrl('blink'),
+    left: frameUrl('look-left'),
+    right: frameUrl('look-right'),
+    ears: frameUrl('ears')
+  };
 
-    const actions = [
-      // Single blink: a very short vertical facial squash, then immediately open again.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} scaleY(.93)`, offset: .44 },
-        { transform: `${base} scaleY(.93)`, offset: .56 },
-        { transform: base, offset: 1 }
-      ], 240, 'cubic-bezier(.4,0,.2,1)'),
-
-      // Double blink: two quick blinks with a tiny pause between them.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} scaleY(.92)`, offset: .16 },
-        { transform: base, offset: .31 },
-        { transform: `${base} scaleY(.94)`, offset: .55 },
-        { transform: base, offset: .72 },
-        { transform: base, offset: 1 }
-      ], 520, 'cubic-bezier(.4,0,.2,1)'),
-
-      // Look toward the page, hold for a moment, then return to center.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} translate3d(-3px,0,0) rotate(-1.8deg)`, offset: .28 },
-        { transform: `${base} translate3d(-3px,0,0) rotate(-1.8deg)`, offset: .7 },
-        { transform: base, offset: 1 }
-      ], 1100, 'cubic-bezier(.2,.75,.2,1)'),
-
-      // Look outside the screen edge, as if checking what is behind it.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} translate3d(3px,0,0) rotate(1.7deg)`, offset: .3 },
-        { transform: `${base} translate3d(3px,0,0) rotate(1.7deg)`, offset: .68 },
-        { transform: base, offset: 1 }
-      ], 1050, 'cubic-bezier(.2,.75,.2,1)'),
-
-      // Ears-perk/listening reaction: lift and stretch the head upward, then settle.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} translate3d(0,-3px,0) scaleY(1.035) rotate(-.8deg)`, offset: .24 },
-        { transform: `${base} translate3d(0,-3px,0) scaleY(1.035) rotate(.9deg)`, offset: .52 },
-        { transform: `${base} translate3d(0,-1px,0) scaleY(1.012)`, offset: .76 },
-        { transform: base, offset: 1 }
-      ], 900, 'cubic-bezier(.2,.8,.2,1)'),
-
-      // Curious head tilt, like the cat is trying to understand what it sees.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} translate3d(-1px,-1px,0) rotate(-3deg)`, offset: .32 },
-        { transform: `${base} translate3d(-1px,-1px,0) rotate(-3deg)`, offset: .68 },
-        { transform: base, offset: 1 }
-      ], 1150, 'cubic-bezier(.2,.75,.2,1)'),
-
-      // Small sniff/nod motion to keep idle behavior from feeling repetitive.
-      () => playAction([
-        { transform: base, offset: 0 },
-        { transform: `${base} translate3d(0,2px,0) rotate(.6deg)`, offset: .25 },
-        { transform: `${base} translate3d(0,-1.5px,0) rotate(-.5deg)`, offset: .52 },
-        { transform: `${base} translate3d(0,1px,0)`, offset: .74 },
-        { transform: base, offset: 1 }
-      ], 820, 'cubic-bezier(.25,.7,.25,1)')
-    ];
-
-    const scheduleAction = () => {
-      window.clearTimeout(mascotTimer);
-      if (document.hidden || mascotHovering) return;
-      const delay = 2400 + Math.random() * 3600;
-      mascotTimer = window.setTimeout(async () => {
-        if (document.hidden || mascotHovering) {
-          scheduleAction();
-          return;
-        }
-        const action = actions[Math.floor(Math.random() * actions.length)];
-        await action();
-        scheduleAction();
-      }, delay);
-    };
-
-    if (mascotLink && finePointer) {
-      mascotLink.addEventListener('pointerenter', () => {
-        mascotHovering = true;
-        window.clearTimeout(mascotTimer);
-        playAction([
-          { transform: base, offset: 0 },
-          { transform: `${base} translate3d(-4px,-2px,0) rotate(-2.8deg) scale(1.025)`, offset: .24 },
-          { transform: `${base} translate3d(-1px,1px,0) rotate(1.4deg) scale(.995)`, offset: .48 },
-          { transform: `${base} translate3d(-3px,-1px,0) rotate(-1deg) scale(1.015)`, offset: .7 },
-          { transform: base, offset: 1 }
-        ], 760, 'cubic-bezier(.2,.8,.2,1)');
-      });
-
-      mascotLink.addEventListener('pointerleave', () => {
-        mascotHovering = false;
-        activeAnimation?.cancel();
-        scheduleAction();
-      });
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        window.clearTimeout(mascotTimer);
-        activeAnimation?.cancel();
-      } else if (!mascotHovering) {
-        scheduleAction();
-      }
-    });
-
-    scheduleAction();
+  for (const src of Object.values(frames)) {
+    const preloader = new Image();
+    preloader.decoding = 'async';
+    preloader.src = src;
   }
+
+  const setMascotFrame = (name) => {
+    const src = frames[name] || frames.idle;
+    if (mascotImage.dataset.mascotFrame === name && mascotImage.src === src) return;
+    mascotImage.dataset.mascotFrame = name;
+    mascotImage.src = src;
+  };
+
+  setMascotFrame('idle');
+
+  if (reducedMotion) return;
+
+  let mascotTimer = 0;
+  let actionToken = 0;
+  let mascotHovering = false;
+
+  const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+
+  const playSequence = async (steps) => {
+    const token = ++actionToken;
+    for (const [frame, duration] of steps) {
+      if (token !== actionToken || document.hidden) return;
+      setMascotFrame(frame);
+      await wait(duration);
+    }
+    if (token === actionToken && !document.hidden) setMascotFrame('idle');
+  };
+
+  const actions = [
+    () => playSequence([['blink', 135]]),
+    () => playSequence([['blink', 110], ['idle', 115], ['blink', 125]]),
+    () => playSequence([['left', 720]]),
+    () => playSequence([['right', 720]]),
+    () => playSequence([['ears', 560]]),
+    () => playSequence([['left', 420], ['idle', 90], ['right', 480]]),
+    () => playSequence([['ears', 300], ['blink', 130], ['ears', 260]]),
+    () => playSequence([['blink', 130]]),
+    () => playSequence([['left', 620]]),
+    () => playSequence([['right', 620]])
+  ];
+
+  const scheduleAction = () => {
+    window.clearTimeout(mascotTimer);
+    if (document.hidden || mascotHovering) return;
+    const delay = 1400 + Math.random() * 2600;
+    mascotTimer = window.setTimeout(async () => {
+      if (document.hidden || mascotHovering) return;
+      const action = actions[Math.floor(Math.random() * actions.length)];
+      await action();
+      scheduleAction();
+    }, delay);
+  };
+
+  const playGreeting = () => playSequence([
+    ['ears', 240],
+    ['left', 330],
+    ['right', 330],
+    ['blink', 125],
+    ['idle', 80]
+  ]);
+
+  if (mascotLink && finePointer) {
+    const startGreeting = () => {
+      mascotHovering = true;
+      window.clearTimeout(mascotTimer);
+      actionToken += 1;
+      playGreeting();
+    };
+    const stopGreeting = () => {
+      mascotHovering = false;
+      actionToken += 1;
+      setMascotFrame('idle');
+      scheduleAction();
+    };
+    mascotLink.addEventListener('pointerenter', startGreeting);
+    mascotLink.addEventListener('pointerleave', stopGreeting);
+    mascotLink.addEventListener('focus', startGreeting);
+    mascotLink.addEventListener('blur', stopGreeting);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    actionToken += 1;
+    window.clearTimeout(mascotTimer);
+    setMascotFrame('idle');
+    if (!document.hidden && !mascotHovering) scheduleAction();
+  });
+
+  scheduleAction();
 })();
