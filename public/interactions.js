@@ -4,6 +4,7 @@
   const root = document.documentElement;
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.brand-banner-image-wrap');
+  const heroImage = hero?.querySelector('.brand-banner-image');
   const mascot = document.querySelector('.mascot-float');
   const mascotLink = mascot?.querySelector('.mascot-float-link');
   const mascotImage = mascot?.querySelector('.mascot-float-avatar img');
@@ -50,6 +51,83 @@
       hero.style.setProperty('--pointer-y', '50%');
     });
   }
+
+  const setupAnimatedHeroBanner = async () => {
+    if (!hero || !heroImage || reducedMotion) return;
+
+    const chunkUrls = Array.from(
+      { length: 6 },
+      (_, index) => `./assets/brand/hero-video/part-${String(index + 1).padStart(2, '0')}.txt?v=1`
+    );
+
+    try {
+      const chunks = await Promise.all(chunkUrls.map(async (url) => {
+        const response = await fetch(url, { cache: 'force-cache' });
+        if (!response.ok) throw new Error(`Hero animation asset failed: ${response.status}`);
+        return response.text();
+      }));
+
+      const encoded = chunks.join('').replace(/\s+/g, '');
+      const binary = atob(encoded);
+      const bytes = new Uint8Array(binary.length);
+      for (let index = 0; index < binary.length; index += 1) {
+        bytes[index] = binary.charCodeAt(index);
+      }
+
+      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'video/mp4' }));
+      const style = document.createElement('style');
+      style.id = 'animated-hero-banner-style';
+      style.textContent = `
+        .brand-banner-motion-layer{position:absolute;inset:0 0 0 52.083333%;z-index:2;overflow:hidden;pointer-events:none;opacity:0;transform-origin:center;transition:opacity .34s ease,transform .5s cubic-bezier(.2,.7,.2,1);-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%)}
+        .brand-banner-motion-layer.is-ready{opacity:1}
+        .brand-banner-motion-video{display:block;width:100%;height:100%;object-fit:fill;background:transparent}
+        .brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:scale(1.004)}
+        @media(max-width:800px){.brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:none}}
+        @media(prefers-reduced-motion:reduce){.brand-banner-motion-layer{display:none!important}}
+      `;
+      document.head.appendChild(style);
+
+      const layer = document.createElement('div');
+      layer.className = 'brand-banner-motion-layer';
+      layer.setAttribute('aria-hidden', 'true');
+
+      const video = document.createElement('video');
+      video.className = 'brand-banner-motion-video';
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.disablePictureInPicture = true;
+      video.setAttribute('aria-hidden', 'true');
+      video.setAttribute('tabindex', '-1');
+      video.src = blobUrl;
+      layer.appendChild(video);
+      hero.appendChild(layer);
+
+      const revealVideo = () => layer.classList.add('is-ready');
+      video.addEventListener('playing', revealVideo, { once: true });
+      video.addEventListener('canplay', () => {
+        video.play().catch(() => undefined);
+      }, { once: true });
+
+      await video.play().then(revealVideo).catch(() => undefined);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          video.pause();
+        } else {
+          video.play().catch(() => undefined);
+        }
+      });
+
+      window.addEventListener('pagehide', () => URL.revokeObjectURL(blobUrl), { once: true });
+    } catch (error) {
+      console.warn('Animated hero banner fallback active.', error);
+    }
+  };
+
+  setupAnimatedHeroBanner();
 
   if (!mascotImage) return;
 
