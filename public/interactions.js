@@ -5,7 +5,7 @@
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.brand-banner-image-wrap');
   const revealTargets = [
-    ...document.querySelectorAll('.mascot-guide, .home-section, .launch-note, .section-heading, .audience-card, .featured-card, .post-card')
+    ...document.querySelectorAll('.home-section, .launch-note, .section-heading, .audience-card, .featured-card, .post-card')
   ];
 
   root.classList.add('effects-ready');
