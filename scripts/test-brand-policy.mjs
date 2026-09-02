@@ -10,18 +10,18 @@ const [banner, mascot] = await Promise.all([stat(bannerPath), stat(mascotPath)])
 const [bannerBytes, mascotBytes] = await Promise.all([readFile(bannerPath), readFile(mascotPath)]);
 
 for (const required of [
-  'data-brand-patched="v8"',
+  'data-brand-patched="v9"',
   'class="hero brand-hero"',
   'class="brand-banner-image-wrap"',
   'class="brand-banner-image"',
   'src="./assets/brand/hero-banner-2048.avif"',
   './assets/brand/hero-banner.avif 800w, ./assets/brand/hero-banner-2048.avif 2048w',
   'width="2048" height="682"',
-  'class="mascot-guide"',
-  'class="mascot-guide-avatar"',
-  'class="mascot-guide-copy"',
-  'AI 업무 파트너',
-  '복잡한 AI를 일의 언어로 정리합니다.',
+  'class="mascot-float"',
+  'class="mascot-float-link"',
+  'class="mascot-float-bubble"',
+  'class="mascot-float-avatar"',
+  '처음이라면 추천 글부터',
   'src="./assets/brand/mascot-character.webp"',
   'class="brand-avatar"',
   'href="./brand.css"',
@@ -47,6 +47,7 @@ for (const required of [
 if (html.includes('class="hero brand-hero mascot-hero"') || html.includes('class="mascot-stage"') || html.includes('class="mascot-character"')) {
   throw new Error('Mascot must not occupy the homepage banner/hero stage.');
 }
+if (html.includes('class="mascot-guide"')) throw new Error('Legacy full-width mascot guide must not remain.');
 
 if (mascot.size < 10_000) throw new Error(`Mascot WebP looks unexpectedly small (${mascot.size} bytes).`);
 if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Mascot asset is not a valid WebP container.');
@@ -68,9 +69,11 @@ for (const required of [
   '.hero::before{content:none!important',
   '.brand-banner-image-wrap picture{display:block;width:100%}',
   '.brand-banner-image{display:block;width:100%;max-width:100%;height:auto;object-fit:contain',
-  '.mascot-guide{display:grid',
-  '.mascot-guide-avatar{position:relative',
-  '.mascot-guide-avatar img{position:absolute',
+  '.mascot-float{position:fixed',
+  '.mascot-float-link{display:flex',
+  '.mascot-float-avatar{position:relative',
+  '.mascot-float-bubble{position:relative',
+  '@keyframes mascot-float-drift',
   '.brand-avatar{position:relative',
   '.brand-avatar img{position:absolute',
   '.audience-card:hover',
@@ -90,7 +93,7 @@ for (const required of [
   "matchMedia('(prefers-reduced-motion: reduce)')",
   "matchMedia('(hover: hover) and (pointer: fine)')",
   "document.querySelector('.brand-banner-image-wrap')",
-  "document.querySelectorAll('.mascot-guide, .home-section",
+  "document.querySelectorAll('.home-section, .launch-note",
   "IntersectionObserver",
   "root.classList.add('effects-ready')",
   "classList.add('is-revealed')",
@@ -101,6 +104,6 @@ for (const required of [
 }
 
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
-if (css.includes('.mascot-stage{') || css.includes('.mascot-hero{')) throw new Error('Hero-sized mascot CSS must not remain.');
+if (css.includes('.mascot-stage{') || css.includes('.mascot-hero{') || css.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
-console.log(`Brand policy OK: banner remains the hero, mascot is a compact guide/header identity, all-page favicon wiring remains, and responsive/reduced-motion behavior is enforced.`);
+console.log(`Brand policy OK: banner remains the hero, mascot is a small floating side guide/header identity, all-page favicon wiring remains, and responsive/reduced-motion behavior is enforced.`);
