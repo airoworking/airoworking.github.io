@@ -16,16 +16,21 @@
 .hero-actions .button:active{transform:translateY(0) scale(.985)}
 .hero-actions .button-primary:hover{box-shadow:0 10px 24px rgba(0,0,0,.14)}
 
-/* Small floating mascot guide: present, but never competes with the page content. */
-.mascot-float{position:fixed;right:max(12px,calc((100vw - var(--max))/2 - 86px));top:52%;z-index:80;transform:translateY(-50%);pointer-events:none}
-.mascot-float-link{display:flex;align-items:center;gap:8px;pointer-events:auto;text-decoration:none;animation:mascot-float-drift 4.6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.08))}
-.mascot-float-avatar{position:relative;display:block;flex:0 0 auto;width:58px;height:58px;overflow:hidden;border:1px solid #cfcfcb;border-radius:50%;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.06);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.mascot-float-avatar img{position:absolute;inset:0;display:block;width:100%!important;max-width:none!important;height:100%!important;object-fit:cover;object-position:50% 22%;transform:scale(1.92);transform-origin:50% 22%}
-.mascot-float-bubble{position:relative;display:inline-flex;align-items:center;min-height:34px;max-width:170px;padding:7px 10px;border:1px solid #d8d8d4;border-radius:11px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#333;font-size:11px;font-weight:780;line-height:1.35;white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.045);transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
-.mascot-float-bubble::after{content:"";position:absolute;right:-5px;top:50%;width:9px;height:9px;border-top:1px solid #d8d8d4;border-right:1px solid #d8d8d4;background:rgba(255,255,255,.94);transform:translateY(-50%) rotate(45deg)}
-.mascot-float-link:hover .mascot-float-avatar,.mascot-float-link:focus-visible .mascot-float-avatar{transform:scale(1.06);border-color:#aaa;box-shadow:0 7px 18px rgba(0,0,0,.09)}
-.mascot-float-link:hover .mascot-float-bubble,.mascot-float-link:focus-visible .mascot-float-bubble{transform:translateX(-3px);border-color:#bcbcb8;background:#fff}
-@keyframes mascot-float-drift{0%,100%{transform:translate3d(0,-5px,0) rotate(-.6deg)}50%{transform:translate3d(-6px,5px,0) rotate(.6deg)}}
+/* Edge-peeking mascot: half hidden at rest, fully appears on hover/focus. */
+.mascot-float{position:fixed;right:8px;top:52%;z-index:80;transform:translateY(-50%);pointer-events:none;animation:mascot-float-drift 7.2s ease-in-out infinite}
+.mascot-float-link{position:relative;display:flex;align-items:center;gap:8px;pointer-events:auto;text-decoration:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,.08))}
+.mascot-float-link::after{content:"";position:absolute;right:-10px;top:-12px;width:72px;height:84px;border-radius:999px}
+.mascot-float-avatar{position:relative;display:block;flex:0 0 auto;width:58px;height:58px;overflow:hidden;border:1px solid #cfcfcb;border-radius:50%;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.06);transform:translateX(34px);transition:transform .42s cubic-bezier(.2,.8,.2,1),border-color .2s ease,box-shadow .2s ease}
+.mascot-float-avatar img{position:absolute;inset:0;display:block;width:100%!important;max-width:none!important;height:100%!important;object-fit:cover;object-position:50% 22%;transform:scale(1.92);transform-origin:50% 24%;animation:mascot-cat-alive 3.8s ease-in-out infinite;transition:filter .24s ease}
+.mascot-float-bubble{position:relative;display:inline-flex;align-items:center;min-height:34px;max-width:0;padding:7px 0;overflow:hidden;border:1px solid transparent;border-radius:11px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#333;font-size:11px;font-weight:780;line-height:1.35;white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.045);opacity:0;visibility:hidden;transform:translateX(14px) scale(.96);transition:max-width .38s cubic-bezier(.2,.8,.2,1),padding .38s cubic-bezier(.2,.8,.2,1),opacity .2s ease,visibility .2s ease,transform .38s cubic-bezier(.2,.8,.2,1),border-color .2s ease}
+.mascot-float-bubble::after{content:"";position:absolute;right:-5px;top:50%;width:9px;height:9px;border-top:1px solid #d8d8d4;border-right:1px solid #d8d8d4;background:rgba(255,255,255,.96);transform:translateY(-50%) rotate(45deg)}
+.mascot-float-link:hover .mascot-float-avatar,.mascot-float-link:focus-visible .mascot-float-avatar{transform:translateX(0) scale(1.045);border-color:#aaa;box-shadow:0 8px 20px rgba(0,0,0,.1)}
+.mascot-float-link:hover .mascot-float-avatar img,.mascot-float-link:focus-visible .mascot-float-avatar img{filter:contrast(1.03)}
+.mascot-float-link:hover .mascot-float-bubble,.mascot-float-link:focus-visible .mascot-float-bubble{max-width:170px;padding:7px 10px;opacity:1;visibility:visible;transform:none;border-color:#c8c8c4}
+.mascot-float-link:active .mascot-float-avatar{transform:translateX(3px) scale(1.02)}
+@keyframes mascot-float-drift{0%,100%{transform:translateY(calc(-50% - 8px))}50%{transform:translateY(calc(-50% + 8px))}}
+@keyframes mascot-cat-alive{0%,100%{transform:scale(1.92) translate3d(0,0,0) rotate(-1deg)}28%{transform:scale(1.95) translate3d(-1px,-2px,0) rotate(1.5deg)}56%{transform:scale(1.91) translate3d(1px,1px,0) rotate(-.4deg)}78%{transform:scale(1.94) translate3d(-1px,-1px,0) rotate(.9deg)}}
+@keyframes mascot-mobile-drift{0%,100%{transform:translate3d(0,-4px,0) rotate(-.5deg)}50%{transform:translate3d(-3px,4px,0) rotate(.5deg)}}
 
 .site-header{transition:background-color .22s ease,box-shadow .22s ease,border-color .22s ease}
 .site-header.is-scrolled{background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(0,0,0,.055);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -63,10 +68,11 @@
 @media(max-width:800px){
   .brand-banner-image-wrap picture,.brand-banner-image{width:100%;height:auto}
   .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
-  .mascot-float{right:10px;top:auto;bottom:20px;transform:none}
+  .mascot-float{right:6px;top:auto;bottom:20px;transform:none;animation:mascot-mobile-drift 5.2s ease-in-out infinite}
   .mascot-float-link{gap:7px}
-  .mascot-float-avatar{width:52px;height:52px}
-  .mascot-float-bubble{max-width:150px;min-height:32px;padding:6px 9px;font-size:10.5px}
+  .mascot-float-avatar{width:52px;height:52px;transform:translateX(20px)}
+  .mascot-float-bubble{display:none}
+  .mascot-float-link:active .mascot-float-avatar{transform:translateX(3px) scale(1.03)}
   .audience-card{grid-template-columns:72px minmax(0,1fr)!important;column-gap:15px!important;padding:18px!important;min-height:154px!important;will-change:auto}
   .audience-icon{width:68px;height:68px;padding:8px;border-radius:17px}
   .audience-card:hover{transform:none;box-shadow:none!important}
@@ -80,9 +86,8 @@
   .brand-banner-image{width:100%;height:auto;min-height:0;object-fit:contain}
   .hero-copy{padding:10px!important}
   .hero-actions{grid-template-columns:1fr!important}
-  .mascot-float{right:8px;bottom:14px}
-  .mascot-float-avatar{width:46px;height:46px}
-  .mascot-float-bubble{display:none}
+  .mascot-float{right:4px;bottom:14px}
+  .mascot-float-avatar{width:46px;height:46px;transform:translateX(18px)}
   .audience-card{grid-template-columns:60px minmax(0,1fr)!important;column-gap:13px!important;padding:16px!important;min-height:144px!important}
   .audience-icon{width:56px;height:56px;padding:7px;border-radius:15px}
 }
@@ -91,12 +96,13 @@
   .brand-banner-image-wrap::after{display:none}
   .audience-card:hover,.hero-actions .button:hover,.launch-note:hover{transform:none}
   .audience-card:hover .audience-icon{transform:none}
-  .mascot-float-link:hover .mascot-float-avatar,.mascot-float-link:hover .mascot-float-bubble{transform:none}
+  .mascot-float-link:hover .mascot-float-avatar{transform:translateX(20px)}
 }
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto!important}
-  .hero,.brand-banner-image,.hero-actions .button,.site-header,.primary-nav a::after,.audience-card,.audience-icon,.audience-count,.section-heading h2::after,.launch-note,.mascot-float-link,.mascot-float-avatar,.mascot-float-bubble,.reveal-target{transition:none!important;animation:none!important;transform:none!important}
+  .hero,.brand-banner-image,.hero-actions .button,.site-header,.primary-nav a::after,.audience-card,.audience-icon,.audience-count,.section-heading h2::after,.launch-note,.reveal-target{transition:none!important;animation:none!important;transform:none!important}
+  .mascot-float,.mascot-float-link,.mascot-float-avatar,.mascot-float-avatar img,.mascot-float-bubble{transition:none!important;animation:none!important}
   .effects-ready .reveal-target{opacity:1!important;transform:none!important}
   .brand-banner-image-wrap::after{display:none!important}
 }
