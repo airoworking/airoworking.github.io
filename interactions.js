@@ -52,140 +52,82 @@
     });
   }
 
-  const setupSmoothHeroBanner = async () => {
-    if (!hero || !heroImage) return;
+  const setupAnimatedHeroBanner = async () => {
+    if (!hero || !heroImage || reducedMotion) return;
+
+    const chunkUrls = Array.from(
+      { length: 6 },
+      (_, index) => `./assets/brand/hero-video/part-${String(index + 1).padStart(2, '0')}.txt?v=1`
+    );
 
     try {
-      if (!heroImage.complete) {
-        await new Promise((resolve) => {
-          heroImage.addEventListener('load', resolve, { once: true });
-          heroImage.addEventListener('error', resolve, { once: true });
-        });
+      const chunks = await Promise.all(chunkUrls.map(async (url) => {
+        const response = await fetch(url, { cache: 'force-cache' });
+        if (!response.ok) throw new Error(`Hero animation asset failed: ${response.status}`);
+        return response.text();
+      }));
+
+      const encoded = chunks.join('').replace(/\s+/g, '');
+      const binary = atob(encoded);
+      const bytes = new Uint8Array(binary.length);
+      for (let index = 0; index < binary.length; index += 1) {
+        bytes[index] = binary.charCodeAt(index);
       }
-      await heroImage.decode?.().catch(() => undefined);
 
-      const sourceUrl = heroImage.currentSrc || heroImage.src;
-      if (!sourceUrl) return;
-
+      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'video/mp4' }));
       const style = document.createElement('style');
-      style.id = 'smooth-hero-banner-style';
+      style.id = 'animated-hero-banner-style';
       style.textContent = `
-        .brand-banner-smooth-stage{position:relative;width:100%;aspect-ratio:2048/682;overflow:hidden;background:#05080d;isolation:isolate}
-        .brand-banner-smooth-source,.brand-banner-smooth-frame{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
-        .brand-banner-smooth-source{z-index:0;opacity:.001;pointer-events:none}
-        .brand-banner-smooth-frame{z-index:1;opacity:0;transform:scale(1.008);transform-origin:50% 50%;transition:opacity 780ms cubic-bezier(.4,0,.2,1),transform 980ms cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
-        .brand-banner-smooth-frame.is-active{opacity:1;transform:scale(1)}
-        .brand-banner-image-wrap.is-smooth-banner-ready>picture{display:none!important}
-        @media(max-width:800px){.brand-banner-smooth-stage{aspect-ratio:2048/682}}
-        @media(prefers-reduced-motion:reduce){.brand-banner-smooth-frame{transition:none!important;transform:none!important}.brand-banner-smooth-frame:not(.is-active){display:none!important}}
+        .brand-banner-motion-layer{position:absolute;inset:0 0 0 52.083333%;z-index:2;overflow:hidden;pointer-events:none;opacity:0;transform-origin:center;transition:opacity .34s ease,transform .5s cubic-bezier(.2,.7,.2,1);-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%)}
+        .brand-banner-motion-layer.is-ready{opacity:1}
+        .brand-banner-motion-video{display:block;width:100%;height:100%;object-fit:fill;background:transparent}
+        .brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:scale(1.004)}
+        @media(max-width:800px){.brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:none}}
+        @media(prefers-reduced-motion:reduce){.brand-banner-motion-layer{display:none!important}}
       `;
       document.head.appendChild(style);
 
-      const stage = document.createElement('div');
-      stage.className = 'brand-banner-smooth-stage';
-      stage.setAttribute('role', 'img');
-      stage.setAttribute('aria-label', heroImage.alt || 'AI 자동화 가이드 배너');
+      const layer = document.createElement('div');
+      layer.className = 'brand-banner-motion-layer';
+      layer.setAttribute('aria-hidden', 'true');
 
-      const source = new Image();
-      source.className = 'brand-banner-smooth-source';
-      source.alt = '';
-      source.decoding = 'async';
-      source.src = sourceUrl;
+      const video = document.createElement('video');
+      video.className = 'brand-banner-motion-video';
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.disablePictureInPicture = true;
+      video.setAttribute('aria-hidden', 'true');
+      video.setAttribute('tabindex', '-1');
+      video.src = blobUrl;
+      layer.appendChild(video);
+      hero.appendChild(layer);
 
-      const canvases = [document.createElement('canvas'), document.createElement('canvas')];
-      for (const canvas of canvases) {
-        canvas.className = 'brand-banner-smooth-frame';
-        canvas.setAttribute('aria-hidden', 'true');
-        stage.appendChild(canvas);
-      }
-      stage.appendChild(source);
-      hero.appendChild(stage);
+      const revealVideo = () => layer.classList.add('is-ready');
+      video.addEventListener('playing', revealVideo, { once: true });
+      video.addEventListener('canplay', () => {
+        video.play().catch(() => undefined);
+      }, { once: true });
 
-      if (!source.complete) {
-        await new Promise((resolve) => {
-          source.addEventListener('load', resolve, { once: true });
-          source.addEventListener('error', resolve, { once: true });
-        });
-      }
-      await source.decode?.().catch(() => undefined);
-
-      const naturalWidth = source.naturalWidth || heroImage.naturalWidth || 2048;
-      const naturalHeight = source.naturalHeight || heroImage.naturalHeight || 682;
-      const canvasWidth = Math.min(1600, naturalWidth);
-      const canvasHeight = Math.max(1, Math.round(canvasWidth * naturalHeight / naturalWidth));
-      const contexts = canvases.map((canvas) => {
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-        return canvas.getContext('2d', { alpha: false, desynchronized: true });
-      });
-      if (contexts.some((context) => !context)) {
-        stage.remove();
-        style.remove();
-        return;
-      }
-
-      const capture = (context) => {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        context.drawImage(source, 0, 0, canvasWidth, canvasHeight);
-      };
-
-      capture(contexts[0]);
-      capture(contexts[1]);
-      canvases[0].classList.add('is-active');
-      hero.classList.add('is-smooth-banner-ready');
-
-      if (reducedMotion) return;
-
-      const FRAME_MS = 1000;
-      const FIRST_CAPTURE_OFFSET_MS = 90;
-      let activeIndex = 0;
-      let timer = 0;
-      let cycle = 1;
-      let nextAt = performance.now() + FRAME_MS + FIRST_CAPTURE_OFFSET_MS;
-
-      const schedule = () => {
-        window.clearTimeout(timer);
-        if (document.hidden) return;
-        timer = window.setTimeout(tick, Math.max(0, nextAt - performance.now()));
-      };
-
-      const tick = () => {
-        if (document.hidden) return;
-        const nextIndex = activeIndex === 0 ? 1 : 0;
-        capture(contexts[nextIndex]);
-
-        requestAnimationFrame(() => {
-          canvases[nextIndex].classList.add('is-active');
-          canvases[activeIndex].classList.remove('is-active');
-          activeIndex = nextIndex;
-        });
-
-        cycle += 1;
-        nextAt += FRAME_MS;
-        if (nextAt < performance.now() - FRAME_MS) {
-          nextAt = performance.now() + FRAME_MS;
-        }
-        schedule();
-      };
-
-      const resume = () => {
-        cycle += 1;
-        nextAt = performance.now() + FRAME_MS + FIRST_CAPTURE_OFFSET_MS;
-        schedule();
-      };
+      await video.play().then(revealVideo).catch(() => undefined);
 
       document.addEventListener('visibilitychange', () => {
-        window.clearTimeout(timer);
-        if (!document.hidden) resume();
+        if (document.hidden) {
+          video.pause();
+        } else {
+          video.play().catch(() => undefined);
+        }
       });
 
-      schedule();
+      window.addEventListener('pagehide', () => URL.revokeObjectURL(blobUrl), { once: true });
     } catch (error) {
-      console.warn('Smooth hero banner fallback active.', error);
+      console.warn('Animated hero banner fallback active.', error);
     }
   };
 
-  setupSmoothHeroBanner();
+  setupAnimatedHeroBanner();
 
   if (!mascotImage) return;
 
