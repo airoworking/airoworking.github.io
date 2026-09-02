@@ -70,10 +70,13 @@ for (const required of [
   '.brand-banner-image-wrap picture{display:block;width:100%}',
   '.brand-banner-image{display:block;width:100%;max-width:100%;height:auto;object-fit:contain',
   '.mascot-float{position:fixed',
-  '.mascot-float-link{display:flex',
+  '.mascot-float-link{position:relative;display:flex',
   '.mascot-float-avatar{position:relative',
   '.mascot-float-bubble{position:relative',
+  'transform:translateX(34px)',
   '@keyframes mascot-float-drift',
+  '@keyframes mascot-cat-alive',
+  '@keyframes mascot-mobile-drift',
   '.brand-avatar{position:relative',
   '.brand-avatar img{position:absolute',
   '.audience-card:hover',
@@ -106,4 +109,4 @@ for (const required of [
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
 if (css.includes('.mascot-stage{') || css.includes('.mascot-hero{') || css.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
-console.log(`Brand policy OK: banner remains the hero, mascot is a small floating side guide/header identity, all-page favicon wiring remains, and responsive/reduced-motion behavior is enforced.`);
+console.log(`Brand policy OK: banner remains the hero, mascot peeks from the right edge with subtle motion and hover reveal, all-page favicon wiring remains, and responsive/reduced-motion behavior is enforced.`);
