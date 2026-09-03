@@ -39,6 +39,7 @@ jobs:
           grep -q '소규모 사업자의 CRM 자동화, 어디서부터 시작해야 할까?' public/posts/crm.html
       - run: node --check scripts/apply-brand.mjs
       - run: node scripts/apply-brand.mjs
+      - run: cp public/assets/brand/hero-banner-2048.avif assets/brand/hero-banner-2048.avif
       - run: node scripts/apply-mascot.mjs
       - run: node scripts/apply-mascot.mjs --check
       - run: node scripts/test-brand-policy.mjs
