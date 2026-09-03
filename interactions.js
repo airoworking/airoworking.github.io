@@ -1,6 +1,5 @@
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const root = document.documentElement;
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.brand-banner-image-wrap');
@@ -38,96 +37,60 @@
     window.addEventListener('scroll', updateHeader, { passive: true });
   }
 
-  if (hero && finePointer && !reducedMotion) {
-    hero.addEventListener('pointermove', (event) => {
-      const bounds = hero.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-      const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-      hero.style.setProperty('--pointer-x', `${x.toFixed(1)}%`);
-      hero.style.setProperty('--pointer-y', `${y.toFixed(1)}%`);
-    }, { passive: true });
-    hero.addEventListener('pointerleave', () => {
-      hero.style.setProperty('--pointer-x', '50%');
-      hero.style.setProperty('--pointer-y', '50%');
-    });
-  }
+  const setupStaticHeroBanner = async () => {
+    if (!hero || !heroImage) return;
 
-  const setupAnimatedHeroBanner = async () => {
-    if (!hero || !heroImage || reducedMotion) return;
+    const style = document.createElement('style');
+    style.id = 'static-hero-banner-style';
+    style.textContent = `
+      .brand-banner-image-wrap::after{display:none!important}
+      .brand-banner-image{transition:none!important;transform:none!important;filter:none!important}
+      .brand-banner-image-wrap:hover .brand-banner-image{transform:none!important;filter:none!important}
+      .brand-banner-motion-layer{display:none!important}
+    `;
+    document.head.appendChild(style);
+
+    const picture = heroImage.closest('picture');
+    picture?.querySelectorAll('source').forEach((source) => source.remove());
+    heroImage.removeAttribute('srcset');
+    heroImage.removeAttribute('sizes');
 
     const chunkUrls = Array.from(
-      { length: 6 },
-      (_, index) => `./assets/brand/hero-video/part-${String(index + 1).padStart(2, '0')}.txt?v=1`
+      { length: 8 },
+      (_, index) => `./assets/brand/hero-static/part-${String(index + 1).padStart(2, '0')}.bin?v=2`
     );
 
     try {
-      const chunks = await Promise.all(chunkUrls.map(async (url) => {
+      const parts = await Promise.all(chunkUrls.map(async (url) => {
         const response = await fetch(url, { cache: 'force-cache' });
-        if (!response.ok) throw new Error(`Hero animation asset failed: ${response.status}`);
-        return response.text();
+        if (!response.ok) throw new Error(`Static hero asset failed: ${response.status}`);
+        return new Uint8Array(await response.arrayBuffer());
       }));
 
-      const encoded = chunks.join('').replace(/\s+/g, '');
-      const binary = atob(encoded);
-      const bytes = new Uint8Array(binary.length);
-      for (let index = 0; index < binary.length; index += 1) {
-        bytes[index] = binary.charCodeAt(index);
+      const totalLength = parts.reduce((sum, part) => sum + part.byteLength, 0);
+      const bytes = new Uint8Array(totalLength);
+      let offset = 0;
+      for (const part of parts) {
+        bytes.set(part, offset);
+        offset += part.byteLength;
       }
 
-      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'video/mp4' }));
-      const style = document.createElement('style');
-      style.id = 'animated-hero-banner-style';
-      style.textContent = `
-        .brand-banner-motion-layer{position:absolute;inset:0 0 0 52.083333%;z-index:2;overflow:hidden;pointer-events:none;opacity:0;transform-origin:center;transition:opacity .34s ease,transform .5s cubic-bezier(.2,.7,.2,1);-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.18) 3%,rgba(0,0,0,.76) 8%,#000 12%,#000 100%)}
-        .brand-banner-motion-layer.is-ready{opacity:1}
-        .brand-banner-motion-video{display:block;width:100%;height:100%;object-fit:fill;background:transparent}
-        .brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:scale(1.004)}
-        @media(max-width:800px){.brand-banner-image-wrap:hover .brand-banner-motion-layer{transform:none}}
-        @media(prefers-reduced-motion:reduce){.brand-banner-motion-layer{display:none!important}}
-      `;
-      document.head.appendChild(style);
+      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'image/avif' }));
+      const preloader = new Image();
+      preloader.src = blobUrl;
+      if (preloader.decode) await preloader.decode();
 
-      const layer = document.createElement('div');
-      layer.className = 'brand-banner-motion-layer';
-      layer.setAttribute('aria-hidden', 'true');
-
-      const video = document.createElement('video');
-      video.className = 'brand-banner-motion-video';
-      video.muted = true;
-      video.loop = true;
-      video.autoplay = true;
-      video.playsInline = true;
-      video.preload = 'auto';
-      video.disablePictureInPicture = true;
-      video.setAttribute('aria-hidden', 'true');
-      video.setAttribute('tabindex', '-1');
-      video.src = blobUrl;
-      layer.appendChild(video);
-      hero.appendChild(layer);
-
-      const revealVideo = () => layer.classList.add('is-ready');
-      video.addEventListener('playing', revealVideo, { once: true });
-      video.addEventListener('canplay', () => {
-        video.play().catch(() => undefined);
-      }, { once: true });
-
-      await video.play().then(revealVideo).catch(() => undefined);
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          video.pause();
-        } else {
-          video.play().catch(() => undefined);
-        }
-      });
-
+      heroImage.src = blobUrl;
+      heroImage.width = 1200;
+      heroImage.height = 400;
+      heroImage.dataset.staticHero = 'ready';
       window.addEventListener('pagehide', () => URL.revokeObjectURL(blobUrl), { once: true });
     } catch (error) {
-      console.warn('Animated hero banner fallback active.', error);
+      console.warn('High-resolution static hero fallback active.', error);
     }
   };
 
-  setupAnimatedHeroBanner();
+  setupStaticHeroBanner();
 
   if (!mascotImage) return;
 
@@ -156,13 +119,11 @@
   };
 
   setMascotFrame('idle');
-
   if (reducedMotion) return;
 
   let mascotTimer = 0;
   let actionToken = 0;
   let mascotHovering = false;
-
   const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
   const playSequence = async (steps) => {
@@ -182,33 +143,24 @@
     () => playSequence([['right', 720]]),
     () => playSequence([['ears', 560]]),
     () => playSequence([['left', 420], ['idle', 90], ['right', 480]]),
-    () => playSequence([['ears', 300], ['blink', 130], ['ears', 260]]),
-    () => playSequence([['blink', 130]]),
-    () => playSequence([['left', 620]]),
-    () => playSequence([['right', 620]])
+    () => playSequence([['ears', 300], ['blink', 130], ['ears', 260]])
   ];
 
   const scheduleAction = () => {
     window.clearTimeout(mascotTimer);
     if (document.hidden || mascotHovering) return;
-    const delay = 1400 + Math.random() * 2600;
     mascotTimer = window.setTimeout(async () => {
       if (document.hidden || mascotHovering) return;
-      const action = actions[Math.floor(Math.random() * actions.length)];
-      await action();
+      await actions[Math.floor(Math.random() * actions.length)]();
       scheduleAction();
-    }, delay);
+    }, 1400 + Math.random() * 2600);
   };
 
   const playGreeting = () => playSequence([
-    ['ears', 240],
-    ['left', 330],
-    ['right', 330],
-    ['blink', 125],
-    ['idle', 80]
+    ['ears', 240], ['left', 330], ['right', 330], ['blink', 125], ['idle', 80]
   ]);
 
-  if (mascotLink && finePointer) {
+  if (mascotLink && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const startGreeting = () => {
       mascotHovering = true;
       window.clearTimeout(mascotTimer);
