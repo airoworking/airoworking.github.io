@@ -2,7 +2,11 @@ import { readFile, stat } from 'node:fs/promises';
 
 const html = await readFile('public/index.html', 'utf8');
 const article = await readFile('public/posts/crm.html', 'utf8');
-const css = await readFile('public/brand.css', 'utf8');
+const [css, cssBase] = await Promise.all([
+  readFile('public/brand.css', 'utf8'),
+  readFile('public/brand-original.css', 'utf8')
+]);
+const brandCss = `${cssBase}\n${css}`;
 const interactions = await readFile('public/interactions.js', 'utf8');
 const bannerPath = 'public/assets/brand/hero-static-hq.avif';
 const mascotPath = 'public/assets/brand/mascot-character.webp';
@@ -72,7 +76,7 @@ for (const required of [
   '@media(max-width:800px)',
   '@media(max-width:480px)'
 ]) {
-  if (!css.includes(required)) throw new Error(`Brand CSS missing ${required}`);
+  if (!brandCss.includes(required)) throw new Error(`Brand CSS missing ${required}`);
 }
 
 for (const required of [
@@ -90,6 +94,6 @@ for (const required of [
 }
 
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
-if (css.includes('.mascot-stage{') || css.includes('.mascot-hero{') || css.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
+if (brandCss.includes('.mascot-stage{') || brandCss.includes('.mascot-hero{') || brandCss.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
 console.log(`Brand policy OK: high-quality static banner remains the hero, mascot peeks from the right edge with subtle motion, and responsive/reduced-motion behavior is enforced.`);
