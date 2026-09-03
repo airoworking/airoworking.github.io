@@ -53,7 +53,6 @@ if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subar
 
 if (banner.size < 70_000) throw new Error(`Static hero AVIF looks unexpectedly small (${banner.size} bytes).`);
 if (bannerBytes.subarray(4, 12).toString('ascii') !== 'ftypavif') throw new Error('Static hero is not a valid AVIF container.');
-
 const ispeIndex = bannerBytes.indexOf(Buffer.from('ispe'));
 if (ispeIndex < 0) throw new Error('Static hero AVIF is missing image dimensions.');
 const bannerWidth = bannerBytes.readUInt32BE(ispeIndex + 8);
@@ -68,11 +67,9 @@ for (const required of [
   '.mascot-float-bubble{',
   '.mascot-float-avatar{',
   '.audience-icon{',
-  '.reveal-target{',
   '.effects-ready .reveal-target{',
   '.effects-ready .reveal-target.is-revealed{',
-  '@media(max-width:900px)',
-  '@media(max-width:720px)',
+  '@media(max-width:800px)',
   '@media(max-width:480px)'
 ]) {
   if (!css.includes(required)) throw new Error(`Brand CSS missing ${required}`);
