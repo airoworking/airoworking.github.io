@@ -52,7 +52,7 @@
     picture?.querySelectorAll('source').forEach((source) => source.remove());
     heroImage.removeAttribute('srcset');
     heroImage.removeAttribute('sizes');
-    heroImage.src = './assets/brand/hero-static-hq.webp?v=5';
+    heroImage.src = './assets/brand/hero-static-hq.webp?v=6';
     heroImage.width = 2048;
     heroImage.height = 682;
     heroImage.decoding = 'async';
