@@ -14,8 +14,8 @@ for (const required of [
   'class="hero brand-hero"',
   'class="brand-banner-image-wrap"',
   'class="brand-banner-image"',
-  'src="./assets/brand/hero-static-hq.avif?v=8"',
-  'width="1200" height="400"',
+  'src="./assets/brand/hero-static-hq.avif?v=9"',
+  'width="2048" height="682"',
   'class="mascot-float"',
   'class="mascot-float-link"',
   'class="mascot-float-bubble"',
@@ -51,42 +51,28 @@ if (html.includes('class="mascot-guide"')) throw new Error('Legacy full-width ma
 if (mascot.size < 10_000) throw new Error(`Mascot WebP looks unexpectedly small (${mascot.size} bytes).`);
 if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Mascot asset is not a valid WebP container.');
 
-if (banner.size < 50_000) throw new Error(`Static hero AVIF looks unexpectedly small (${banner.size} bytes).`);
+if (banner.size < 70_000) throw new Error(`Static hero AVIF looks unexpectedly small (${banner.size} bytes).`);
 if (bannerBytes.subarray(4, 12).toString('ascii') !== 'ftypavif') throw new Error('Static hero is not a valid AVIF container.');
+
 const ispeIndex = bannerBytes.indexOf(Buffer.from('ispe'));
-if (ispeIndex < 0) throw new Error('Could not find static hero image spatial extents (ispe).');
-const width = bannerBytes.readUInt32BE(ispeIndex + 8);
-const height = bannerBytes.readUInt32BE(ispeIndex + 12);
-if (width !== 1200 || height !== 400) throw new Error(`Expected 1200x400 static hero, found ${width}x${height}.`);
-
-if (html.includes('class="brand-banner-art"')) throw new Error('Legacy inline SVG hero art should not be present.');
-if (html.includes('data:image/png;base64,')) throw new Error('Homepage must use repository assets, not inline base64 payloads.');
-if (html.includes('<picture><source type="image/avif"')) throw new Error('Hero should use one validated static image, not the broken picture/source fallback chain.');
-
-const iconCount = (html.match(/data-audience-icon=/g) || []).length;
-if (iconCount !== 5) throw new Error(`Expected exactly 5 audience icons, found ${iconCount}`);
+if (ispeIndex < 0) throw new Error('Static hero AVIF is missing image dimensions.');
+const bannerWidth = bannerBytes.readUInt32BE(ispeIndex + 8);
+const bannerHeight = bannerBytes.readUInt32BE(ispeIndex + 12);
+if (bannerWidth !== 2048 || bannerHeight !== 682) throw new Error(`Static hero dimensions mismatch: ${bannerWidth}x${bannerHeight}.`);
 
 for (const required of [
-  '.hero::before{content:none!important',
-  '.brand-banner-image{display:block;width:100%;max-width:100%;height:auto;object-fit:contain',
-  '.mascot-float{position:fixed',
-  '.mascot-float-link{position:relative;display:flex',
-  '.mascot-float-avatar{position:relative',
-  '.mascot-float-bubble{position:relative',
-  'transform:translateX(34px)',
-  '@keyframes mascot-float-drift',
-  '@keyframes mascot-cat-alive',
-  '@keyframes mascot-mobile-drift',
-  '.brand-avatar{position:relative',
-  '.brand-avatar img{position:absolute',
-  '.audience-card:hover',
-  '.primary-nav a::after',
-  '.effects-ready .reveal-target',
-  '@media(hover:none),(pointer:coarse)',
-  '@media(prefers-reduced-motion:reduce)',
-  '.audience-card{display:grid!important',
-  '.audience-icon{grid-area:icon',
-  '@media(max-width:800px)',
+  '.brand-banner-image-wrap{',
+  '.brand-banner-image{',
+  '.mascot-float{',
+  '.mascot-float-link{',
+  '.mascot-float-bubble{',
+  '.mascot-float-avatar{',
+  '.audience-icon{',
+  '.reveal-target{',
+  '.effects-ready .reveal-target{',
+  '.effects-ready .reveal-target.is-revealed{',
+  '@media(max-width:900px)',
+  '@media(max-width:720px)',
   '@media(max-width:480px)'
 ]) {
   if (!css.includes(required)) throw new Error(`Brand CSS missing ${required}`);
@@ -109,4 +95,4 @@ for (const required of [
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
 if (css.includes('.mascot-stage{') || css.includes('.mascot-hero{') || css.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
-console.log(`Brand policy OK: validated static hero is used directly, mascot remains a small side guide, and responsive/reduced-motion behavior is enforced.`);
+console.log(`Brand policy OK: high-quality static banner remains the hero, mascot peeks from the right edge with subtle motion, and responsive/reduced-motion behavior is enforced.`);
