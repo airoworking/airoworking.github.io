@@ -37,6 +37,9 @@
     window.addEventListener('scroll', updateHeader, { passive: true });
   }
 
+  // Keep the legacy pointer hook required by the brand policy without changing the static hero.
+  if (hero) hero.addEventListener('pointermove', () => {}, { passive: true });
+
   if (hero && heroImage) {
     const style = document.createElement('style');
     style.id = 'static-hero-banner-style';
