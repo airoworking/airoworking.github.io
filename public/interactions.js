@@ -3,7 +3,6 @@
   const root = document.documentElement;
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.brand-banner-image-wrap');
-  const heroImage = hero?.querySelector('.brand-banner-image');
   const mascot = document.querySelector('.mascot-float');
   const mascotLink = mascot?.querySelector('.mascot-float-link');
   const mascotImage = mascot?.querySelector('.mascot-float-avatar img');
@@ -37,10 +36,10 @@
     window.addEventListener('scroll', updateHeader, { passive: true });
   }
 
-  // Keep the legacy pointer hook required by the brand policy without changing the static hero.
+  // Preserve the existing policy hook, but keep the hero visually static.
   if (hero) hero.addEventListener('pointermove', () => {}, { passive: true });
 
-  if (hero && heroImage) {
+  if (hero) {
     const style = document.createElement('style');
     style.id = 'static-hero-banner-style';
     style.textContent = `
@@ -50,16 +49,6 @@
       .brand-banner-motion-layer{display:none!important}
     `;
     document.head.appendChild(style);
-
-    const picture = heroImage.closest('picture');
-    picture?.querySelectorAll('source').forEach((source) => source.remove());
-    heroImage.removeAttribute('srcset');
-    heroImage.removeAttribute('sizes');
-    heroImage.src = './assets/brand/hero-static-hq.webp?v=6';
-    heroImage.width = 2048;
-    heroImage.height = 682;
-    heroImage.decoding = 'async';
-    heroImage.dataset.staticHero = 'ready';
   }
 
   if (!mascotImage) return;
