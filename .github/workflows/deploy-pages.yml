@@ -7,7 +7,6 @@ on:
       - 'public/**'
       - 'data/**'
       - 'brand-assets/**'
-      - 'hero-source/**'
       - 'config/adsense.json'
       - 'scripts/editorial-polish.mjs'
       - 'scripts/live-overrides.mjs'
@@ -42,7 +41,7 @@ jobs:
         run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
-      - name: Apply mascot brand identity
+      - name: Apply validated static hero and mascot brand identity
         run: |
           node scripts/apply-brand.mjs
           node scripts/apply-mascot.mjs
@@ -52,34 +51,6 @@ jobs:
         run: |
           node scripts/apply-adsense.mjs
           node scripts/apply-adsense.mjs --check
-      - name: Install high-quality static hero banner
-        run: |
-          set -euo pipefail
-          mkdir -p public/assets/brand
-          cat hero-source/banner.part*.b64 | tr -d '\n\r' | base64 --decode > public/assets/brand/hero-static-hq.avif
-          test "$(stat -c%s public/assets/brand/hero-static-hq.avif)" -gt 70000
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path('public/index.html')
-          html = path.read_text(encoding='utf-8')
-          hero = ('<div class="brand-banner-image-wrap">'
-                  '<picture>'
-                  '<source type="image/avif" srcset="./assets/brand/hero-static-hq.avif?v=7">'
-                  '<img class="brand-banner-image" src="./assets/brand/hero-banner.png?v=7" '
-                  'width="2048" height="682" '
-                  'alt="실무에 바로 쓰는 AI 자동화. 업무 자동화, 비즈니스 자동화, AI 도구 활용법을 한눈에 소개하는 실무 가이드 배너" '
-                  'fetchpriority="high" decoding="async">'
-                  '</picture>'
-                  '</div><div class="hero-copy">')
-          pattern = r'<div class="brand-banner-image-wrap">.*?</div><div class="hero-copy">'
-          html, count = re.subn(pattern, hero, html, count=1, flags=re.S)
-          if count != 1:
-              raise SystemExit('Hero banner block not found')
-          path.write_text(html, encoding='utf-8')
-          PY
-          grep -q 'hero-static-hq.avif?v=7' public/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
