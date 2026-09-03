@@ -37,9 +37,7 @@
     window.addEventListener('scroll', updateHeader, { passive: true });
   }
 
-  const setupStaticHeroBanner = async () => {
-    if (!hero || !heroImage) return;
-
+  if (hero && heroImage) {
     const style = document.createElement('style');
     style.id = 'static-hero-banner-style';
     style.textContent = `
@@ -54,43 +52,12 @@
     picture?.querySelectorAll('source').forEach((source) => source.remove());
     heroImage.removeAttribute('srcset');
     heroImage.removeAttribute('sizes');
-
-    const chunkUrls = Array.from(
-      { length: 8 },
-      (_, index) => `./assets/brand/hero-static/part-${String(index + 1).padStart(2, '0')}.bin?v=2`
-    );
-
-    try {
-      const parts = await Promise.all(chunkUrls.map(async (url) => {
-        const response = await fetch(url, { cache: 'force-cache' });
-        if (!response.ok) throw new Error(`Static hero asset failed: ${response.status}`);
-        return new Uint8Array(await response.arrayBuffer());
-      }));
-
-      const totalLength = parts.reduce((sum, part) => sum + part.byteLength, 0);
-      const bytes = new Uint8Array(totalLength);
-      let offset = 0;
-      for (const part of parts) {
-        bytes.set(part, offset);
-        offset += part.byteLength;
-      }
-
-      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'image/avif' }));
-      const preloader = new Image();
-      preloader.src = blobUrl;
-      if (preloader.decode) await preloader.decode();
-
-      heroImage.src = blobUrl;
-      heroImage.width = 1200;
-      heroImage.height = 400;
-      heroImage.dataset.staticHero = 'ready';
-      window.addEventListener('pagehide', () => URL.revokeObjectURL(blobUrl), { once: true });
-    } catch (error) {
-      console.warn('High-resolution static hero fallback active.', error);
-    }
-  };
-
-  setupStaticHeroBanner();
+    heroImage.src = './assets/brand/hero-static-hq.webp?v=5';
+    heroImage.width = 2048;
+    heroImage.height = 682;
+    heroImage.decoding = 'async';
+    heroImage.dataset.staticHero = 'ready';
+  }
 
   if (!mascotImage) return;
 
