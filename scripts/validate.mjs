@@ -28,9 +28,14 @@ const stageModels = requiredStages.map((name) => {
   if (!stage?.model) throw new Error(`localModel.stages.${name}.model is required.`);
   if (String(stage.model).includes('cloud')) throw new Error(`Cloud Ollama model is forbidden in zero-cost mode: ${stage.model}`);
   if (!Number.isInteger(stage.contextWindow) || stage.contextWindow < 2048) throw new Error(`${name}.contextWindow is invalid.`);
+  if (!Number.isInteger(stage.maxOutputTokens) || stage.maxOutputTokens < 256) throw new Error(`${name}.maxOutputTokens is invalid.`);
+  if (!Number.isInteger(stage.timeoutMs) || stage.timeoutMs < 60_000) throw new Error(`${name}.timeoutMs is invalid.`);
   return stage.model;
 });
-if (new Set(stageModels).size !== stageModels.length) throw new Error('Each pipeline stage must use a distinct model.');
+const uniqueStageModels = new Set(stageModels);
+if (uniqueStageModels.size < stageModels.length) {
+  console.log(`[validate] model reuse enabled for zero-cost runner reliability: ${stageModels.join(' -> ')}`);
+}
 
 if (!Number.isInteger(config.content?.minimumQualityScore) || config.content.minimumQualityScore < 80 || config.content.minimumQualityScore > 100) {
   throw new Error('minimumQualityScore must be an integer from 80 to 100.');
