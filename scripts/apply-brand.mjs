@@ -6,7 +6,6 @@ const staticHeroPath = 'public/assets/brand/hero-static-hq.avif';
 const staticHeroMirrorPath = 'assets/brand/hero-static-hq.avif';
 const mascotPath = 'public/assets/brand/mascot-character.webp';
 const bannerParts = Array.from({ length: 6 }, (_, index) => `brand-assets/hero-banner-2048.part${index + 1}.b64`);
-const staticHeroParts = Array.from({ length: 10 }, (_, index) => `hero-source/banner.part${String(index).padStart(2, '0')}.b64`);
 const mascotParts = Array.from({ length: 5 }, (_, index) => `brand-assets/mascot-character.part${index + 1}.b64`);
 
 const icons = {
@@ -31,29 +30,24 @@ async function decodeParts(parts, output, kind) {
 }
 
 async function buildStaticHero() {
-  const chunks = await Promise.all(staticHeroParts.map(async (path) => (await readFile(path, 'utf8')).trim()));
-  const binary = Buffer.from(chunks.join(''), 'base64');
+  const binary = await readFile(staticHeroPath);
   if (binary.length < 70_000 || binary.subarray(4, 12).toString('ascii') !== 'ftypavif') {
-    throw new Error('High-quality static hero source is not a valid AVIF container.');
+    throw new Error('High-quality static hero asset is not a valid AVIF container.');
   }
   const ispeIndex = binary.indexOf(Buffer.from('ispe'));
   if (ispeIndex < 0) throw new Error('High-quality static hero AVIF is missing image dimensions.');
   const width = binary.readUInt32BE(ispeIndex + 8);
   const height = binary.readUInt32BE(ispeIndex + 12);
-  if (width < 1200 || height < 400) throw new Error(`Static hero is unexpectedly small: ${width}x${height}.`);
-  await mkdir('public/assets/brand', { recursive: true });
+  if (width !== 2048 || height !== 682) throw new Error(`Static hero dimensions mismatch: ${width}x${height}.`);
   await mkdir('assets/brand', { recursive: true });
-  await Promise.all([
-    writeFile(staticHeroPath, binary),
-    writeFile(staticHeroMirrorPath, binary)
-  ]);
-  console.log(`[brand] built high-quality static hero ${staticHeroPath} (${binary.length} bytes, ${width}x${height})`);
+  await writeFile(staticHeroMirrorPath, binary);
+  console.log(`[brand] validated committed high-quality static hero ${staticHeroPath} (${binary.length} bytes, ${width}x${height})`);
 }
 
 function heroHtml(html) {
   const secondaryHref = html.includes('id="launch"') ? '#launch' : '#commercial';
   const secondaryLabel = html.includes('id="launch"') ? '발행 준비 상태 보기' : 'AI 도구 비교 보기';
-  return `<section class="hero brand-hero" aria-labelledby="hero-title"><h1 id="hero-title" class="hero-sr-only">실무에 바로 쓰는 AI 자동화 가이드</h1><div class="brand-banner-image-wrap"><img class="brand-banner-image" src="./assets/brand/hero-static-hq.avif?v=9" width="2048" height="682" alt="실무에 바로 쓰는 AI 자동화. 업무 자동화, 비즈니스 자동화, AI 도구 활용법을 한눈에 소개하는 실무 가이드 배너" fetchpriority="high" decoding="sync"></div><div class="hero-copy"><div class="hero-actions"><a class="button button-primary" href="#audiences">분야별 가이드 보기</a><a class="button button-secondary" href="${secondaryHref}">${secondaryLabel}</a></div></div></section>`;
+  return `<section class="hero brand-hero" aria-labelledby="hero-title"><h1 id="hero-title" class="hero-sr-only">실무에 바로 쓰는 AI 자동화 가이드</h1><div class="brand-banner-image-wrap"><img class="brand-banner-image" src="./assets/brand/hero-static-hq.avif?v=12" width="2048" height="682" alt="실무에 바로 쓰는 AI 자동화. 업무 자동화, 비즈니스 자동화, AI 도구 활용법을 한눈에 소개하는 실무 가이드 배너" fetchpriority="high" decoding="sync"></div><div class="hero-copy"><div class="hero-actions"><a class="button button-primary" href="#audiences">분야별 가이드 보기</a><a class="button button-secondary" href="${secondaryHref}">${secondaryLabel}</a></div></div></section>`;
 }
 
 function mascotFloatHtml() {
@@ -89,4 +83,4 @@ if (!html.includes('src="./interactions.js"')) html = html.replace('</body>', '<
 
 await writeFile(target, html);
 if (target === 'public/index.html') await writeFile('index.html', html);
-console.log(`[brand] restored a high-quality static banner hero, placed mascot as a small floating side guide, and applied ${Object.keys(icons).length} audience icons to ${target}`);
+console.log(`[brand] restored the committed high-quality static banner hero, placed mascot as a small floating side guide, and applied ${Object.keys(icons).length} audience icons to ${target}`);

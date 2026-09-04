@@ -1,8 +1,39 @@
 @import url("./brand-original.css");
 
-/* Hero: use one real static image. Avoid the sliced AVIF background that could render blank. */
-.brand-banner-image-wrap{aspect-ratio:2048/682;background:#03070b url("./assets/brand/hero-static-hq.webp?v=11") center/cover no-repeat!important}
-.brand-banner-image-wrap>picture,.brand-banner-image-wrap::after,.brand-banner-image{display:none!important}
+/* Hero: render the real high-quality static banner image directly. */
+.brand-banner-image-wrap {
+  aspect-ratio: 2048 / 682;
+  background: #03070b !important;
+  overflow: hidden !important;
+}
+
+.brand-banner-image-wrap > picture {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.brand-banner-image-wrap::after {
+  display: none !important;
+}
+
+.brand-banner-image {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background: #03070b !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+.brand-banner-image-wrap:hover .brand-banner-image {
+  transform: none !important;
+  filter: none !important;
+}
 
 /* Polished audience icon set generated for the five homepage paths. */
 .audience-icon svg {

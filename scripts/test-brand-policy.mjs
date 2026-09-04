@@ -18,7 +18,7 @@ for (const required of [
   'class="hero brand-hero"',
   'class="brand-banner-image-wrap"',
   'class="brand-banner-image"',
-  'src="./assets/brand/hero-static-hq.avif?v=9"',
+  'src="./assets/brand/hero-static-hq.avif?v=12"',
   'width="2048" height="682"',
   'class="mascot-float"',
   'class="mascot-float-link"',
