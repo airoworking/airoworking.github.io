@@ -8,7 +8,7 @@ const [css, cssBase] = await Promise.all([
 ]);
 const brandCss = `${cssBase}\n${css}`;
 const interactions = await readFile('public/interactions.js', 'utf8');
-const bannerPath = 'public/assets/brand/hero-static-hq.avif';
+const bannerPath = 'public/assets/brand/hero-banner-static.webp';
 const mascotPath = 'public/assets/brand/mascot-character.webp';
 const [banner, mascot] = await Promise.all([stat(bannerPath), stat(mascotPath)]);
 const [bannerBytes, mascotBytes] = await Promise.all([readFile(bannerPath), readFile(mascotPath)]);
@@ -18,8 +18,9 @@ for (const required of [
   'class="hero brand-hero"',
   'class="brand-banner-image-wrap"',
   'class="brand-banner-image"',
-  'src="./assets/brand/hero-static-hq.avif?v=12"',
+  'src="./assets/brand/hero-banner-static.webp?v=20260904-static"',
   'width="2048" height="682"',
+  'id="static-hero-lock"',
   'class="mascot-float"',
   'class="mascot-float-link"',
   'class="mascot-float-bubble"',
@@ -55,13 +56,8 @@ if (html.includes('class="mascot-guide"')) throw new Error('Legacy full-width ma
 if (mascot.size < 10_000) throw new Error(`Mascot WebP looks unexpectedly small (${mascot.size} bytes).`);
 if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Mascot asset is not a valid WebP container.');
 
-if (banner.size < 70_000) throw new Error(`Static hero AVIF looks unexpectedly small (${banner.size} bytes).`);
-if (bannerBytes.subarray(4, 12).toString('ascii') !== 'ftypavif') throw new Error('Static hero is not a valid AVIF container.');
-const ispeIndex = bannerBytes.indexOf(Buffer.from('ispe'));
-if (ispeIndex < 0) throw new Error('Static hero AVIF is missing image dimensions.');
-const bannerWidth = bannerBytes.readUInt32BE(ispeIndex + 8);
-const bannerHeight = bannerBytes.readUInt32BE(ispeIndex + 12);
-if (bannerWidth !== 2048 || bannerHeight !== 682) throw new Error(`Static hero dimensions mismatch: ${bannerWidth}x${bannerHeight}.`);
+if (banner.size < 150_000) throw new Error(`Static hero WebP looks unexpectedly small (${banner.size} bytes).`);
+if (bannerBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || bannerBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Static hero is not a valid WebP container.');
 
 for (const required of [
   '.brand-banner-image-wrap{',
@@ -96,4 +92,4 @@ for (const required of [
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
 if (brandCss.includes('.mascot-stage{') || brandCss.includes('.mascot-hero{') || brandCss.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
-console.log(`Brand policy OK: high-quality static banner remains the hero, mascot peeks from the right edge with subtle motion, and responsive/reduced-motion behavior is enforced.`);
+console.log(`Brand policy OK: uploaded high-quality static WebP remains the hero, hero motion is disabled, mascot peeks from the right edge, and responsive/reduced-motion behavior is enforced.`);
