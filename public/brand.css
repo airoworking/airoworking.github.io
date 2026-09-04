@@ -1,54 +1,8 @@
 @import url("./brand-original.css");
 
-.brand-banner-image-wrap {
-  aspect-ratio: 2048 / 682;
-  background-color: #03070b;
-  background-image:
-    url("./assets/brand/hero-banner-static-01.avif"),
-    url("./assets/brand/hero-banner-static-02.avif"),
-    url("./assets/brand/hero-banner-static-03.avif"),
-    url("./assets/brand/hero-banner-static-04.avif"),
-    url("./assets/brand/hero-banner-static-05.avif"),
-    url("./assets/brand/hero-banner-static-06.avif"),
-    url("./assets/brand/hero-banner-static-07.avif"),
-    url("./assets/brand/hero-banner-static-08.avif"),
-    url("./assets/brand/hero-banner-static-09.avif"),
-    url("./assets/brand/hero-banner-static-10.avif"),
-    url("./assets/brand/hero-banner-static-11.avif"),
-    url("./assets/brand/hero-banner-static-12.avif");
-  background-position:
-    0% 0,
-    14.285714% 0,
-    28.571429% 0,
-    42.857143% 0,
-    53.333333% 0,
-    60% 0,
-    66.666667% 0,
-    73.333333% 0,
-    80% 0,
-    86.666667% 0,
-    93.333333% 0,
-    100% 0;
-  background-size:
-    12.5% 100%,
-    12.5% 100%,
-    12.5% 100%,
-    12.5% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%,
-    6.25% 100%;
-  background-repeat: no-repeat;
-}
-
-.brand-banner-image-wrap > picture,
-.brand-banner-image-wrap::after {
-  display: none !important;
-}
+/* Hero: use one real static image. Avoid the sliced AVIF background that could render blank. */
+.brand-banner-image-wrap{aspect-ratio:2048/682;background:#03070b url("./assets/brand/hero-static-hq.webp?v=11") center/cover no-repeat!important}
+.brand-banner-image-wrap>picture,.brand-banner-image-wrap::after,.brand-banner-image{display:none!important}
 
 /* Polished audience icon set generated for the five homepage paths. */
 .audience-icon svg {
