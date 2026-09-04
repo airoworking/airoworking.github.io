@@ -8,10 +8,15 @@ const [css, cssBase] = await Promise.all([
 ]);
 const brandCss = `${cssBase}\n${css}`;
 const interactions = await readFile('public/interactions.js', 'utf8');
-const bannerPath = 'public/assets/brand/hero-banner-static.webp';
 const mascotPath = 'public/assets/brand/mascot-character.webp';
-const [banner, mascot] = await Promise.all([stat(bannerPath), stat(mascotPath)]);
-const [bannerBytes, mascotBytes] = await Promise.all([readFile(bannerPath), readFile(mascotPath)]);
+const heroTilePaths = Array.from({ length: 8 }, (_, index) => `public/assets/brand/hero-upload-20260904-t${index}.svg`);
+const mascot = await stat(mascotPath);
+const mascotBytes = await readFile(mascotPath);
+const heroTiles = await Promise.all(heroTilePaths.map(async (path) => ({
+  path,
+  stat: await stat(path),
+  text: await readFile(path, 'utf8')
+})));
 
 for (const required of [
   'data-brand-patched="v9"',
@@ -56,8 +61,16 @@ if (html.includes('class="mascot-guide"')) throw new Error('Legacy full-width ma
 if (mascot.size < 10_000) throw new Error(`Mascot WebP looks unexpectedly small (${mascot.size} bytes).`);
 if (mascotBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || mascotBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Mascot asset is not a valid WebP container.');
 
-if (banner.size < 150_000) throw new Error(`Static hero WebP looks unexpectedly small (${banner.size} bytes).`);
-if (bannerBytes.subarray(0, 4).toString('ascii') !== 'RIFF' || bannerBytes.subarray(8, 12).toString('ascii') !== 'WEBP') throw new Error('Static hero is not a valid WebP container.');
+for (let index = 0; index < heroTiles.length; index += 1) {
+  const tile = heroTiles[index];
+  if (tile.stat.size < 1_000) throw new Error(`Uploaded hero tile ${index} looks unexpectedly small (${tile.stat.size} bytes).`);
+  if (!tile.text.startsWith('<svg') || !tile.text.includes('data:image/webp;base64,')) {
+    throw new Error(`Uploaded hero tile ${index} is not an SVG wrapper containing an embedded WebP image.`);
+  }
+  if (!css.includes(`hero-upload-20260904-t${index}.svg`)) {
+    throw new Error(`Hero CSS is not wired to uploaded tile ${index}.`);
+  }
+}
 
 for (const required of [
   '.brand-banner-image-wrap{',
@@ -92,4 +105,4 @@ for (const required of [
 if (interactions.includes('setInterval(')) throw new Error('Interaction layer must not use continuous timers.');
 if (brandCss.includes('.mascot-stage{') || brandCss.includes('.mascot-hero{') || brandCss.includes('.mascot-guide{')) throw new Error('Legacy hero-sized or full-width mascot CSS must not remain.');
 
-console.log(`Brand policy OK: uploaded high-quality static WebP remains the hero, hero motion is disabled, mascot peeks from the right edge, and responsive/reduced-motion behavior is enforced.`);
+console.log('Brand policy OK: the user-uploaded 2048x682 hero is reconstructed from eight embedded-WebP SVG tiles, hero motion is disabled, mascot peeks from the right edge, and responsive/reduced-motion behavior is enforced.');
