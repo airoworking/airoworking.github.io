@@ -1,18 +1,19 @@
 @import url("./brand-original.css");
 
-/* Hero: render the uploaded high-quality static banner directly. */
+/* Hero: uploaded high-quality static banner only; no motion or hover effects. */
 .brand-banner-image-wrap {
   aspect-ratio: 2048 / 682;
-  background-color: #03070b !important;
-  background-image: url("./assets/brand/hero-banner-static.webp?v=20260904") !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: cover !important;
+  background: #03070b !important;
   overflow: hidden !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .brand-banner-image-wrap > picture {
-  display: none !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .brand-banner-image-wrap::after {
@@ -20,7 +21,13 @@
 }
 
 .brand-banner-image {
-  display: none !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background: #03070b !important;
   transform: none !important;
   filter: none !important;
   transition: none !important;
