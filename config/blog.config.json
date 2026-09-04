@@ -40,7 +40,7 @@
   "localModel": {
     "provider": "ollama",
     "baseUrl": "http://127.0.0.1:11434",
-    "cleanupAfterStage": true,
+    "cleanupAfterStage": false,
     "stages": {
       "topic": {
         "model": "qwen3:1.7b",
@@ -50,21 +50,21 @@
         "timeoutMs": 600000
       },
       "research": {
-        "model": "qwen3:4b",
+        "model": "qwen3:1.7b",
         "temperature": 0.1,
-        "contextWindow": 12288,
-        "maxOutputTokens": 2400,
-        "timeoutMs": 900000
+        "contextWindow": 8192,
+        "maxOutputTokens": 1600,
+        "timeoutMs": 600000
       },
       "draft": {
-        "model": "qwen3:8b",
+        "model": "qwen3:1.7b",
         "temperature": 0.2,
-        "contextWindow": 16384,
-        "maxOutputTokens": 3800,
-        "timeoutMs": 1200000
+        "contextWindow": 8192,
+        "maxOutputTokens": 3000,
+        "timeoutMs": 720000
       },
       "qa": {
-        "model": "gemma3:4b",
+        "model": "qwen3:1.7b",
         "temperature": 0.0,
         "contextWindow": 12288,
         "maxOutputTokens": 3400,
@@ -190,7 +190,7 @@
     "maxQueries": 10,
     "maxSearchResultsPerQuery": 5,
     "maxDocuments": 10,
-    "maxCharsPerDocument": 2600,
+    "maxCharsPerDocument": 1800,
     "requestTimeoutMs": 15000
   },
   "monetization": {
