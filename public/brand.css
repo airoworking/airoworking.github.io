@@ -49,3 +49,38 @@
 .brand-banner-image-wrap::after {
   display: none !important;
 }
+
+/* Polished audience icon set generated for the five homepage paths. */
+.audience-icon svg {
+  display: none !important;
+}
+
+.audience-icon::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.audience-icon[data-audience-icon="knowledge-worker"]::before {
+  background-image: url("./assets/brand/audience-work-automation.webp?v=1");
+}
+
+.audience-icon[data-audience-icon="small-business"]::before {
+  background-image: url("./assets/brand/audience-small-business.webp?v=1");
+}
+
+.audience-icon[data-audience-icon="freelancer"]::before {
+  background-image: url("./assets/brand/audience-freelancer.webp?v=1");
+}
+
+.audience-icon[data-audience-icon="creator"]::before {
+  background-image: url("./assets/brand/audience-creator.webp?v=1");
+}
+
+.audience-icon[data-audience-icon="developer"]::before {
+  background-image: url("./assets/brand/audience-developer.webp?v=1");
+}
