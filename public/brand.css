@@ -1,10 +1,13 @@
 @import url("./brand-original.css");
 
-/* Hero: render the real high-quality static banner image directly. */
+/* Hero: uploaded high-quality static banner only; no motion or hover effects. */
 .brand-banner-image-wrap {
   aspect-ratio: 2048 / 682;
   background: #03070b !important;
   overflow: hidden !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
 }
 
 .brand-banner-image-wrap > picture {
@@ -28,6 +31,7 @@
   transform: none !important;
   filter: none !important;
   transition: none !important;
+  animation: none !important;
 }
 
 .brand-banner-image-wrap:hover .brand-banner-image {
