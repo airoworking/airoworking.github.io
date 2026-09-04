@@ -1,9 +1,25 @@
 @import url("./brand-original.css");
 
-/* Hero: uploaded high-quality static banner only; no motion or hover effects. */
+/* Hero: render the user-uploaded 2048x682 banner as eight static slices. */
 .brand-banner-image-wrap {
   aspect-ratio: 2048 / 682;
-  background: #03070b !important;
+  background-color: #03070b !important;
+  background-image:
+    url("./assets/brand/hero-upload-20260904-t0.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t1.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t2.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t3.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t4.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t5.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t6.svg?v=2"),
+    url("./assets/brand/hero-upload-20260904-t7.svg?v=2") !important;
+  background-repeat: no-repeat !important;
+  background-size:
+    12.5% 100%, 12.5% 100%, 12.5% 100%, 12.5% 100%,
+    12.5% 100%, 12.5% 100%, 12.5% 100%, 12.5% 100% !important;
+  background-position:
+    0% 0%, 14.285714% 0%, 28.571429% 0%, 42.857143% 0%,
+    57.142857% 0%, 71.428571% 0%, 85.714286% 0%, 100% 0% !important;
   overflow: hidden !important;
   transform: none !important;
   transition: none !important;
@@ -20,6 +36,7 @@
   display: none !important;
 }
 
+/* Keep the legacy image element only for intrinsic sizing/alt text; the uploaded banner is painted above as the wrapper background. */
 .brand-banner-image {
   display: block !important;
   width: 100% !important;
@@ -27,7 +44,8 @@
   height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
-  background: #03070b !important;
+  background: transparent !important;
+  opacity: 0 !important;
   transform: none !important;
   filter: none !important;
   transition: none !important;
