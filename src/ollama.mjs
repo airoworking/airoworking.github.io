@@ -11,9 +11,33 @@ const DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS = 1000;
 const DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS = 2200;
 const QA_MIN_PARAGRAPH_CHARS = 3500;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
-const QA_EXPANSION_TIMEOUT_MS = 600000;
+const QA_EXPANSION_TIMEOUT_MS = 900000;
+const QA_EXPANSION_MAX_OUTPUT_TOKENS = 2200;
+const QA_EXPANSION_MAX_ROUNDS = 2;
 
 const HUMAN_EDITORIAL_RULES = `Editorial voice rules: Write like an experienced Korean editor explaining a real work problem to a colleague. Avoid formulaic AI prose, inflated claims, repetitive summaries, and mechanically enumerated sections. Vary sentence and paragraph length naturally. Use bullets only when scanning genuinely helps; otherwise prefer connected prose. Do not start every section with a definition or end every section with a generic conclusion. Avoid repetitive endings such as '~하는 것이 중요합니다' and empty phrases such as '효율성을 높이고 비용을 절감하며 성과를 향상시킵니다'. Prefer concrete situations, trade-offs, and transitions. Titles and headings must sound like natural Korean editorial copy, not keyword-stuffed templates: avoid phrases such as '실전 활용 가이드', '완벽 가이드', '효율적인 도입 전략 및 단계별 실행' unless absolutely necessary. Never put Markdown syntax such as **bold**, __bold__, backticks, or Markdown list markers inside JSON string fields. For a sequential process, a short ordered list is fine, but do not turn the entire article into '1단계/2단계/3단계' prose. Do not pretend to have personal experience.`;
+
+const qaExpansionSchema = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    additions: {
+      type: 'array',
+      minItems: 1,
+      maxItems: 8,
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          sectionIndex: { type: 'integer' },
+          paragraphs: { type: 'array', minItems: 1, maxItems: 2, items: { type: 'string' } }
+        },
+        required: ['sectionIndex', 'paragraphs']
+      }
+    }
+  },
+  required: ['additions']
+};
 
 function paragraphChars(sections) {
   return (sections || []).flatMap((section) => section?.paragraphs || []).join('').length;
@@ -50,15 +74,6 @@ function qaNoLegacyDepthSchema(schema) {
   };
 }
 
-function sectionsOnlySchema(schema) {
-  return {
-    type: 'object',
-    additionalProperties: false,
-    properties: { sections: schema.properties.revisedSections },
-    required: ['sections']
-  };
-}
-
 function normalizeForDedupe(value) {
   return String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
 }
@@ -83,11 +98,8 @@ function mergeParagraphText(section, value) {
     return true;
   }
 
-  // The schema caps each section at five paragraphs. A complete expansion used to be
-  // silently discarded whenever the primary QA already occupied all five slots.
-  // Keep the expansion by folding new, non-duplicate prose into the shortest existing
-  // paragraph instead of dropping it. This preserves every model-written fact-checked
-  // sentence without breaking the schema or making another LLM call.
+  // The schema caps each section at five paragraphs. If a useful repair arrives after
+  // the section is full, preserve it by folding it into the shortest paragraph.
   let shortestIndex = 0;
   for (let index = 1; index < section.paragraphs.length; index += 1) {
     if (String(section.paragraphs[index] || '').length < String(section.paragraphs[shortestIndex] || '').length) {
@@ -156,10 +168,25 @@ function mergeExpandedSections(current, expanded) {
   return merged;
 }
 
+function mergeQaAdditions(current, additions) {
+  const merged = (current || []).map((section) => ({
+    ...section,
+    paragraphs: [...(section.paragraphs || [])],
+    bullets: [...(section.bullets || [])]
+  }));
+  for (const addition of additions || []) {
+    const index = Number(addition?.sectionIndex);
+    if (!Number.isInteger(index) || index < 0 || index >= merged.length) continue;
+    for (const paragraph of addition.paragraphs || []) mergeParagraphText(merged[index], paragraph);
+  }
+  return merged;
+}
+
 export const __ollamaDepthTest = {
   paragraphChars,
   promoteUsefulBulletsToParagraphs,
-  mergeExpandedSections
+  mergeExpandedSections,
+  mergeQaAdditions
 };
 
 function assertQaLanguage(schema, data) {
@@ -202,25 +229,28 @@ export async function structuredResponse(args) {
     let chars = paragraphChars(data.revisedSections);
     console.log(`[quality] final QA composed depth=${chars} paragraph chars after folding substantive list content into section prose where appropriate.`);
 
-    if (chars < QA_MIN_PARAGRAPH_CHARS) {
-      console.warn(`[quality] final QA depth=${chars} is below ${QA_MIN_PARAGRAPH_CHARS}; requesting one complete section expansion instead of legacy append-only repair.`);
+    for (let round = 1; chars < QA_MIN_PARAGRAPH_CHARS && round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
+      const missing = QA_MIN_PARAGRAPH_CHARS - chars;
+      const requested = Math.max(500, missing + 250);
+      console.warn(`[quality] final QA depth=${chars} is below ${QA_MIN_PARAGRAPH_CHARS}; requesting targeted expansion ${round}/${QA_EXPANSION_MAX_ROUNDS} for about ${requested} additional paragraph chars.`);
       const expansion = await baseStructuredResponse({
         ...args,
-        schema: sectionsOnlySchema(args.schema),
-        maxOutputTokens: Math.max(Number(args.maxOutputTokens) || 0, 4200),
+        schema: qaExpansionSchema,
+        maxOutputTokens: QA_EXPANSION_MAX_OUTPUT_TOKENS,
         timeoutMs: Math.min(Number(args.timeoutMs) || QA_EXPANSION_TIMEOUT_MS, QA_EXPANSION_TIMEOUT_MS),
-        instructions: `${HUMAN_EDITORIAL_RULES}\n\nYou are completing the final reader-facing Korean article after fact checking. Return only a complete replacement 'sections' array matching the schema. Use only the supplied original QA input and the current fact-checked result. Preserve supported conclusions, but deepen practical explanations, trade-offs, decision criteria, setup steps, caveats, and failure modes. Do not invent any fact, price, date, benchmark, URL, personal experience, or example not supported by the input. Write enough substantive prose for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters.`,
-        input: `ORIGINAL QA INPUT:\n${args.input}\n\nCURRENT FACT-CHECKED QA RESULT:\n${JSON.stringify(data)}\n\nExpand the article sections once. Do not return summaries or commentary outside JSON.`
+        instructions: `${HUMAN_EDITORIAL_RULES}\n\nYou are doing a targeted depth repair of an already fact-checked Korean article. Return only an 'additions' array. Each addition must reference an existing zero-based sectionIndex and contain one or two new Korean paragraphs. Do not rewrite or repeat existing paragraphs. Each paragraph should normally be 180-320 Korean characters and must add practical explanation, decision criteria, setup detail, caveats, trade-offs, or failure modes that are directly supported by the supplied QA input. Do not invent facts, prices, dates, benchmarks, URLs, personal experience, or unsupported examples. Produce about ${requested} additional paragraph characters in total; concise targeted additions are preferred over regenerating the whole article.`,
+        input: `ORIGINAL QA INPUT:\n${args.input}\n\nCURRENT FACT-CHECKED SECTIONS:\n${JSON.stringify(data.revisedSections)}\n\nReturn targeted additions only. Do not regenerate the complete sections array.`
       });
       const beforeMerge = chars;
-      const merged = mergeExpandedSections(data.revisedSections, expansion.data.sections);
+      const merged = mergeQaAdditions(data.revisedSections, expansion.data.additions);
       data = { ...data, revisedSections: promoteUsefulBulletsToParagraphs(merged) };
       chars = paragraphChars(data.revisedSections);
-      console.log(`[quality] final QA depth after one complete section expansion=${chars} paragraph chars (${Math.max(0, chars - beforeMerge)} chars preserved from expansion).`);
+      console.log(`[quality] final QA depth after targeted expansion ${round}=${chars} paragraph chars (${Math.max(0, chars - beforeMerge)} chars preserved from additions).`);
+      if (chars <= beforeMerge) break;
     }
 
     if (chars < QA_MIN_PARAGRAPH_CHARS) {
-      const error = new Error(`Final QA article remained too thin after one complete section expansion (${chars} < ${QA_MIN_PARAGRAPH_CHARS} paragraph chars).`);
+      const error = new Error(`Final QA article remained too thin after targeted expansion (${chars} < ${QA_MIN_PARAGRAPH_CHARS} paragraph chars).`);
       error.code = 'ARTICLE_DEPTH_SHORT';
       throw error;
     }
