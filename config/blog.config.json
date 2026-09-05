@@ -46,29 +46,29 @@
         "model": "qwen3:1.7b",
         "temperature": 0.1,
         "contextWindow": 8192,
-        "maxOutputTokens": 1700,
-        "timeoutMs": 600000
+        "maxOutputTokens": 2200,
+        "timeoutMs": 720000
       },
       "research": {
         "model": "qwen3:1.7b",
         "temperature": 0.1,
         "contextWindow": 8192,
-        "maxOutputTokens": 1600,
-        "timeoutMs": 600000
+        "maxOutputTokens": 2000,
+        "timeoutMs": 720000
       },
       "draft": {
         "model": "qwen3:1.7b",
-        "temperature": 0.2,
-        "contextWindow": 8192,
-        "maxOutputTokens": 3000,
-        "timeoutMs": 720000
+        "temperature": 0.15,
+        "contextWindow": 12288,
+        "maxOutputTokens": 4800,
+        "timeoutMs": 1200000
       },
       "qa": {
         "model": "qwen3:1.7b",
         "temperature": 0.0,
-        "contextWindow": 12288,
-        "maxOutputTokens": 3400,
-        "timeoutMs": 900000
+        "contextWindow": 16384,
+        "maxOutputTokens": 5600,
+        "timeoutMs": 1500000
       }
     }
   },
