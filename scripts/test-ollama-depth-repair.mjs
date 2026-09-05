@@ -44,8 +44,8 @@ const qaLikeSchema = {
 
 let draftCalls = 0;
 let qaPrimaryCalls = 0;
-let expansionCalls = 0;
-let legacyAdditionCalls = 0;
+let targetedAdditionCalls = 0;
+let completeExpansionCalls = 0;
 const requestBodies = [];
 
 function response(res, payload, evalCount = 100) {
@@ -84,8 +84,17 @@ const server = http.createServer((req, res) => {
     const props = requestBody.format?.properties || {};
 
     if (props.additions) {
-      legacyAdditionCalls += 1;
-      response(res, { additions: [] });
+      targetedAdditionCalls += 1;
+      const extra = '입력 자료에 확인된 범위 안에서 실제 적용 순서와 선택 기준을 더 자세히 설명합니다. 먼저 시작 조건과 완료 조건을 적고 사람이 판단해야 하는 예외를 따로 표시하면 자동화 범위를 과도하게 넓히는 실수를 줄일 수 있습니다. 작은 범위로 시험한 뒤 누락과 오류를 확인하고 다음 단계로 확장하는 방식이 유지 관리에도 유리합니다. 운영 중 실패했을 때 되돌리는 절차와 수동 확인 지점도 함께 정해 두면 자동화 결과를 검증하기 쉽습니다. '.repeat(3);
+      response(res, {
+        additions: Array.from({ length: 8 }, (_, index) => ({
+          sectionIndex: index % 2,
+          paragraphs: [
+            `${extra} 추가 판단 기준 ${index + 1}.`,
+            `${extra.replace('자동화 범위', '업무 범위')} 추가 운영 기준 ${index + 1}.`
+          ]
+        }))
+      }, 700);
       return;
     }
 
@@ -121,14 +130,8 @@ const server = http.createServer((req, res) => {
     }
 
     if (props.sections && !props.title && !props.revisedTitle) {
-      expansionCalls += 1;
-      const expanded = '입력 자료에 확인된 범위 안에서 실제 적용 순서와 선택 기준을 더 자세히 풀어 설명합니다. 먼저 반복 업무의 시작 조건과 완료 조건을 적고, 사람이 판단해야 하는 예외를 따로 표시하면 자동화 범위를 과도하게 넓히는 실수를 줄일 수 있습니다. 작은 범위로 시험한 뒤 누락과 오류를 확인하고 다음 단계로 확장하는 방식이 유지 관리에도 유리합니다. '.repeat(6);
-      response(res, {
-        sections: [
-          { heading: '현재 업무부터 살펴보기', paragraphs: [expanded, expanded.replace('반복 업무', '고객 응대 업무')], bullets: [] },
-          { heading: '자동화 범위 정하기', paragraphs: [expanded.replace('반복 업무', '문서 업무'), expanded.replace('반복 업무', '운영 업무')], bullets: [] }
-        ]
-      }, 500);
+      completeExpansionCalls += 1;
+      response(res, { sections: [] });
       return;
     }
 
@@ -157,7 +160,7 @@ try {
   if (draftChars >= 1000) throw new Error(`Fixture must exercise a sub-1000-char draft handoff, got ${draftChars}.`);
   if (draft.data.slug !== '') throw new Error('Draft handoff wrapper should synthesize an empty slug for downstream fallback.');
 
-  const beforeBulletQaExpansionCalls = expansionCalls;
+  const beforeBulletTargetedCalls = targetedAdditionCalls;
   const bulletRichQa = await structuredResponse({
     baseUrl,
     model: 'depth-repair-test',
@@ -170,7 +173,7 @@ try {
   });
   const bulletQaChars = bulletRichQa.data.revisedSections.flatMap((section) => section.paragraphs).join('').length;
   if (bulletQaChars < 3500) throw new Error(`Substantive list content was not promoted into final prose: ${bulletQaChars}.`);
-  if (expansionCalls !== beforeBulletQaExpansionCalls) throw new Error('Bullet-rich QA should not require another model expansion call.');
+  if (targetedAdditionCalls !== beforeBulletTargetedCalls) throw new Error('Bullet-rich QA should not require another model expansion call.');
 
   const expansionQa = await structuredResponse({
     baseUrl,
@@ -183,10 +186,10 @@ try {
     contextWindow: 2048
   });
   const expandedChars = expansionQa.data.revisedSections.flatMap((section) => section.paragraphs).join('').length;
-  if (expandedChars < 3500) throw new Error(`One complete section expansion did not clear 3500 chars: ${expandedChars}.`);
-  if (expansionCalls !== beforeBulletQaExpansionCalls + 1) throw new Error(`Expected exactly one complete QA expansion call, got ${expansionCalls - beforeBulletQaExpansionCalls}.`);
+  if (expandedChars < 3500) throw new Error(`Targeted QA additions did not clear 3500 chars: ${expandedChars}.`);
+  if (targetedAdditionCalls !== beforeBulletTargetedCalls + 1) throw new Error(`Expected exactly one targeted QA expansion call, got ${targetedAdditionCalls - beforeBulletTargetedCalls}.`);
+  if (completeExpansionCalls !== 0) throw new Error(`Complete section regeneration must not run on the slow-runner QA path; got ${completeExpansionCalls} calls.`);
 
-  if (legacyAdditionCalls !== 0) throw new Error('Legacy additions[] append-only repair must never run for final QA.');
   if (draftCalls !== 1) throw new Error(`Expected one draft generation, got ${draftCalls}.`);
   if (qaPrimaryCalls !== 2) throw new Error(`Expected two QA primary generations, got ${qaPrimaryCalls}.`);
 
@@ -195,12 +198,13 @@ try {
   if (qaRequests.some((body) => body.format?.properties?.revisedSections)) throw new Error('QA primary schema still exposes revisedSections and would trigger legacy depth repair.');
   if (qaRequests.some((body) => (body.options?.num_predict || 0) < 4000)) throw new Error('QA primary output budget was not raised to 4000 tokens.');
 
-  const expansionRequest = requestBodies.find((body) => body.format?.properties?.sections && !body.format?.properties?.title && !body.format?.properties?.revisedTitle);
-  if (!expansionRequest) throw new Error('No complete sections-only expansion request was issued.');
-  if (expansionRequest.format?.properties?.additions) throw new Error('Expansion request unexpectedly used the legacy additions schema.');
-  if (!String(expansionRequest.messages?.[0]?.content || '').includes('complete replacement')) throw new Error('Expansion prompt does not clearly request complete replacement sections.');
+  const expansionRequest = requestBodies.find((body) => body.format?.properties?.additions);
+  if (!expansionRequest) throw new Error('No targeted additions request was issued.');
+  if (expansionRequest.format?.properties?.sections) throw new Error('Targeted expansion unexpectedly requested a complete sections array.');
+  if (!String(expansionRequest.messages?.[0]?.content || '').includes('targeted depth repair')) throw new Error('Targeted expansion prompt is missing the slow-runner repair instruction.');
+  if ((expansionRequest.options?.num_predict || 0) > 2200) throw new Error('Targeted QA expansion output budget is too large for the slow runner.');
 
-  console.log(`QA depth recovery OK: short draft=${draftChars} chars; bullet-rich QA=${bulletQaChars}; one-shot expanded QA=${expandedChars}; legacy append repairs=${legacyAdditionCalls}.`);
+  console.log(`QA depth recovery OK: short draft=${draftChars} chars; bullet-rich QA=${bulletQaChars}; targeted expanded QA=${expandedChars}; targeted repair calls=${targetedAdditionCalls}.`);
 } finally {
   await new Promise((resolve) => server.close(resolve));
 }
