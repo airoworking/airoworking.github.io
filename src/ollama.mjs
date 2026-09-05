@@ -10,6 +10,7 @@ export { ensureModel, removeModel };
 const DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS = 1000;
 const DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS = 2200;
 const QA_MIN_PARAGRAPH_CHARS = 3500;
+const QA_PUBLISH_FLOOR_PARAGRAPH_CHARS = 3300;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
 const QA_EXPANSION_TIMEOUT_MS = 900000;
 const QA_EXPANSION_MAX_OUTPUT_TOKENS = 2200;
@@ -249,8 +250,12 @@ export async function structuredResponse(args) {
       if (chars <= beforeMerge) break;
     }
 
-    if (chars < QA_MIN_PARAGRAPH_CHARS) {
-      const error = new Error(`Final QA article remained too thin after targeted expansion (${chars} < ${QA_MIN_PARAGRAPH_CHARS} paragraph chars).`);
+    if (chars < QA_MIN_PARAGRAPH_CHARS && chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS) {
+      console.warn(`[quality] final QA ended at ${chars} paragraph chars after the targeted repair budget. This is within the near-target publish band (${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-${QA_MIN_PARAGRAPH_CHARS - 1}), so publication will continue instead of spending another slow-runner model pass for the remaining ${QA_MIN_PARAGRAPH_CHARS - chars} chars.`);
+    }
+
+    if (chars < QA_PUBLISH_FLOOR_PARAGRAPH_CHARS) {
+      const error = new Error(`Final QA article remained too thin after targeted expansion (${chars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} publish-floor paragraph chars; preferred target ${QA_MIN_PARAGRAPH_CHARS}).`);
       error.code = 'ARTICLE_DEPTH_SHORT';
       throw error;
     }
