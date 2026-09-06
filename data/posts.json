@@ -1,5 +1,62 @@
 [
   {
+    "title": "소규모 사업자용 AI 텍스트-비디오 자동화 도구 비교 분석",
+    "slug": "ai",
+    "description": "소규모 사업자가 텍스트를 비디오로 변환하는 데 필요한 도구를 비교 분석하여 최적의 선택을 제안합니다. AI 텍스트-비디오 생성 도구의 기능, 가격, 사용 용도, 사용자 경험 등을 종합적으로 분석하여 소규모 사업자에게 가장 유리한 도구를 제안합니다.",
+    "category": "소규모 사업자 도구",
+    "tags": [
+      "AI 텍스트-비디오",
+      "소규모 사업자",
+      "도구 비교",
+      "비용 절감",
+      "시간 절약"
+    ],
+    "date": "2026-09-06",
+    "primaryKeyword": "AI-Text-Video",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "digital-product",
+    "readerProblem": "소규모 사업자가 텍스트를 비디오로 변환하는 데 시간과 비용을 절약하고 효율성을 높이기 위해 필요한 도구 찾기",
+    "expectedOutcome": "AI-Text-Video를 사용하면 텍스트를 자동으로 비디오로 변환하여 비용 절감과 시간 절약",
+    "opportunityScore": 5,
+    "qualityScore": 85,
+    "verificationSummary": "소규모 사업자용 AI 텍스트-비디오 자동화 도구의 비교 분석 및 사용자 경험에 대한 정보가 부족한 상태에서, 주요 도구의 기능, 가격, 사용 용도, 사용자 경험 등을 종합적으로 분석하여 최적의 선택을 제안합니다.",
+    "sources": [
+      {
+        "title": "AI Text To Video Generator — Free. Pro Quality.",
+        "url": "https://www.kapwing.com/ai/text-to-video"
+      },
+      {
+        "title": "AI Text to Video Generator Free - Script to Video - Flixier",
+        "url": "https://flixier.com/ai/ai-text-to-video"
+      },
+      {
+        "title": "Free AI Video Generator — Text to Video & Image to Video | Vivideo",
+        "url": "https://vivideo.ai/"
+      },
+      {
+        "title": "Text to Video — AI Videos from Text Free Online | Createimg",
+        "url": "https://createimg.ai/text-to-video"
+      },
+      {
+        "title": "Text to Video AI - Generate, Refine & Export - VEED",
+        "url": "https://www.veed.io/tools/ai-video/text-to-video"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-cover.svg",
+      "summary": "assets/posts/ai-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자의 CRM 자동화, 어디서부터 시작해야 할까?",
     "slug": "crm",
     "description": "고객 정보가 흩어지고 후속 연락을 놓치기 시작했다면 CRM 자동화를 검토할 때입니다. 소규모 팀이 필요한 기능만 고르고, 데이터를 정리하고, 자동화를 단계적으로 붙이는 방법을 정리했습니다.",
