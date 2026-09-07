@@ -1,9 +1,10 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { structuredResponse, ensureModel, removeModel } from './ollama.mjs';
 import { collectEvidence, buildDiscoveryQueries, evidenceForPrompt, allowedSourceMap, canonicalUrl } from './research.mjs';
 import { ensureResearchSourceDiversity } from './research-brief.mjs';
 import { normalizeTopicCandidate } from './topic-candidates.mjs';
+import { resolveArticleSlug } from './slug-policy.mjs';
 import { fetchLicensedCommonsPhoto } from './commons.mjs';
 import { buildVisualAssets } from './visuals.mjs';
 import { renderArticle, renderFeed, renderIndex, renderSitemap } from './render.mjs';
@@ -186,9 +187,6 @@ async function runStage(stageName, task) {
   }
 }
 
-function slugify(value) {
-  return String(value || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
-}
 function norm(value) {
   return String(value || '').trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ');
 }
@@ -222,6 +220,21 @@ function duplicateKeyword(keyword) {
 function duplicateTitle(title) {
   const n = norm(title);
   return posts.some((p) => norm(p.title) === n);
+}
+
+async function collectExistingArtifactSlugs() {
+  const used = new Set(posts.map((post) => String(post.slug || '').trim()).filter(Boolean));
+  const collect = async (relative, pattern) => {
+    for (const name of await readdir(path.join(ROOT, relative))) {
+      const match = name.match(pattern);
+      if (match?.[1]) used.add(match[1]);
+    }
+  };
+  await collect('public/posts', /^(.*)\.html$/i);
+  await collect('data/articles', /^(.*)\.json$/i);
+  await collect('data/media', /^(.*)\.json$/i);
+  await collect('public/assets/posts', /^(.*)-(?:cover|summary)\.svg$/i);
+  return [...used];
 }
 
 function audienceLabel(id) {
@@ -445,7 +458,7 @@ async function researchTopic(topic) {
 async function writeArticle(topic, research) {
   const { data } = await runStage('draft', (ai) => ai({
     schema: articleSchema,
-    instructions: `Write a high-quality Korean practical article grounded only in the supplied research brief. ${audiencePrompt(topic.audienceSegment)} Start from the reader's concrete problem and desired outcome, not from product marketing. Add actionable steps, decision criteria, tradeoffs, limitations, cost/time considerations where supported, and failure modes. For non-developer audiences, avoid unnecessary code and explain setup in plain language. For developer audiences, preserve technical depth. Never claim personal experience or invent facts. Avoid SEO filler, repetitive prose, and fake precision. The slug must be lowercase ASCII with hyphens. Aim for roughly 1400-2100 Korean words only when evidence supports that depth.`,
+    instructions: `Write a high-quality Korean practical article grounded only in the supplied research brief. ${audiencePrompt(topic.audienceSegment)} Start from the reader's concrete problem and desired outcome, not from product marketing. Add actionable steps, decision criteria, tradeoffs, limitations, cost/time considerations where supported, and failure modes. For non-developer audiences, avoid unnecessary code and explain setup in plain language. For developer audiences, preserve technical depth. Never claim personal experience or invent facts. Avoid SEO filler, repetitive prose, and fake precision. The slug must be lowercase ASCII with hyphens and should contain descriptive topic words; never return a generic one-word slug such as ai, tool, blog, post, guide, or automation. Aim for roughly 1400-2100 Korean words only when evidence supports that depth.`,
     input: `Topic and content strategy: ${JSON.stringify(topic)}\nResearch brief: ${JSON.stringify(research)}\nSources in the article must use URLs from the research brief only.`
   }));
   return data;
@@ -473,6 +486,21 @@ console.log(`Selected: ${topic.topic} (${topic.opportunityScore}/100) · audienc
 const researchBundle = await researchTopic(topic);
 console.log(`[research] final evidence documents: ${researchBundle.documents.length}`);
 const article = await writeArticle(topic, researchBundle.brief);
+const slugDecision = resolveArticleSlug({
+  primaryKeyword: topic.primaryKeyword,
+  preferredSlug: article.slug,
+  title: article.title,
+  topic: topic.topic,
+  date: today,
+  existingSlugs: await collectExistingArtifactSlugs()
+});
+const slug = slugDecision.slug;
+if (slugDecision.repaired || slugDecision.collision) {
+  console.warn(`[slug] normalized ${JSON.stringify(article.slug || '')} -> ${JSON.stringify(slug)} · source=${slugDecision.source}${slugDecision.collision ? ' · collision resolved' : ''}`);
+} else {
+  console.log(`[slug] reserved ${slug} · source=${slugDecision.source}`);
+}
+
 const qa = await qualityCheck(topic, researchBundle, article);
 console.log(`[qa] score=${qa.score}/100 approved=${qa.approved} verifiedSources=${qa.verifiedSources.length}`);
 
@@ -483,10 +511,6 @@ if (qa.verifiedSources.length < 3) throw new Error('Quality review returned fewe
 if (duplicateTitle(qa.revisedTitle)) throw new Error(`Duplicate article title: ${qa.revisedTitle}`);
 const articleChars = qa.revisedSections.flatMap((section) => section.paragraphs || []).join('').length;
 if (articleChars < 3500) throw new Error(`Quality guard: final article is too thin (${articleChars} chars).`);
-
-let slug = slugify(article.slug || qa.revisedTitle);
-if (!slug) slug = `article-${today}`;
-if (posts.some((post) => post.slug === slug)) throw new Error(`Duplicate slug: ${slug}`);
 
 const visualFiles = {
   cover: config.visuals?.generateCover ? `assets/posts/${slug}-cover.svg` : null,

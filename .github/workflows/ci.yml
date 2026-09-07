@@ -19,6 +19,7 @@ jobs:
       - run: node --check src/research.mjs
       - run: node --check src/research-brief.mjs
       - run: node --check src/topic-candidates.mjs
+      - run: node --check src/slug-policy.mjs
       - run: node --check src/commons.mjs
       - run: node --check src/visuals.mjs
       - run: node --check src/render.mjs
@@ -29,6 +30,7 @@ jobs:
       - run: node --check scripts/apply-mascot.mjs
       - run: node --check scripts/sync-pages-root.mjs
       - run: node --check scripts/test-publish-workflow-policy.mjs
+      - run: node --check scripts/test-slug-policy.mjs
       - run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
@@ -62,6 +64,7 @@ jobs:
       - run: node scripts/test-discovery-policy.mjs
       - run: node scripts/test-topic-candidate-policy.mjs
       - run: node scripts/test-publish-workflow-policy.mjs
+      - run: node scripts/test-slug-policy.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate
