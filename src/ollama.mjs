@@ -13,6 +13,8 @@ const DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS = 2200;
 export const QA_PREFERRED_PARAGRAPH_CHARS = 3500;
 export const QA_PUBLISH_FLOOR_PARAGRAPH_CHARS = 2600;
 export const QA_NEAR_FLOOR_TOLERANCE_CHARS = 150;
+export const QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS = 1200;
+export const QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS = 1800;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
 export const QA_REVIEW_MAX_OUTPUT_TOKENS = 2400;
 export const QA_REVIEW_TIMEOUT_MS = 900000;
@@ -23,23 +25,43 @@ const QA_EXPANSION_MAX_ROUNDS = 2;
 
 const HUMAN_EDITORIAL_RULES = READER_FRIENDLY_EDITORIAL_RULES;
 
-export function assessQaDepth(value, { allowNearFloor = true } = {}) {
+export function repairedQaFloor(draftChars) {
+  const chars = Math.max(0, Number(draftChars) || 0);
+  return Math.max(
+    QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS,
+    Math.min(QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS, chars)
+  );
+}
+
+export function assessQaDepth(value, {
+  allowNearFloor = true,
+  allowRepairedFloor = false,
+  repairedFloor = QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS
+} = {}) {
   const chars = Math.max(0, Number(value) || 0);
   const acceptedFloor = Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - QA_NEAR_FLOOR_TOLERANCE_CHARS);
+  const boundedRepairedFloor = Math.max(
+    QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS,
+    Math.min(QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS, Number(repairedFloor) || QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS)
+  );
   const meetsStrictFloor = chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS;
   const acceptedNearFloor = Boolean(allowNearFloor) && !meetsStrictFloor && chars >= acceptedFloor;
-  const publishable = meetsStrictFloor || acceptedNearFloor;
+  const acceptedRepairedFloor = Boolean(allowRepairedFloor) && !meetsStrictFloor && !acceptedNearFloor && chars >= boundedRepairedFloor;
+  const publishable = meetsStrictFloor || acceptedNearFloor || acceptedRepairedFloor;
   return {
     chars,
     meetsPreferred: chars >= QA_PREFERRED_PARAGRAPH_CHARS,
     meetsStrictFloor,
     acceptedNearFloor,
+    acceptedRepairedFloor,
     acceptedFloor,
+    repairedFloor: boundedRepairedFloor,
     publishable,
     needsExpansion: !publishable,
     shortfallToPreferred: Math.max(0, QA_PREFERRED_PARAGRAPH_CHARS - chars),
     shortfallToFloor: Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars),
-    shortfallToAcceptedFloor: Math.max(0, acceptedFloor - chars)
+    shortfallToAcceptedFloor: Math.max(0, acceptedFloor - chars),
+    shortfallToRepairedFloor: Math.max(0, boundedRepairedFloor - chars)
   };
 }
 
@@ -308,6 +330,7 @@ export const __ollamaDepthTest = {
   mergeExpandedSections,
   mergeQaAdditions,
   assessQaDepth,
+  repairedQaFloor,
   applyQaSectionRevisions
 };
 
@@ -342,6 +365,10 @@ export async function structuredResponse(args) {
   if (isQaSchema(args.schema)) {
     const useDeltaReview = isPublicationQaSchema(args.schema);
     const seedDraft = useDeltaReview ? extractQaDraft(args.input) : null;
+    const seedDraftChars = useDeltaReview ? paragraphChars(seedDraft.sections) : 0;
+    const adaptiveRepairedFloor = useDeltaReview
+      ? repairedQaFloor(seedDraftChars)
+      : QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS;
     const primarySchema = useDeltaReview ? qaDeltaReviewSchema(args.schema) : qaNoLegacyDepthSchema(args.schema);
     const primaryMaxOutputTokens = useDeltaReview
       ? Math.min(Math.max(1, Number(args.maxOutputTokens) || QA_REVIEW_MAX_OUTPUT_TOKENS), QA_REVIEW_MAX_OUTPUT_TOKENS)
@@ -350,7 +377,7 @@ export async function structuredResponse(args) {
       ? Math.min(Math.max(1, Number(args.timeoutMs) || QA_REVIEW_TIMEOUT_MS), QA_REVIEW_TIMEOUT_MS)
       : args.timeoutMs;
     const reviewInstruction = useDeltaReview
-      ? `\n\nSlow-runner delta review requirement: Do NOT regenerate the complete article. The field 'sectionRevisions' is a patch list, not the final sections array. Preserve every supplied Draft section that is already factually defensible, useful, and well written. Return a replacement only for a section that has a consequential factual, clarity, structure, or reader-value problem. Each replacement must include the original zero-based sectionIndex plus the complete replacement heading, paragraphs, and bullets for that one section. Return an empty sectionRevisions array when no body section needs replacement. You may replace at most ${QA_MAX_SECTION_REVISIONS} sections. If more than ${QA_MAX_SECTION_REVISIONS} body sections require substantial correction, set approved=false and explain why in warnings instead of attempting a whole-article rewrite. approved=true is allowed only when every omitted Draft section is safe to preserve unchanged and the returned replacements resolve all consequential issues. Keep revisedTitle, revisedDescription, revisedFaq, verifiedSources, warnings, verificationSummary, and visualPlan concise and complete.`
+      ? `\n\nSlow-runner delta review requirement: Do NOT regenerate the complete article. The field 'sectionRevisions' is a patch list, not the final sections array. Preserve every supplied Draft section that is already factually defensible, useful, and well written. Return a replacement only for a section that has a consequential factual, clarity, structure, or reader-value problem. Each replacement must include the original zero-based sectionIndex plus the complete replacement heading, paragraphs, and bullets for that one section. Preserve every supported useful point from the original section; do not compress a section merely to be concise. Unless unsupported or repetitive material must be removed, keep the replacement roughly comparable in useful depth to the section it replaces. Return an empty sectionRevisions array when no body section needs replacement. You may replace at most ${QA_MAX_SECTION_REVISIONS} sections. If more than ${QA_MAX_SECTION_REVISIONS} body sections require substantial correction, set approved=false and explain why in warnings instead of attempting a whole-article rewrite. approved=true is allowed only when every omitted Draft section is safe to preserve unchanged and the returned replacements resolve all consequential issues. Keep revisedTitle, revisedDescription, revisedFaq, verifiedSources, warnings, verificationSummary, and visualPlan concise and complete.`
       : `\n\nThe JSON schema calls the final article sections field 'sections' for this QA pass. Treat it exactly as the final revisedSections. Aim for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters across those sections, but never pad with repetition or unsupported claims. The preferred publication depth is ${QA_PREFERRED_PARAGRAPH_CHARS}; depth alone must not override factual quality or reader usefulness.`;
 
     const primary = await baseStructuredResponse({
@@ -394,23 +421,31 @@ export async function structuredResponse(args) {
       return { ...primary, data };
     }
 
+    let depthRepairRounds = 0;
     for (let round = 1; round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
-      const expansionDepth = assessQaDepth(chars, { allowNearFloor: round > 1 });
+      const expansionDepth = assessQaDepth(chars, {
+        allowNearFloor: round > 1,
+        allowRepairedFloor: useDeltaReview && round > 1,
+        repairedFloor: adaptiveRepairedFloor
+      });
       if (!expansionDepth.needsExpansion) {
         if (expansionDepth.acceptedNearFloor) {
           console.warn(`[quality] final QA depth=${chars} is within the bounded ${QA_NEAR_FLOOR_TOLERANCE_CHARS}-char tolerance below the ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor after a prior targeted repair; skipping another slow expansion.`);
+        } else if (expansionDepth.acceptedRepairedFloor) {
+          console.warn(`[quality] final QA depth=${chars} remains below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char target but exceeds the adaptive repaired floor ${expansionDepth.repairedFloor} derived from the ${seedDraftChars}-char draft. The QA verdict passed and one targeted repair already improved the article, so publication will continue instead of spending another slow model call solely on length.`);
         }
         break;
       }
       const missing = QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars;
       const requested = Math.max(500, missing + 250);
       console.warn(`[quality] final QA depth=${chars} is below the substantial publish floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}; requesting targeted expansion ${round}/${QA_EXPANSION_MAX_ROUNDS} for about ${requested} additional paragraph chars.`);
+      depthRepairRounds = round;
       const expansion = await baseStructuredResponse({
         ...args,
         schema: qaExpansionSchema,
         maxOutputTokens: QA_EXPANSION_MAX_OUTPUT_TOKENS,
         timeoutMs: Math.min(Number(args.timeoutMs) || QA_EXPANSION_TIMEOUT_MS, QA_EXPANSION_TIMEOUT_MS),
-        instructions: `${HUMAN_EDITORIAL_RULES}\n\nYou are doing a targeted depth repair of an already fact-checked Korean article. Return only an 'additions' array. Each addition must reference an existing zero-based sectionIndex and contain one or two new Korean paragraphs. Do not rewrite or repeat existing paragraphs. Each paragraph should normally be 180-320 Korean characters and must add practical explanation, decision criteria, setup detail, caveats, trade-offs, or failure modes that are directly supported by the supplied QA input. Prefer a concrete reader situation or decision example when it can be expressed without inventing facts. Do not invent facts, prices, dates, benchmarks, URLs, personal experience, or unsupported examples. Produce about ${requested} additional paragraph characters in total; concise targeted additions are preferred over regenerating the whole article.`,
+        instructions: `${HUMAN_EDITORIAL_RULES}\n\nYou are doing a targeted depth repair of an already fact-checked Korean article. Return only an 'additions' array. Each addition must reference an existing zero-based sectionIndex and contain one or two new Korean paragraphs. Do not rewrite or repeat existing paragraphs. Each paragraph should normally be 180-320 Korean characters and must add practical explanation, decision criteria, setup detail, caveats, trade-offs, or failure modes that are directly supported by the supplied QA input. Prefer a concrete reader situation or decision example when it can be expressed without inventing facts. Do not invent facts, prices, dates, benchmarks, URLs, personal experience, or unsupported examples. Produce about ${requested} additional paragraph characters in total. When the shortfall is large, spread useful additions across multiple sections and keep adding distinct supported detail until the requested amount is approximately covered rather than returning a token one-paragraph repair.`,
         input: `ORIGINAL QA INPUT:\n${args.input}\n\nCURRENT FACT-CHECKED SECTIONS:\n${JSON.stringify(data.revisedSections)}\n\nReturn targeted additions only. Do not regenerate the complete sections array.`
       });
       const beforeMerge = chars;
@@ -424,15 +459,20 @@ export async function structuredResponse(args) {
       if (chars <= beforeMerge) break;
     }
 
-    const depth = assessQaDepth(chars);
+    const depth = assessQaDepth(chars, {
+      allowRepairedFloor: useDeltaReview && depthRepairRounds > 0,
+      repairedFloor: adaptiveRepairedFloor
+    });
     if (depth.acceptedNearFloor) {
       console.warn(`[quality] final QA depth=${chars} is ${depth.shortfallToFloor} chars below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor but inside the bounded ${QA_NEAR_FLOOR_TOLERANCE_CHARS}-char post-repair tolerance. Publication will continue because the QA verdict passed and another slow model call would be disproportionate to this marginal shortfall.`);
+    } else if (depth.acceptedRepairedFloor) {
+      console.warn(`[quality] final QA depth=${chars} is below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char target but above the adaptive repaired floor ${depth.repairedFloor}. Publication will continue because the independent QA verdict passed, the article retains the required 5-9 section structure, and bounded depth repair has already been attempted.`);
     } else if (depth.publishable && !depth.meetsPreferred) {
       console.warn(`[quality] final QA depth=${chars} is below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target but above the substantial ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char publish floor. Publication will continue because reader usefulness, QA approval, and evidence quality matter more than padding to a fixed count.`);
     }
 
     if (!depth.publishable) {
-      const error = new Error(`Final QA article remained materially too thin after targeted expansion (${chars} paragraph chars; strict floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, bounded post-repair minimum ${depth.acceptedFloor}, preferred target ${QA_PREFERRED_PARAGRAPH_CHARS}).`);
+      const error = new Error(`Final QA article remained materially too thin after targeted expansion (${chars} paragraph chars; strict floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, bounded near-floor minimum ${depth.acceptedFloor}, adaptive repaired minimum ${depth.repairedFloor}, preferred target ${QA_PREFERRED_PARAGRAPH_CHARS}).`);
       error.code = 'ARTICLE_DEPTH_SHORT';
       throw error;
     }
