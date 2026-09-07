@@ -3,6 +3,7 @@ import path from 'node:path';
 import { structuredResponse, ensureModel, removeModel } from './ollama.mjs';
 import { collectEvidence, buildDiscoveryQueries, evidenceForPrompt, allowedSourceMap, canonicalUrl } from './research.mjs';
 import { ensureResearchSourceDiversity } from './research-brief.mjs';
+import { normalizeTopicCandidate } from './topic-candidates.mjs';
 import { fetchLicensedCommonsPhoto } from './commons.mjs';
 import { buildVisualAssets } from './visuals.mjs';
 import { renderArticle, renderFeed, renderIndex, renderSitemap } from './render.mjs';
@@ -58,9 +59,9 @@ const topicCandidateSchema = {
   properties: {
     topic: { type: 'string' },
     primaryKeyword: { type: 'string' },
-    audienceSegment: { type: 'string' },
-    contentRole: { type: 'string' },
-    monetizationRoute: { type: 'string' },
+    audienceSegment: { type: 'string', enum: audienceIds },
+    contentRole: { type: 'string', enum: contentRoles },
+    monetizationRoute: { type: 'string', enum: monetizationRoutes },
     readerProblem: { type: 'string' },
     expectedOutcome: { type: 'string' },
     searchIntent: { type: 'string' },
@@ -201,9 +202,18 @@ function similarity(a, b) {
   for (const x of A) if (B.has(x)) same += 1;
   return same / (A.size + B.size - same);
 }
+function recentSimilarity(candidate) {
+  let keyword = 0;
+  let title = 0;
+  for (const post of posts.slice(0, config.content.recentTitleWindow)) {
+    keyword = Math.max(keyword, similarity(candidate.primaryKeyword, post.primaryKeyword));
+    title = Math.max(title, similarity(candidate.topic, post.title));
+  }
+  return { keyword, title };
+}
 function tooSimilar(candidate) {
-  return posts.slice(0, config.content.recentTitleWindow).some((p) =>
-    similarity(candidate.primaryKeyword, p.primaryKeyword) > 0.62 || similarity(candidate.topic, p.title) > 0.68);
+  const profile = recentSimilarity(candidate);
+  return profile.keyword > 0.62 || profile.title > 0.68;
 }
 function duplicateKeyword(keyword) {
   const n = norm(keyword);
@@ -327,15 +337,68 @@ async function chooseTopic() {
   const segmentCatalog = audienceSegments.map(({ id, label, searchPhrase }) => ({ id, label, searchPhrase }));
   const { data } = await runStage('topic', (ai) => ai({
     schema: topicSchema,
-    instructions: `You are a search-demand opportunity analyst for a broad Korean AI로 일하는 법 publication. Generate diverse candidates only from supplied public evidence. The publication serves office/knowledge workers, small business owners, freelancers/solo operators, content creators, and developers/AI practitioners. Do not collapse everything into developer tooling. Favor real problems where AI or automation can save time, reduce repetitive work, lower costs, improve customer workflows, or support a concrete software decision. Include a healthy mix of reach topics (broad informational demand), commercial topics (comparison/alternatives/pricing/tool selection), and authority topics (deeper implementation/security/architecture). Never fabricate search volume. Scores are qualitative estimates from evidence. Avoid generic news summaries, hype, thin listicles, YMYL, and topics unrelated to practical AI/automation.`,
+    instructions: `You are a search-demand opportunity analyst for a broad Korean AI로 일하는 법 publication. Generate diverse candidates only from supplied public evidence. The publication serves office/knowledge workers, small business owners, freelancers/solo operators, content creators, and developers/AI practitioners. Do not collapse everything into developer tooling. Favor real problems where AI or automation can save time, reduce repetitive work, lower costs, improve customer workflows, or support a concrete software decision. Include a healthy mix of reach topics (broad informational demand), commercial topics (comparison/alternatives/pricing/tool selection), and authority topics (deeper implementation/security/architecture). Never fabricate search volume. Scores are qualitative estimates from evidence. Avoid generic news summaries, hype, thin listicles, YMYL, and topics unrelated to practical AI/automation. Use the exact allowed IDs/values for audienceSegment, contentRole, and monetizationRoute; do not return labels, synonyms, or free-form variants for those three fields.`,
     input: `Date: ${today}\nNiche: ${config.content.niche}\nAudience segments: ${JSON.stringify(segmentCatalog)}\nPortfolio targets: ${JSON.stringify(config.content.portfolio)}\nRecent posts to avoid/rebalance: ${JSON.stringify(recent)}\nAllowed audienceSegment IDs: ${audienceIds.join(', ')}\nAllowed contentRole values: ${contentRoles.join(', ')}\nAllowed monetizationRoute values: ${monetizationRoutes.join(', ')}\nReturn ${config.research.candidateCount || 8} genuinely distinct candidates across multiple audience segments.\n\nPUBLIC EVIDENCE:\n${evidenceForPrompt(docs)}`
   }));
 
-  const ranked = (data.candidates || [])
-    .filter((candidate) => validCandidate(candidate) && !tooSimilar(candidate) && !duplicateKeyword(candidate.primaryKeyword))
-    .map((candidate) => ({ ...candidate, opportunityScore: portfolioAdjustedScore(candidate) }))
+  const normalizedCandidates = (data.candidates || []).map((rawCandidate, index) => {
+    const normalized = normalizeTopicCandidate(rawCandidate, {
+      audienceSegments,
+      audienceIds,
+      contentRoles,
+      monetizationRoutes
+    });
+    let candidate = normalized.candidate;
+    const repairs = [...normalized.repairs];
+
+    // A small model sometimes proposes a distinct topic but reuses a previous broad keyword.
+    // Prefer the distinct topic wording as the search keyword when it is not itself a duplicate.
+    if (duplicateKeyword(candidate.primaryKeyword)) {
+      const topicKeyword = String(candidate.topic || '').trim();
+      if (topicKeyword && !duplicateKeyword(topicKeyword) && similarity(topicKeyword, candidate.primaryKeyword) < 0.98) {
+        repairs.push(`primaryKeyword: ${JSON.stringify(candidate.primaryKeyword)} -> ${JSON.stringify(topicKeyword)}`);
+        candidate = { ...candidate, primaryKeyword: topicKeyword };
+      }
+    }
+
+    if (repairs.length) console.warn(`[topic] candidate ${index + 1} normalized: ${repairs.join(' | ')}`);
+    return candidate;
+  });
+
+  const evaluated = normalizedCandidates.map((candidate, index) => {
+    const profile = recentSimilarity(candidate);
+    const invalid = !validCandidate(candidate);
+    const duplicate = duplicateKeyword(candidate.primaryKeyword);
+    const strictSimilar = profile.keyword > 0.62 || profile.title > 0.68;
+    const reasons = [];
+    if (invalid) reasons.push(`invalid metadata audience=${candidate.audienceSegment} role=${candidate.contentRole} monetization=${candidate.monetizationRoute}`);
+    if (duplicate) reasons.push('duplicate primary keyword');
+    if (strictSimilar) reasons.push(`recent similarity keyword=${profile.keyword.toFixed(2)} title=${profile.title.toFixed(2)}`);
+    if (reasons.length) console.warn(`[topic] candidate ${index + 1} filtered: ${candidate.primaryKeyword} · ${reasons.join(' | ')}`);
+    return { candidate, profile, invalid, duplicate, strictSimilar };
+  });
+
+  let publishable = evaluated.filter((item) => !item.invalid && !item.duplicate && !item.strictSimilar);
+  if (!publishable.length) {
+    const relaxed = evaluated
+      .filter((item) => !item.invalid && !item.duplicate && item.profile.keyword < 0.85 && item.profile.title < 0.85)
+      .sort((a, b) =>
+        Math.max(a.profile.keyword, a.profile.title) - Math.max(b.profile.keyword, b.profile.title));
+    if (relaxed.length) {
+      console.warn('[topic] strict similarity guard filtered every otherwise valid candidate; using the least-similar non-duplicate candidates under the 0.85 safety ceiling.');
+      publishable = relaxed.slice(0, Math.min(3, relaxed.length));
+    }
+  }
+
+  const ranked = publishable
+    .map(({ candidate }) => ({ ...candidate, opportunityScore: portfolioAdjustedScore(candidate) }))
     .sort((a, b) => b.opportunityScore - a.opportunityScore);
-  if (!ranked.length) throw new Error('All discovered topic candidates were invalid or too similar to recent content.');
+  if (!ranked.length) {
+    const invalidCount = evaluated.filter((item) => item.invalid).length;
+    const duplicateCount = evaluated.filter((item) => item.duplicate).length;
+    const similarCount = evaluated.filter((item) => item.strictSimilar).length;
+    throw new Error(`No publishable topic candidates remained after normalization (generated=${evaluated.length}, invalid=${invalidCount}, duplicate=${duplicateCount}, strictSimilar=${similarCount}).`);
+  }
   console.log('[topic] ranked candidates:');
   ranked.forEach((candidate, index) => console.log(
     `  ${index + 1}. ${candidate.primaryKeyword} = ${candidate.opportunityScore}/100 · ${candidate.audienceSegment} · ${candidate.contentRole}`));
