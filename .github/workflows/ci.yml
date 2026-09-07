@@ -16,6 +16,7 @@ jobs:
       - run: node --check src/language.mjs
       - run: node --check src/ollama-base.mjs
       - run: node --check src/ollama.mjs
+      - run: node --check src/editorial-style.mjs
       - run: node --check src/research.mjs
       - run: node --check src/research-brief.mjs
       - run: node --check src/topic-candidates.mjs
@@ -31,6 +32,7 @@ jobs:
       - run: node --check scripts/sync-pages-root.mjs
       - run: node --check scripts/test-publish-workflow-policy.mjs
       - run: node --check scripts/test-slug-policy.mjs
+      - run: node --check scripts/test-editorial-style-policy.mjs
       - run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
@@ -65,6 +67,7 @@ jobs:
       - run: node scripts/test-topic-candidate-policy.mjs
       - run: node scripts/test-publish-workflow-policy.mjs
       - run: node scripts/test-slug-policy.mjs
+      - run: node scripts/test-editorial-style-policy.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate
