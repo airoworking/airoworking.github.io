@@ -18,6 +18,7 @@ jobs:
       - run: node --check src/ollama.mjs
       - run: node --check src/research.mjs
       - run: node --check src/research-brief.mjs
+      - run: node --check src/topic-candidates.mjs
       - run: node --check src/commons.mjs
       - run: node --check src/visuals.mjs
       - run: node --check src/render.mjs
@@ -58,6 +59,7 @@ jobs:
       - run: node scripts/test-research-source-diversity.mjs
       - run: node scripts/test-commons-policy.mjs
       - run: node scripts/test-discovery-policy.mjs
+      - run: node scripts/test-topic-candidate-policy.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate
