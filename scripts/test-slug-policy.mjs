@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { isMeaningfulSlug, resolveArticleSlug, slugifyAscii } from '../src/slug-policy.mjs';
 
 assert.equal(slugifyAscii('  AI / Content Automation  '), 'ai-content-automation');
@@ -75,5 +76,17 @@ const long = resolveArticleSlug({
 });
 assert.equal(long.slug.length <= 80, true);
 assert.equal(long.slug.endsWith('2026-09-07'), true);
+
+const pipeline = await readFile(new URL('../src/pipeline.mjs', import.meta.url), 'utf8');
+const draftIndex = pipeline.indexOf('const article = await writeArticle');
+const slugIndex = pipeline.indexOf('const slugDecision = resolveArticleSlug');
+const qaIndex = pipeline.indexOf('const qa = await qualityCheck');
+assert.ok(draftIndex >= 0 && slugIndex > draftIndex && qaIndex > slugIndex, 'slug must be reserved after draft and before expensive QA');
+assert.equal(pipeline.includes('throw new Error(`Duplicate slug:'), false, 'duplicate slug must not remain a fatal terminal error');
+assert.match(pipeline, /collectExistingArtifactSlugs/);
+assert.match(pipeline, /public\/posts/);
+assert.match(pipeline, /data\/articles/);
+assert.match(pipeline, /data\/media/);
+assert.match(pipeline, /public\/assets\/posts/);
 
 console.log('slug policy tests passed');
