@@ -12,6 +12,7 @@ const DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS = 1000;
 const DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS = 2200;
 export const QA_PREFERRED_PARAGRAPH_CHARS = 3500;
 export const QA_PUBLISH_FLOOR_PARAGRAPH_CHARS = 2600;
+export const QA_NEAR_FLOOR_TOLERANCE_CHARS = 150;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
 export const QA_REVIEW_MAX_OUTPUT_TOKENS = 2400;
 export const QA_REVIEW_TIMEOUT_MS = 900000;
@@ -22,15 +23,23 @@ const QA_EXPANSION_MAX_ROUNDS = 2;
 
 const HUMAN_EDITORIAL_RULES = READER_FRIENDLY_EDITORIAL_RULES;
 
-export function assessQaDepth(value) {
+export function assessQaDepth(value, { allowNearFloor = true } = {}) {
   const chars = Math.max(0, Number(value) || 0);
+  const acceptedFloor = Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - QA_NEAR_FLOOR_TOLERANCE_CHARS);
+  const meetsStrictFloor = chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS;
+  const acceptedNearFloor = Boolean(allowNearFloor) && !meetsStrictFloor && chars >= acceptedFloor;
+  const publishable = meetsStrictFloor || acceptedNearFloor;
   return {
     chars,
     meetsPreferred: chars >= QA_PREFERRED_PARAGRAPH_CHARS,
-    publishable: chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS,
-    needsExpansion: chars < QA_PUBLISH_FLOOR_PARAGRAPH_CHARS,
+    meetsStrictFloor,
+    acceptedNearFloor,
+    acceptedFloor,
+    publishable,
+    needsExpansion: !publishable,
     shortfallToPreferred: Math.max(0, QA_PREFERRED_PARAGRAPH_CHARS - chars),
-    shortfallToFloor: Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars)
+    shortfallToFloor: Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars),
+    shortfallToAcceptedFloor: Math.max(0, acceptedFloor - chars)
   };
 }
 
@@ -385,7 +394,14 @@ export async function structuredResponse(args) {
       return { ...primary, data };
     }
 
-    for (let round = 1; assessQaDepth(chars).needsExpansion && round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
+    for (let round = 1; round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
+      const expansionDepth = assessQaDepth(chars, { allowNearFloor: round > 1 });
+      if (!expansionDepth.needsExpansion) {
+        if (expansionDepth.acceptedNearFloor) {
+          console.warn(`[quality] final QA depth=${chars} is within the bounded ${QA_NEAR_FLOOR_TOLERANCE_CHARS}-char tolerance below the ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor after a prior targeted repair; skipping another slow expansion.`);
+        }
+        break;
+      }
       const missing = QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars;
       const requested = Math.max(500, missing + 250);
       console.warn(`[quality] final QA depth=${chars} is below the substantial publish floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}; requesting targeted expansion ${round}/${QA_EXPANSION_MAX_ROUNDS} for about ${requested} additional paragraph chars.`);
@@ -409,12 +425,14 @@ export async function structuredResponse(args) {
     }
 
     const depth = assessQaDepth(chars);
-    if (depth.publishable && !depth.meetsPreferred) {
+    if (depth.acceptedNearFloor) {
+      console.warn(`[quality] final QA depth=${chars} is ${depth.shortfallToFloor} chars below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor but inside the bounded ${QA_NEAR_FLOOR_TOLERANCE_CHARS}-char post-repair tolerance. Publication will continue because the QA verdict passed and another slow model call would be disproportionate to this marginal shortfall.`);
+    } else if (depth.publishable && !depth.meetsPreferred) {
       console.warn(`[quality] final QA depth=${chars} is below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target but above the substantial ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char publish floor. Publication will continue because reader usefulness, QA approval, and evidence quality matter more than padding to a fixed count.`);
     }
 
     if (!depth.publishable) {
-      const error = new Error(`Final QA article remained materially too thin after targeted expansion (${chars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} publish-floor paragraph chars; preferred target ${QA_PREFERRED_PARAGRAPH_CHARS}).`);
+      const error = new Error(`Final QA article remained materially too thin after targeted expansion (${chars} paragraph chars; strict floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, bounded post-repair minimum ${depth.acceptedFloor}, preferred target ${QA_PREFERRED_PARAGRAPH_CHARS}).`);
       error.code = 'ARTICLE_DEPTH_SHORT';
       throw error;
     }
