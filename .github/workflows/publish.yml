@@ -32,19 +32,88 @@ jobs:
       - name: Validate repository
         run: npm run validate
       - name: Install Ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
+        run: |
+          set -euo pipefail
+
+          installer=/tmp/install-ollama.sh
+          curl_retry() {
+            /usr/bin/curl --fail --show-error --silent --location \
+              --retry 5 --retry-delay 2 --retry-all-errors --connect-timeout 20 "$@"
+          }
+
+          if ! curl_retry -o "$installer" https://ollama.com/install.sh; then
+            echo "::warning::ollama.com install script download failed; using the official GitHub release asset."
+            curl_retry -o "$installer" https://github.com/ollama/ollama/releases/latest/download/install.sh
+          fi
+          test -s "$installer"
+          sh -n "$installer"
+
+          # The official installer performs additional downloads with curl. Put a retrying
+          # curl shim first on PATH so transient connection resets do not corrupt the install.
+          retry_bin=/tmp/ollama-install-retry-bin
+          mkdir -p "$retry_bin"
+          cat > "$retry_bin/curl" <<'SH'
+          #!/usr/bin/env bash
+          exec /usr/bin/curl --retry 5 --retry-delay 2 --retry-all-errors --connect-timeout 20 "$@"
+          SH
+          chmod +x "$retry_bin/curl"
+
+          if ! PATH="$retry_bin:$PATH" sh "$installer"; then
+            echo "::warning::Official Ollama installer failed; falling back to the official GitHub release archive."
+            case "$(uname -m)" in
+              x86_64) arch=amd64 ;;
+              aarch64|arm64) arch=arm64 ;;
+              *) echo "Unsupported runner architecture: $(uname -m)" >&2; exit 1 ;;
+            esac
+            archive="/tmp/ollama-linux-${arch}.tar.zst"
+            curl_retry -o "$archive" "https://github.com/ollama/ollama/releases/latest/download/ollama-linux-${arch}.tar.zst"
+            if ! command -v zstd >/dev/null 2>&1; then
+              sudo apt-get update
+              sudo apt-get install -y zstd
+            fi
+            sudo mkdir -p /usr/local
+            zstd -dc "$archive" | sudo tar -xf - -C /usr/local
+          fi
+
+          command -v ollama >/dev/null
+          ollama --version
       - name: Start local Ollama
         env:
           OLLAMA_NUM_PARALLEL: '1'
           OLLAMA_MAX_LOADED_MODELS: '1'
           OLLAMA_KEEP_ALIVE: '30s'
+          OLLAMA_HOST: 127.0.0.1:11434
         run: |
+          set -euo pipefail
+          command -v ollama >/dev/null
+
+          if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
+            echo "Ollama is already running."
+            exit 0
+          fi
+
           nohup ollama serve >/tmp/ollama.log 2>&1 &
-          for i in {1..30}; do
-            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; then break; fi
+          ollama_pid=$!
+          ready=0
+          for i in {1..45}; do
+            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            if ! kill -0 "$ollama_pid" 2>/dev/null; then
+              echo "Ollama exited before becoming ready." >&2
+              cat /tmp/ollama.log || true
+              exit 1
+            fi
             sleep 2
           done
-          curl -fsS http://127.0.0.1:11434/api/tags >/dev/null || { cat /tmp/ollama.log; exit 1; }
+          if [ "$ready" -ne 1 ]; then
+            echo "Ollama did not become ready within 90 seconds." >&2
+            cat /tmp/ollama.log || true
+            exit 1
+          fi
+          curl -fsS http://127.0.0.1:11434/api/tags >/dev/null
+          echo "Ollama API is ready."
       - name: Discover, research, write, cross-check, and publish
         env:
           OLLAMA_BASE_URL: http://127.0.0.1:11434
