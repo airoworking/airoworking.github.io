@@ -28,6 +28,7 @@ jobs:
       - run: node --check scripts/apply-adsense.mjs
       - run: node --check scripts/apply-mascot.mjs
       - run: node --check scripts/sync-pages-root.mjs
+      - run: node --check scripts/test-publish-workflow-policy.mjs
       - run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
@@ -60,6 +61,7 @@ jobs:
       - run: node scripts/test-commons-policy.mjs
       - run: node scripts/test-discovery-policy.mjs
       - run: node scripts/test-topic-candidate-policy.mjs
+      - run: node scripts/test-publish-workflow-policy.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate
