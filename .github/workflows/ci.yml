@@ -33,6 +33,7 @@ jobs:
       - run: node --check scripts/test-publish-workflow-policy.mjs
       - run: node --check scripts/test-slug-policy.mjs
       - run: node --check scripts/test-editorial-style-policy.mjs
+      - run: node --check scripts/test-adaptive-qa-depth-policy.mjs
       - run: |
           node scripts/editorial-polish.mjs
           node scripts/live-overrides.mjs
@@ -68,6 +69,7 @@ jobs:
       - run: node scripts/test-publish-workflow-policy.mjs
       - run: node scripts/test-slug-policy.mjs
       - run: node scripts/test-editorial-style-policy.mjs
+      - run: node scripts/test-adaptive-qa-depth-policy.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate

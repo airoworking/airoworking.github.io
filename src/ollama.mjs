@@ -10,14 +10,26 @@ export { ensureModel, removeModel };
 
 const DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS = 1000;
 const DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS = 2200;
-const QA_MIN_PARAGRAPH_CHARS = 3500;
-const QA_PUBLISH_FLOOR_PARAGRAPH_CHARS = 3300;
+export const QA_PREFERRED_PARAGRAPH_CHARS = 3500;
+export const QA_PUBLISH_FLOOR_PARAGRAPH_CHARS = 2600;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
 const QA_EXPANSION_TIMEOUT_MS = 900000;
 const QA_EXPANSION_MAX_OUTPUT_TOKENS = 2200;
 const QA_EXPANSION_MAX_ROUNDS = 2;
 
 const HUMAN_EDITORIAL_RULES = READER_FRIENDLY_EDITORIAL_RULES;
+
+export function assessQaDepth(value) {
+  const chars = Math.max(0, Number(value) || 0);
+  return {
+    chars,
+    meetsPreferred: chars >= QA_PREFERRED_PARAGRAPH_CHARS,
+    publishable: chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS,
+    needsExpansion: chars < QA_PUBLISH_FLOOR_PARAGRAPH_CHARS,
+    shortfallToPreferred: Math.max(0, QA_PREFERRED_PARAGRAPH_CHARS - chars),
+    shortfallToFloor: Math.max(0, QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars)
+  };
+}
 
 const qaExpansionSchema = {
   type: 'object',
@@ -113,7 +125,7 @@ function mergeParagraphText(section, value) {
   return true;
 }
 
-function promoteUsefulBulletsToParagraphs(sections, minimum = QA_MIN_PARAGRAPH_CHARS) {
+function promoteUsefulBulletsToParagraphs(sections, minimum = QA_PREFERRED_PARAGRAPH_CHARS) {
   const next = (sections || []).map((section) => ({
     ...section,
     paragraphs: [...(section.paragraphs || [])],
@@ -188,7 +200,8 @@ export const __ollamaDepthTest = {
   paragraphChars,
   promoteUsefulBulletsToParagraphs,
   mergeExpandedSections,
-  mergeQaAdditions
+  mergeQaAdditions,
+  assessQaDepth
 };
 
 function assertQaLanguage(schema, data) {
@@ -204,14 +217,14 @@ export async function structuredResponse(args) {
     const result = await baseStructuredResponse({
       ...args,
       schema: draftHandoffSchema(args.schema),
-      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nDraft handoff policy: This is the evidence-grounded working draft, not the final published article. Build a complete 5-9 section structure and aim for about ${DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS} Korean paragraph characters total, normally with 2-3 substantive paragraphs in important sections. Prioritize supported reasoning, decision criteria, actionable steps, limitations, and trade-offs over filler. Do not spend another generation merely padding the draft: the independent QA stage owns the final 3500+ character publication requirement. A short but structurally valid draft must still be handed to QA rather than discarded solely for length.`
+      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nDraft handoff policy: This is the evidence-grounded working draft, not the final published article. Build a complete 5-9 section structure and aim for about ${DRAFT_HANDOFF_TARGET_PARAGRAPH_CHARS} Korean paragraph characters total, normally with 2-3 substantive paragraphs in important sections. Prioritize supported reasoning, decision criteria, actionable steps, limitations, and trade-offs over filler. Do not spend another generation merely padding the draft: the independent QA stage owns the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}+ character depth target, while a fact-checked article may publish above the substantial ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-character floor. A short but structurally valid draft must still be handed to QA rather than discarded solely for length.`
     });
     const balancedSections = rebalanceSectionsForReadability(result.data.sections);
     const chars = paragraphChars(balancedSections);
     if (chars < DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS) {
-      console.warn(`[quality] draft handoff depth=${chars} paragraph chars is below the ${DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS}-char advisory target; accepting the structurally valid draft and delegating final depth to QA (hard final minimum remains 3500).`);
+      console.warn(`[quality] draft handoff depth=${chars} paragraph chars is below the ${DRAFT_HANDOFF_WARN_PARAGRAPH_CHARS}-char advisory target; accepting the structurally valid draft and delegating final depth to QA (preferred ${QA_PREFERRED_PARAGRAPH_CHARS}, publish floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}).`);
     } else {
-      console.log(`[quality] draft handoff depth=${chars} paragraph chars; final QA minimum remains 3500.`);
+      console.log(`[quality] draft handoff depth=${chars} paragraph chars; final QA preferred target=${QA_PREFERRED_PARAGRAPH_CHARS}, publish floor=${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}.`);
     }
     return {
       ...result,
@@ -224,7 +237,7 @@ export async function structuredResponse(args) {
       ...args,
       schema: qaNoLegacyDepthSchema(args.schema),
       maxOutputTokens: Math.max(Number(args.maxOutputTokens) || 0, 4000),
-      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.\n\nThe JSON schema calls the final article sections field 'sections' for this QA pass. Treat it exactly as the final revisedSections. Aim for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters across those sections, but never pad with repetition or unsupported claims.`
+      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.\n\nThe JSON schema calls the final article sections field 'sections' for this QA pass. Treat it exactly as the final revisedSections. Aim for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters across those sections, but never pad with repetition or unsupported claims. The preferred publication depth is ${QA_PREFERRED_PARAGRAPH_CHARS}; depth alone must not override factual quality or reader usefulness.`,
     });
 
     const { sections, ...rest } = primary.data;
@@ -235,10 +248,10 @@ export async function structuredResponse(args) {
     let chars = paragraphChars(data.revisedSections);
     console.log(`[quality] final QA composed depth=${chars} paragraph chars after folding substantive list content into section prose where appropriate.`);
 
-    for (let round = 1; chars < QA_MIN_PARAGRAPH_CHARS && round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
-      const missing = QA_MIN_PARAGRAPH_CHARS - chars;
+    for (let round = 1; assessQaDepth(chars).needsExpansion && round <= QA_EXPANSION_MAX_ROUNDS; round += 1) {
+      const missing = QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - chars;
       const requested = Math.max(500, missing + 250);
-      console.warn(`[quality] final QA depth=${chars} is below ${QA_MIN_PARAGRAPH_CHARS}; requesting targeted expansion ${round}/${QA_EXPANSION_MAX_ROUNDS} for about ${requested} additional paragraph chars.`);
+      console.warn(`[quality] final QA depth=${chars} is below the substantial publish floor ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}; requesting targeted expansion ${round}/${QA_EXPANSION_MAX_ROUNDS} for about ${requested} additional paragraph chars.`);
       const expansion = await baseStructuredResponse({
         ...args,
         schema: qaExpansionSchema,
@@ -258,12 +271,13 @@ export async function structuredResponse(args) {
       if (chars <= beforeMerge) break;
     }
 
-    if (chars < QA_MIN_PARAGRAPH_CHARS && chars >= QA_PUBLISH_FLOOR_PARAGRAPH_CHARS) {
-      console.warn(`[quality] final QA ended at ${chars} paragraph chars after the targeted repair budget. This is within the near-target publish band (${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-${QA_MIN_PARAGRAPH_CHARS - 1}), so publication will continue instead of spending another slow-runner model pass for the remaining ${QA_MIN_PARAGRAPH_CHARS - chars} chars.`);
+    const depth = assessQaDepth(chars);
+    if (depth.publishable && !depth.meetsPreferred) {
+      console.warn(`[quality] final QA depth=${chars} is below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target but above the substantial ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char publish floor. Publication will continue because reader usefulness, QA approval, and evidence quality matter more than padding to a fixed count.`);
     }
 
-    if (chars < QA_PUBLISH_FLOOR_PARAGRAPH_CHARS) {
-      const error = new Error(`Final QA article remained too thin after targeted expansion (${chars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} publish-floor paragraph chars; preferred target ${QA_MIN_PARAGRAPH_CHARS}).`);
+    if (!depth.publishable) {
+      const error = new Error(`Final QA article remained materially too thin after targeted expansion (${chars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} publish-floor paragraph chars; preferred target ${QA_PREFERRED_PARAGRAPH_CHARS}).`);
       error.code = 'ARTICLE_DEPTH_SHORT';
       throw error;
     }

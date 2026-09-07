@@ -1,6 +1,13 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { structuredResponse, ensureModel, removeModel } from './ollama.mjs';
+import {
+  structuredResponse,
+  ensureModel,
+  removeModel,
+  assessQaDepth,
+  QA_PREFERRED_PARAGRAPH_CHARS,
+  QA_PUBLISH_FLOOR_PARAGRAPH_CHARS
+} from './ollama.mjs';
 import { collectEvidence, buildDiscoveryQueries, evidenceForPrompt, allowedSourceMap, canonicalUrl } from './research.mjs';
 import { ensureResearchSourceDiversity } from './research-brief.mjs';
 import { normalizeTopicCandidate } from './topic-candidates.mjs';
@@ -510,7 +517,13 @@ if (!qa.approved || qa.score < config.content.minimumQualityScore) {
 if (qa.verifiedSources.length < 3) throw new Error('Quality review returned fewer than 3 whitelisted public sources.');
 if (duplicateTitle(qa.revisedTitle)) throw new Error(`Duplicate article title: ${qa.revisedTitle}`);
 const articleChars = qa.revisedSections.flatMap((section) => section.paragraphs || []).join('').length;
-if (articleChars < 3500) throw new Error(`Quality guard: final article is too thin (${articleChars} chars).`);
+const articleDepth = assessQaDepth(articleChars);
+if (!articleDepth.publishable) {
+  throw new Error(`Quality guard: final article is materially too thin (${articleChars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} paragraph chars).`);
+}
+if (!articleDepth.meetsPreferred) {
+  console.warn(`[quality] publisher accepted ${articleChars} paragraph chars below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target because the article cleared the shared ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor and all factual QA gates.`);
+}
 
 const visualFiles = {
   cover: config.visuals?.generateCover ? `assets/posts/${slug}-cover.svg` : null,
