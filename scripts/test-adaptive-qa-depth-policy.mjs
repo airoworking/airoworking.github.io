@@ -1,9 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import {
   assessQaDepth,
+  repairedQaFloor,
   QA_PREFERRED_PARAGRAPH_CHARS,
   QA_PUBLISH_FLOOR_PARAGRAPH_CHARS,
   QA_NEAR_FLOOR_TOLERANCE_CHARS,
+  QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS,
+  QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS,
   QA_REVIEW_MAX_OUTPUT_TOKENS,
   QA_REVIEW_TIMEOUT_MS,
   QA_MAX_SECTION_REVISIONS,
@@ -17,15 +20,20 @@ function assert(condition, message) {
 assert(QA_PREFERRED_PARAGRAPH_CHARS === 3500, 'Preferred QA depth should remain 3500 paragraph chars.');
 assert(QA_PUBLISH_FLOOR_PARAGRAPH_CHARS === 2600, 'Substantial publish floor should remain 2600 paragraph chars.');
 assert(QA_NEAR_FLOOR_TOLERANCE_CHARS === 150, 'Post-repair near-floor tolerance should remain tightly bounded at 150 chars.');
+assert(QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS === 1200, 'Adaptive repaired floor must never fall below 1200 paragraph chars.');
+assert(QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS === 1800, 'Adaptive repaired floor must never exceed 1800 paragraph chars.');
+assert(repairedQaFloor(900) === 1200, 'Very short drafts must still require the 1200-char structural safety floor after repair.');
+assert(repairedQaFloor(1313) === 1313, 'Run #20 draft depth should become its own adaptive repaired floor.');
+assert(repairedQaFloor(2100) === 1800, 'Longer drafts should cap the fallback floor at 1800 chars.');
 assert(QA_REVIEW_MAX_OUTPUT_TOKENS === 2400, 'Primary QA review should be capped at 2400 output tokens on the CPU runner.');
 assert(QA_REVIEW_TIMEOUT_MS === 900000, 'Primary QA review should have a bounded 15-minute timeout.');
 assert(QA_MAX_SECTION_REVISIONS === 4, 'Delta QA should never attempt more than four replacement sections in one pass.');
 
 const tooThin = assessQaDepth(1907);
-assert(!tooThin.publishable && tooThin.needsExpansion, '1907-char QA output must request targeted expansion.');
+assert(!tooThin.publishable && tooThin.needsExpansion, '1907-char QA output must still request targeted expansion before repaired-floor acceptance is enabled.');
 
 const belowTolerance = assessQaDepth(QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - QA_NEAR_FLOOR_TOLERANCE_CHARS - 1);
-assert(!belowTolerance.publishable && belowTolerance.needsExpansion, 'Output below the bounded near-floor minimum must remain blocked.');
+assert(!belowTolerance.publishable && belowTolerance.needsExpansion, 'Output below the bounded near-floor minimum must remain blocked before targeted repair.');
 
 const atToleranceBoundary = assessQaDepth(QA_PUBLISH_FLOOR_PARAGRAPH_CHARS - QA_NEAR_FLOOR_TOLERANCE_CHARS);
 assert(atToleranceBoundary.publishable && atToleranceBoundary.acceptedNearFloor, 'Exact near-floor boundary should be accepted only as a bounded post-repair result.');
@@ -44,8 +52,45 @@ assert(run19AfterFirstExpansion.acceptedNearFloor, '2476-char run #19 regression
 assert(run19AfterFirstExpansion.shortfallToFloor === 124, 'Run #19 shortfall should remain visible in diagnostics.');
 assert(!run19AfterFirstExpansion.meetsPreferred, '2476 chars should remain below the preferred target, not be mislabeled as ideal depth.');
 
+// Regression from the 2026-09-07 failure after run #19: delta QA reduced a
+// 1313-char draft to 889 chars. The first targeted expansion recovered it to
+// 1515 chars, but the old fixed floor forced a second 473-second model call and
+// still failed at 2103. Once one bounded repair has made the QA-approved article
+// at least as deep as the original draft (subject to the 1200-1800 safety band),
+// length alone must not discard the publication.
+const run20RepairedFloor = repairedQaFloor(1313);
+const run20BeforeRepair = assessQaDepth(889, {
+  allowNearFloor: false,
+  allowRepairedFloor: false,
+  repairedFloor: run20RepairedFloor
+});
+assert(!run20BeforeRepair.publishable, 'Run #20 must still perform at least one targeted repair from the 889-char QA composition.');
+
+const run20WithoutRepairPermission = assessQaDepth(1515, { repairedFloor: run20RepairedFloor });
+assert(!run20WithoutRepairPermission.publishable, 'Adaptive repaired-floor acceptance must never activate before a repair has actually run.');
+
+const run20AfterFirstRepair = assessQaDepth(1515, {
+  allowRepairedFloor: true,
+  repairedFloor: run20RepairedFloor
+});
+assert(run20AfterFirstRepair.publishable, '1515-char run #20 output should publish after the first bounded repair.');
+assert(run20AfterFirstRepair.acceptedRepairedFloor, 'Run #20 first repair must be identified as adaptive repaired-floor acceptance.');
+assert(run20AfterFirstRepair.repairedFloor === 1313, 'Run #20 adaptive repaired floor should be tied to its 1313-char draft.');
+
+const run20FormerFailure = assessQaDepth(2103, {
+  allowRepairedFloor: true,
+  repairedFloor: run20RepairedFloor
+});
+assert(run20FormerFailure.publishable && run20FormerFailure.acceptedRepairedFloor, 'The former 2103-char terminal failure must be publishable after bounded repair.');
+
+const belowRun20AdaptiveFloor = assessQaDepth(1312, {
+  allowRepairedFloor: true,
+  repairedFloor: run20RepairedFloor
+});
+assert(!belowRun20AdaptiveFloor.publishable, 'Adaptive recovery must still block output that is thinner than the source draft floor.');
+
 const atFloor = assessQaDepth(QA_PUBLISH_FLOOR_PARAGRAPH_CHARS);
-assert(atFloor.publishable && atFloor.meetsStrictFloor && !atFloor.acceptedNearFloor && !atFloor.needsExpansion, 'Output at the strict shared floor must publish without tolerance.');
+assert(atFloor.publishable && atFloor.meetsStrictFloor && !atFloor.acceptedNearFloor && !atFloor.acceptedRepairedFloor && !atFloor.needsExpansion, 'Output at the strict shared floor must publish without tolerance.');
 
 // Regression from Automated Blog Publisher run #16: after the first targeted
 // expansion the article reached 2723 paragraph chars. The old policy spent
@@ -82,12 +127,12 @@ const ollamaBaseSource = await readFile(new URL('../src/ollama-base.mjs', import
 const pipelineSource = await readFile(new URL('../src/pipeline.mjs', import.meta.url), 'utf8');
 
 assert(
-  ollamaSource.includes('const expansionDepth = assessQaDepth(chars, { allowNearFloor: round > 1 });'),
-  'QA expansion loop must require one strict repair before enabling bounded near-floor acceptance.'
+  ollamaSource.includes('allowRepairedFloor: useDeltaReview && round > 1'),
+  'QA expansion loop must enable the adaptive repaired floor only after one real targeted repair.'
 );
 assert(
-  ollamaSource.includes('skipping another slow expansion'),
-  'Run #19 regression must stop before a second slow expansion once the bounded post-repair band is reached.'
+  ollamaSource.includes('derived from the ${seedDraftChars}-char draft'),
+  'Run #20 recovery diagnostics must explain the adaptive floor source.'
 );
 assert(
   ollamaSource.includes('const QA_EXPANSION_MAX_ROUNDS = 2;'),
@@ -102,6 +147,10 @@ assert(
   'Delta QA prompt must explicitly forbid whole-article regeneration.'
 );
 assert(
+  ollamaSource.includes('do not compress a section merely to be concise'),
+  'Delta QA replacements must be told not to destroy useful supported depth just for concision.'
+);
+assert(
   ollamaSource.includes('Math.min(Math.max(1, Number(args.maxOutputTokens) || QA_REVIEW_MAX_OUTPUT_TOKENS), QA_REVIEW_MAX_OUTPUT_TOKENS)'),
   'Primary QA output must be capped independently of the legacy 5600-token stage budget.'
 );
@@ -114,8 +163,12 @@ assert(
   'Qwen3 thinking must remain disabled for structured CPU-runner calls.'
 );
 assert(
-  pipelineSource.includes('const articleDepth = assessQaDepth(articleChars);'),
-  'Publisher must use the same shared QA depth decision as the model wrapper.'
+  pipelineSource.includes('repairedQaFloor(articleDraftChars)'),
+  'Publisher must recompute the same adaptive repaired floor from the original draft.'
+);
+assert(
+  pipelineSource.includes('allowRepairedFloor: true'),
+  'Publisher must honor the repaired depth policy already enforced by the QA wrapper.'
 );
 assert(
   !pipelineSource.includes('articleChars < 3500'),
@@ -123,7 +176,7 @@ assert(
 );
 assert(
   pipelineSource.includes('QA_PUBLISH_FLOOR_PARAGRAPH_CHARS'),
-  'Publisher error diagnostics must reference the shared publish floor.'
+  'Publisher diagnostics must continue to reference the strict publish target.'
 );
 
-console.log(`Adaptive QA policy OK: preferred=${QA_PREFERRED_PARAGRAPH_CHARS}, strictFloor=${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, nearFloorTolerance=${QA_NEAR_FLOOR_TOLERANCE_CHARS}; run #19 accepts 2476 after one repair, run #16 stops at 2723, and run #17 uses <=${QA_REVIEW_MAX_OUTPUT_TOKENS} tokens with delta section review.`);
+console.log(`Adaptive QA policy OK: preferred=${QA_PREFERRED_PARAGRAPH_CHARS}, strictFloor=${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, nearFloorTolerance=${QA_NEAR_FLOOR_TOLERANCE_CHARS}, repairedFloor=${QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS}-${QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS}; run #20 accepts 1515 after one repair instead of failing at 2103, run #19 accepts 2476, and run #17 stays on bounded delta QA.`);
