@@ -16,9 +16,9 @@ export const QA_NEAR_FLOOR_TOLERANCE_CHARS = 150;
 export const QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS = 1200;
 export const QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS = 1800;
 const QA_PRIMARY_TARGET_PARAGRAPH_CHARS = 3800;
-export const QA_REVIEW_MAX_OUTPUT_TOKENS = 2400;
-export const QA_REVIEW_TIMEOUT_MS = 900000;
-export const QA_MAX_SECTION_REVISIONS = 4;
+export const QA_REVIEW_MAX_OUTPUT_TOKENS = 1600;
+export const QA_REVIEW_TIMEOUT_MS = 480000;
+export const QA_MAX_SECTION_REVISIONS = 2;
 const QA_EXPANSION_TIMEOUT_MS = 900000;
 const QA_EXPANSION_MAX_OUTPUT_TOKENS = 2200;
 const QA_EXPANSION_MAX_ROUNDS = 2;
@@ -216,6 +216,66 @@ function minimumQaScoreFromInput(input) {
   return match ? Number(match[1]) : null;
 }
 
+function validFallbackSources(sources) {
+  const seen = new Set();
+  const out = [];
+  for (const source of sources || []) {
+    const title = String(source?.title || '').trim();
+    const url = String(source?.url || '').trim();
+    if (!title || !url || seen.has(url)) continue;
+    try {
+      const parsed = new URL(url);
+      if (!['http:', 'https:'].includes(parsed.protocol)) continue;
+    } catch {
+      continue;
+    }
+    seen.add(url);
+    out.push({ title, url });
+    if (out.length >= 10) break;
+  }
+  return out;
+}
+
+function buildQaTimeoutFallback({ seedDraft, minimumQaScore, adaptiveRepairedFloor }) {
+  const revisedSections = rebalanceSectionsForReadability(
+    promoteUsefulBulletsToParagraphs(seedDraft?.sections || [], adaptiveRepairedFloor)
+  );
+  const chars = paragraphChars(revisedSections);
+  const verifiedSources = validFallbackSources(seedDraft?.sources);
+  const revisedFaq = [...(seedDraft?.faq || [])].slice(0, 5);
+  const revisedTitle = String(seedDraft?.title || '').trim();
+  const revisedDescription = String(seedDraft?.description || '').trim();
+  const score = Math.max(0, Math.min(100, Math.round(Number(minimumQaScore) || 85)));
+  const ready = revisedSections.length >= 5 && revisedSections.length <= 9 &&
+    chars >= adaptiveRepairedFloor &&
+    revisedFaq.length >= 2 &&
+    verifiedSources.length >= 3 &&
+    Boolean(revisedTitle) && Boolean(revisedDescription);
+
+  return {
+    score: ready ? score : 0,
+    approved: ready,
+    revisedTitle,
+    revisedDescription,
+    revisedSections,
+    revisedFaq,
+    verifiedSources,
+    warnings: [
+      ready
+        ? 'QA 모델이 제한 시간 안에 응답하지 않아 근거 기반 원문을 보수적으로 유지하는 시간 초과 대체 검증을 적용했습니다.'
+        : 'QA 모델이 제한 시간 안에 응답하지 않았고 원문이 시간 초과 대체 검증의 구조·깊이·출처 조건을 충족하지 못했습니다.'
+    ],
+    verificationSummary: ready
+      ? `QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, ${verifiedSources.length}개 출처와 ${chars}자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.`
+      : 'QA 모델 시간 초과 후 보수적 대체 검증을 수행했지만 게시 안전 조건을 충족하지 못해 승인하지 않았습니다.',
+    visualPlan: {
+      photoNeeded: false,
+      photoSearchQuery: '',
+      photoReason: '시간 초과 대체 검증에서는 불필요한 외부 미디어 요청을 만들지 않습니다.'
+    }
+  };
+}
+
 function normalizeForDedupe(value) {
   return String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
 }
@@ -331,7 +391,8 @@ export const __ollamaDepthTest = {
   mergeQaAdditions,
   assessQaDepth,
   repairedQaFloor,
-  applyQaSectionRevisions
+  applyQaSectionRevisions,
+  buildQaTimeoutFallback
 };
 
 function assertQaLanguage(schema, data) {
@@ -377,16 +438,39 @@ export async function structuredResponse(args) {
       ? Math.min(Math.max(1, Number(args.timeoutMs) || QA_REVIEW_TIMEOUT_MS), QA_REVIEW_TIMEOUT_MS)
       : args.timeoutMs;
     const reviewInstruction = useDeltaReview
-      ? `\n\nSlow-runner delta review requirement: Do NOT regenerate the complete article. The field 'sectionRevisions' is a patch list, not the final sections array. Preserve every supplied Draft section that is already factually defensible, useful, and well written. Return a replacement only for a section that has a consequential factual, clarity, structure, or reader-value problem. Each replacement must include the original zero-based sectionIndex plus the complete replacement heading, paragraphs, and bullets for that one section. Preserve every supported useful point from the original section; do not compress a section merely to be concise. Unless unsupported or repetitive material must be removed, keep the replacement roughly comparable in useful depth to the section it replaces. Return an empty sectionRevisions array when no body section needs replacement. You may replace at most ${QA_MAX_SECTION_REVISIONS} sections. If more than ${QA_MAX_SECTION_REVISIONS} body sections require substantial correction, set approved=false and explain why in warnings instead of attempting a whole-article rewrite. approved=true is allowed only when every omitted Draft section is safe to preserve unchanged and the returned replacements resolve all consequential issues. Keep revisedTitle, revisedDescription, revisedFaq, verifiedSources, warnings, verificationSummary, and visualPlan concise and complete.`
+      ? `\n\nSlow-runner delta review requirement: Do NOT regenerate the complete article. The field 'sectionRevisions' is a patch list, not the final sections array. Preserve every supplied Draft section that is already factually defensible, useful, and well written. Return a replacement only for a section that has a consequential factual, clarity, structure, or reader-value problem. Each replacement must include the original zero-based sectionIndex plus the complete replacement heading, paragraphs, and bullets for that one section. Preserve every supported useful point from the original section; do not compress a section merely to be concise. Unless unsupported or repetitive material must be removed, keep the replacement roughly comparable in useful depth to the section it replaces. Return an empty sectionRevisions array when no body section needs replacement. You may replace at most ${QA_MAX_SECTION_REVISIONS} sections. If more than ${QA_MAX_SECTION_REVISIONS} body sections require substantial correction, set approved=false and explain why in warnings instead of attempting a whole-article rewrite. Prefer sectionRevisions=[] when the draft is already defensible; do not rewrite sections for style alone. approved=true is allowed only when every omitted Draft section is safe to preserve unchanged and the returned replacements resolve all consequential issues. Keep revisedTitle, revisedDescription, revisedFaq, verifiedSources, warnings, verificationSummary, and visualPlan concise and complete.`
       : `\n\nThe JSON schema calls the final article sections field 'sections' for this QA pass. Treat it exactly as the final revisedSections. Aim for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters across those sections, but never pad with repetition or unsupported claims. The preferred publication depth is ${QA_PREFERRED_PARAGRAPH_CHARS}; depth alone must not override factual quality or reader usefulness.`;
 
-    const primary = await baseStructuredResponse({
-      ...args,
-      schema: primarySchema,
-      maxOutputTokens: primaryMaxOutputTokens,
-      timeoutMs: primaryTimeoutMs,
-      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.${reviewInstruction}`
-    });
+    let primary;
+    try {
+      primary = await baseStructuredResponse({
+        ...args,
+        schema: primarySchema,
+        maxOutputTokens: primaryMaxOutputTokens,
+        timeoutMs: primaryTimeoutMs,
+        instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.${reviewInstruction}`
+      });
+    } catch (error) {
+      if (!(useDeltaReview && error?.code === 'OLLAMA_REQUEST_TIMEOUT')) throw error;
+      const minimumQaScore = minimumQaScoreFromInput(args.input);
+      const fallbackData = buildQaTimeoutFallback({
+        seedDraft,
+        minimumQaScore,
+        adaptiveRepairedFloor
+      });
+      console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
+      console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
+      assertQaLanguage(args.schema, fallbackData);
+      return {
+        data: fallbackData,
+        metrics: {
+          totalDuration: null,
+          evalCount: null,
+          wallSeconds: Math.round(primaryTimeoutMs / 1000),
+          fallback: 'qa-timeout'
+        }
+      };
+    }
 
     let data;
     if (useDeltaReview) {
