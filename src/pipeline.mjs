@@ -5,6 +5,7 @@ import {
   ensureModel,
   removeModel,
   assessQaDepth,
+  repairedQaFloor,
   QA_PREFERRED_PARAGRAPH_CHARS,
   QA_PUBLISH_FLOOR_PARAGRAPH_CHARS
 } from './ollama.mjs';
@@ -516,13 +517,24 @@ if (!qa.approved || qa.score < config.content.minimumQualityScore) {
 }
 if (qa.verifiedSources.length < 3) throw new Error('Quality review returned fewer than 3 whitelisted public sources.');
 if (duplicateTitle(qa.revisedTitle)) throw new Error(`Duplicate article title: ${qa.revisedTitle}`);
+const articleDraftChars = article.sections.flatMap((section) => section.paragraphs || []).join('').length;
 const articleChars = qa.revisedSections.flatMap((section) => section.paragraphs || []).join('').length;
-const articleDepth = assessQaDepth(articleChars);
+const articleRepairedFloor = repairedQaFloor(articleDraftChars);
+const articleDepth = assessQaDepth(articleChars, {
+  allowRepairedFloor: true,
+  repairedFloor: articleRepairedFloor
+});
 if (!articleDepth.publishable) {
-  throw new Error(`Quality guard: final article is materially too thin (${articleChars} < ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS} paragraph chars).`);
+  throw new Error(`Quality guard: final article is materially too thin (${articleChars} paragraph chars; strict target ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, adaptive repaired minimum ${articleDepth.repairedFloor}).`);
 }
 if (!articleDepth.meetsPreferred) {
-  console.warn(`[quality] publisher accepted ${articleChars} paragraph chars below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target because the article cleared the shared ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor and all factual QA gates.`);
+  if (articleDepth.acceptedRepairedFloor) {
+    console.warn(`[quality] publisher accepted ${articleChars} paragraph chars below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char target after bounded QA repair because the article cleared its adaptive ${articleDepth.repairedFloor}-char floor derived from the ${articleDraftChars}-char draft and all factual QA gates.`);
+  } else if (articleDepth.acceptedNearFloor) {
+    console.warn(`[quality] publisher accepted ${articleChars} paragraph chars inside the bounded near-floor tolerance below the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char target after all factual QA gates passed.`);
+  } else {
+    console.warn(`[quality] publisher accepted ${articleChars} paragraph chars below the preferred ${QA_PREFERRED_PARAGRAPH_CHARS}-char target because the article cleared the strict ${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}-char floor and all factual QA gates.`);
+  }
 }
 
 const visualFiles = {
