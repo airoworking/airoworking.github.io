@@ -1,5 +1,58 @@
 [
   {
+    "title": "AI 도구를 활용한 콘텐츠 제작자 도구: 고객 유치와 효율성 향상 전략",
+    "slug": "ai-content",
+    "description": "콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작하는 데 어려움을 겪고 있다. 이 문제는 AI 도구의 효율성과 실제 활용성에 대한 불확실성과 함께 심화되고 있다. 이에 따라, 콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작할 수 있도록 도와주는 도구가 필요하다.",
+    "category": "콘텐츠 제작",
+    "tags": [
+      "AI 도구",
+      "콘텐츠 제작",
+      "고객 유치",
+      "업무 효율성",
+      "전략"
+    ],
+    "date": "2026-09-08",
+    "primaryKeyword": "AI-content",
+    "audienceSegment": "creator",
+    "contentRole": "reach",
+    "monetizationRoute": "adsense",
+    "readerProblem": "콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작하는 데 어려움을 겪고 있다.",
+    "expectedOutcome": "콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작할 수 있도록 도와준다.",
+    "opportunityScore": 78,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 2874자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "How to Master AI Content Creation (+ 15 Tools That Actually Work)",
+        "url": "https://www.monsterinsights.com/ai-content-creation-guide-with-tools/"
+      },
+      {
+        "title": "AI-Generated Content 101 for Marketers and Creators",
+        "url": "https://ahrefs.com/blog/ai-generated-content/"
+      },
+      {
+        "title": "AI-Generated Content: Discover What Works and What Doesn't",
+        "url": "https://www.conductor.com/academy/ai-generated-content/"
+      },
+      {
+        "title": "8 Best AI Content Creation Platforms That Actually Work",
+        "url": "https://learn.g2.com/best-ai-content-creation-platforms"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-content-cover.svg",
+      "summary": "assets/posts/ai-content-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자용 AI 텍스트-비디오 자동화 도구 비교 분석",
     "slug": "ai",
     "description": "소규모 사업자가 텍스트를 비디오로 변환하는 데 필요한 도구를 비교 분석하여 최적의 선택을 제안합니다. AI 텍스트-비디오 생성 도구의 기능, 가격, 사용 용도, 사용자 경험 등을 종합적으로 분석하여 소규모 사업자에게 가장 유리한 도구를 제안합니다.",
