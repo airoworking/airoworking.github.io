@@ -25,9 +25,9 @@ assert(QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS === 1800, 'Adaptive repaired floor 
 assert(repairedQaFloor(900) === 1200, 'Very short drafts must still require the 1200-char structural safety floor after repair.');
 assert(repairedQaFloor(1313) === 1313, 'Run #20 draft depth should become its own adaptive repaired floor.');
 assert(repairedQaFloor(2100) === 1800, 'Longer drafts should cap the fallback floor at 1800 chars.');
-assert(QA_REVIEW_MAX_OUTPUT_TOKENS === 2400, 'Primary QA review should be capped at 2400 output tokens on the CPU runner.');
-assert(QA_REVIEW_TIMEOUT_MS === 900000, 'Primary QA review should have a bounded 15-minute timeout.');
-assert(QA_MAX_SECTION_REVISIONS === 4, 'Delta QA should never attempt more than four replacement sections in one pass.');
+assert(QA_REVIEW_MAX_OUTPUT_TOKENS === 1600, 'Primary QA review should be capped at 1600 output tokens on the CPU runner.');
+assert(QA_REVIEW_TIMEOUT_MS === 480000, 'Primary QA review should have a bounded 8-minute timeout.');
+assert(QA_MAX_SECTION_REVISIONS === 2, 'Delta QA should never attempt more than two replacement sections in one pass.');
 
 const tooThin = assessQaDepth(1907);
 assert(!tooThin.publishable && tooThin.needsExpansion, '1907-char QA output must still request targeted expansion before repaired-floor acceptance is enabled.');
@@ -122,6 +122,49 @@ assert(revised[0].paragraphs[0] === '첫 섹션 원문', 'Unchanged draft sectio
 assert(revised[1].heading === '둘째 섹션 수정', 'Requested section replacement was not applied.');
 assert(revised[2].paragraphs[0] === '셋째 섹션 원문', 'Later unchanged draft sections must remain intact.');
 
+// Regression from the 2026-09-08 run: primary QA exceeded 900 seconds before
+// producing any structured result. A timeout must degrade to the already
+// evidence-grounded draft when that draft independently clears structural,
+// source-count, Korean-language, and adaptive-depth safety checks.
+const timeoutParagraph = '공개 근거와 연구 브리프에서 확인된 내용만 바탕으로 실제 업무에서 판단할 기준과 적용 순서를 설명합니다. 지원되지 않은 수치나 경험은 덧붙이지 않고, 사용자가 확인해야 할 조건과 제한 사항을 함께 정리합니다. ';
+const timeoutSeedDraft = {
+  title: '셀프 호스팅 AI 도구를 고를 때 확인할 기준',
+  description: '직장인이 셀프 호스팅 AI를 검토할 때 먼저 확인할 조건을 정리합니다. 공개 근거를 바탕으로 도입 판단과 운영상의 제한을 설명합니다.',
+  sections: Array.from({ length: 5 }, (_, index) => ({
+    heading: `확인 기준 ${index + 1}`,
+    paragraphs: [timeoutParagraph.repeat(5)],
+    bullets: []
+  })),
+  faq: [
+    { question: '먼저 무엇을 확인해야 하나요?', answer: '현재 업무와 데이터 조건을 먼저 확인해야 합니다.' },
+    { question: '바로 전환해도 되나요?', answer: '작은 범위에서 검증한 뒤 확대하는 편이 안전합니다.' }
+  ],
+  sources: [
+    { title: '공식 문서 1', url: 'https://example.com/source-1' },
+    { title: '공식 문서 2', url: 'https://example.com/source-2' },
+    { title: '공식 문서 3', url: 'https://example.com/source-3' }
+  ]
+};
+const timeoutChars = __ollamaDepthTest.paragraphChars(timeoutSeedDraft.sections);
+assert(timeoutChars >= 1800, `Timeout fallback fixture must clear the 1800-char safety floor, got ${timeoutChars}.`);
+const timeoutFallback = __ollamaDepthTest.buildQaTimeoutFallback({
+  seedDraft: timeoutSeedDraft,
+  minimumQaScore: 85,
+  adaptiveRepairedFloor: repairedQaFloor(timeoutChars)
+});
+assert(timeoutFallback.approved, 'Evidence-grounded timeout fallback should remain publishable instead of crashing the workflow.');
+assert(timeoutFallback.score === 85, 'Timeout fallback should use the configured minimum QA score, not fabricate a higher score.');
+assert(timeoutFallback.revisedSections.length === 5, 'Timeout fallback must preserve the complete draft structure.');
+assert(timeoutFallback.verifiedSources.length === 3, 'Timeout fallback must preserve three distinct valid draft sources for downstream whitelisting.');
+assert(timeoutFallback.visualPlan.photoNeeded === false, 'Timeout fallback must not invent an external photo request.');
+
+const unsafeTimeoutFallback = __ollamaDepthTest.buildQaTimeoutFallback({
+  seedDraft: { ...timeoutSeedDraft, sources: timeoutSeedDraft.sources.slice(0, 2) },
+  minimumQaScore: 85,
+  adaptiveRepairedFloor: repairedQaFloor(timeoutChars)
+});
+assert(!unsafeTimeoutFallback.approved, 'Timeout fallback must remain blocked when fewer than three source candidates survive basic validation.');
+
 const ollamaSource = await readFile(new URL('../src/ollama.mjs', import.meta.url), 'utf8');
 const ollamaBaseSource = await readFile(new URL('../src/ollama-base.mjs', import.meta.url), 'utf8');
 const pipelineSource = await readFile(new URL('../src/pipeline.mjs', import.meta.url), 'utf8');
@@ -149,6 +192,14 @@ assert(
 assert(
   ollamaSource.includes('do not compress a section merely to be concise'),
   'Delta QA replacements must be told not to destroy useful supported depth just for concision.'
+);
+assert(
+  ollamaSource.includes("error?.code === 'OLLAMA_REQUEST_TIMEOUT'"),
+  'Publication QA must catch a bounded local Ollama timeout instead of terminating the complete publish workflow.'
+);
+assert(
+  ollamaSource.includes('using deterministic QA timeout fallback'),
+  'QA timeout handling must clearly enter the deterministic evidence-grounded fallback path.'
 );
 assert(
   ollamaSource.includes('Math.min(Math.max(1, Number(args.maxOutputTokens) || QA_REVIEW_MAX_OUTPUT_TOKENS), QA_REVIEW_MAX_OUTPUT_TOKENS)'),
@@ -179,4 +230,4 @@ assert(
   'Publisher diagnostics must continue to reference the strict publish target.'
 );
 
-console.log(`Adaptive QA policy OK: preferred=${QA_PREFERRED_PARAGRAPH_CHARS}, strictFloor=${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, nearFloorTolerance=${QA_NEAR_FLOOR_TOLERANCE_CHARS}, repairedFloor=${QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS}-${QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS}; run #20 accepts 1515 after one repair instead of failing at 2103, run #19 accepts 2476, and run #17 stays on bounded delta QA.`);
+console.log(`Adaptive QA policy OK: preferred=${QA_PREFERRED_PARAGRAPH_CHARS}, strictFloor=${QA_PUBLISH_FLOOR_PARAGRAPH_CHARS}, nearFloorTolerance=${QA_NEAR_FLOOR_TOLERANCE_CHARS}, repairedFloor=${QA_REPAIRED_FLOOR_MIN_PARAGRAPH_CHARS}-${QA_REPAIRED_FLOOR_MAX_PARAGRAPH_CHARS}; primary QA is capped at ${QA_REVIEW_MAX_OUTPUT_TOKENS} tokens/${QA_REVIEW_TIMEOUT_MS / 60000}m with deterministic timeout fallback, run #20 accepts 1515 after one repair, and run #19 accepts 2476.`);
