@@ -1,5 +1,54 @@
 [
   {
+    "title": "AI 기반 콘텐츠 제작 및 자동화 도구의 구축 및 활용 전략",
+    "slug": "article-2026-09-09",
+    "description": "AI 기반 콘텐츠 제작 및 자동화 도구는 키워드 리서치, 초안 작성, SEO 최적화, 이미지 생성, 발행 등 5단계로 구성된 워크플로우를 통해 콘텐츠의 품질과 생산성의 균형을 유지합니다. 이 워크플로우는 인간 편집자의 역할과 AI 자동화의 경계를 명확히 정의하여, 개발자들이 실제 도입 사례와 성공 요인을 기반으로 전략을 수립할 수 있습니다.",
+    "category": "AI 도구 비교 및 구축 전략",
+    "tags": [
+      "AI 콘텐츠 워크플로우",
+      "자동화 도구",
+      "개발자 전략",
+      "콘텐츠 제작",
+      "성공 요인"
+    ],
+    "date": "2026-09-09",
+    "primaryKeyword": "AI 기반 콘텐츠 제작 및 자동화 도구",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "digital-product",
+    "readerProblem": "AI 도구의 구축 및 활용 전략 제안",
+    "expectedOutcome": "AI 도구의 구축 및 활용 전략 제안",
+    "opportunityScore": 74,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 2599자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "2026년 최고의 AI 콘텐츠 생성 도구 10선",
+        "url": "https://clickup.com/ko/blog/55673/ai-content-creation-tools"
+      },
+      {
+        "title": "인공지능(AI) 콘텐츠 자동화 툴 비교 &ndash; 무료/유료 추천 리스트 총정리 (2025)",
+        "url": "https://kosmo-world.com/entry/%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5AI-%EC%BD%98%ED%85%90%EC%B8%A0-%EC%9E%90%EB%8F%99%ED%99%94-%ED%88%B4-%EB%B9%84%EA%B5%90-%E2%80%93-%EB%AC%B4%EB%A3%8C%EC%9C%A0%EB%A3%8C-%EC%B6%94%EC%B2%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%B4%9D%EC%A0%95%EB%A6%AC-2025"
+      },
+      {
+        "title": "AI 콘텐츠 제작 워크플로우 완전 가이드 2025: 5단계 자동화 시스템 – AI 타스코",
+        "url": "https://ai.tasko.kr/ai-content-creation-workflow-2025/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/article-2026-09-09-cover.svg",
+      "summary": "assets/posts/article-2026-09-09-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 도구를 활용한 콘텐츠 제작자 도구: 고객 유치와 효율성 향상 전략",
     "slug": "ai-content",
     "description": "콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작하는 데 어려움을 겪고 있다. 이 문제는 AI 도구의 효율성과 실제 활용성에 대한 불확실성과 함께 심화되고 있다. 이에 따라, 콘텐츠 제작자들이 AI 도구를 사용하여 고객을 유치하고, 콘텐츠를 효과적으로 제작할 수 있도록 도와주는 도구가 필요하다.",
