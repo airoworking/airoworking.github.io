@@ -1,5 +1,58 @@
 [
   {
+    "title": "AI 이메일 자동화 도구의 선택 및 실행 가이드",
+    "slug": "ai-email-automation-tools",
+    "description": "개발자 및 AI 실무자가 실제 업무에 AI 이메일 자동화 도구를 적용할 때, 선택 기준, 실행 단계, 보안 및 운영 전략에 대한 구체적인 정보를 제공하는 가이드를 작성합니다.",
+    "category": "AI/개발",
+    "tags": [
+      "AI 이메일 자동화",
+      "개발자 도구",
+      "보안 전략",
+      "운영 전략",
+      "실전 활용"
+    ],
+    "date": "2026-09-12",
+    "primaryKeyword": "AI Email Automation Tools",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "digital-product",
+    "readerProblem": "개발자·AI 실무자가 AI Email Automation Tools를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI Email Automation Tools의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 74,
+    "qualityScore": 85,
+    "verificationSummary": "본 가이드는 개발자 및 AI 실무자들이 AI 이메일 자동화 도구를 실제 업무에 적용할 때 선택 기준, 실행 단계, 보안 및 운영 전략에 대한 구체적인 정보를 제공하는 데 기초하여 작성되었습니다. 제공된 자료는 실무 적용 시의 성능 및 효과를 예측하기 위한 기초 정보로 활용할 수 있습니다.",
+    "sources": [
+      {
+        "title": "13 Best Email Automation Tools, Tested for 2026",
+        "url": "https://www.saleshandy.com/blog/email-automation-tools/"
+      },
+      {
+        "title": "10 Best AI Email Automation Software Compared [Updated for 2026] | Automation | Gmelius",
+        "url": "https://gmelius.com/blog/best-ai-email-automation-software"
+      },
+      {
+        "title": "GitHub - TracecatHQ/tracecat: Open-source security automation platform for teams and AI agents · GitHub",
+        "url": "https://github.com/TracecatHQ/tracecat"
+      },
+      {
+        "title": "10 Best Email Automation Tools for Developers in 2026",
+        "url": "https://robotomail.com/blog/email-automation-tools"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-email-automation-tools-cover.svg",
+      "summary": "assets/posts/ai-email-automation-tools-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자에게 최적화된 No-Code Automation 도구 선택 전략",
     "slug": "best-no-code-automation-platforms",
     "description": "소규모 사업자가 No-Code Automation 도구를 활용하여 업무 효율성을 높이기 위해 필요한 선택 기준을 파악하지 못하고 있는 현실을 해결하기 위해, 2026년 9월 11일 업데이트된 최신 자료를 바탕으로 실전 활용 전략과 비교 분석을 제공합니다.",
