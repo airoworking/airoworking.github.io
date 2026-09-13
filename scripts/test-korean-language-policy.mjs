@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { structuredResponse } from '../src/ollama.mjs';
-import { KOREAN_FIRST_SYSTEM_RULES, koreanLanguageIssues, koreanTextStats } from '../src/language.mjs';
+import { KOREAN_FIRST_SYSTEM_RULES, koreanLanguageIssues, koreanTextStats, koreanizeArticleCategory } from '../src/language.mjs';
 
 const topicSchema = {
   type: 'object',
@@ -63,9 +63,46 @@ const badArticle = {
   faq: [{ question: 'Which tool is best?', answer: 'It depends on the workflow.' }]
 };
 const badArticleIssues = koreanLanguageIssues(articleLikeSchema, badArticle);
-for (const field of ['article.title', 'article.description', 'article.category', 'article.tags', 'article.body', 'article.faq']) {
+if (badArticle.category !== '개발·AI 도구') throw new Error(`English developer category was not normalized locally: ${badArticle.category}`);
+for (const field of ['article.title', 'article.description', 'article.tags', 'article.body', 'article.faq']) {
   if (!badArticleIssues.some((issue) => issue.startsWith(field))) throw new Error(`Missing Korean publication guard for ${field}`);
 }
+if (badArticleIssues.some((issue) => issue.startsWith('article.category'))) {
+  throw new Error('A locally normalizable English category must not trigger whole-article language repair.');
+}
+
+// Regression from Automated Blog Publisher run #30 (2026-09-13): the draft was
+// otherwise Korean-first, but an English category triggered a complete second draft
+// generation. That slow repair took 1289 seconds and shrank the article to 1125 chars,
+// causing the later QA timeout fallback to reject it. Low-entropy category metadata
+// must be normalized deterministically without touching the article body.
+const run30Article = {
+  title: '스프레드시트 자동화 도구를 고르는 실전 기준',
+  description: '반복되는 표 계산과 정리 작업을 줄이려는 직장인을 위한 가이드입니다. 도구를 고를 때 확인할 기준과 안전한 적용 순서를 설명합니다.',
+  category: 'Spreadsheet Automation',
+  tags: ['AI 자동화', '스프레드시트', '업무 생산성'],
+  sections: [
+    {
+      heading: '먼저 자동화할 업무를 좁히기',
+      paragraphs: ['스프레드시트 자동화는 모든 작업을 한 번에 바꾸기보다 반복 빈도가 높고 입력과 출력이 명확한 업무부터 적용하는 편이 안전합니다. 기존 절차에서 사람이 확인해야 하는 지점과 자동으로 처리해도 되는 지점을 나누면 도구 선택 기준도 더 분명해집니다.']
+    },
+    {
+      heading: '도구 선택 기준 확인하기',
+      paragraphs: ['연동 범위와 데이터 처리 방식, 오류가 났을 때 되돌릴 수 있는지 확인해야 합니다. 특히 중요한 업무 데이터는 외부 서비스로 전송되는 범위와 접근 권한을 먼저 살피고 작은 샘플로 결과를 검증한 뒤 적용 범위를 넓히는 것이 좋습니다.']
+    }
+  ],
+  faq: [
+    { question: '처음에는 어떤 업무부터 자동화해야 하나요?', answer: '반복 빈도가 높고 입력과 결과를 사람이 쉽게 검증할 수 있는 단순 작업부터 시작하는 것이 좋습니다.' },
+    { question: '자동화 결과를 바로 실무에 써도 되나요?', answer: '처음에는 샘플 데이터로 검증하고 오류가 발생했을 때 되돌릴 방법을 확인한 뒤 적용 범위를 단계적으로 넓히는 것이 안전합니다.' }
+  ]
+};
+const run30BodyBefore = JSON.stringify(run30Article.sections);
+const run30Issues = koreanLanguageIssues(articleLikeSchema, run30Article);
+if (run30Issues.length) throw new Error(`Run #30 category-only regression should pass after local normalization: ${run30Issues.join(' | ')}`);
+if (run30Article.category !== '업무 생산성') throw new Error(`Run #30 category should normalize to 업무 생산성, got ${run30Article.category}`);
+if (JSON.stringify(run30Article.sections) !== run30BodyBefore) throw new Error('Category normalization must never rewrite or shrink article sections.');
+if (koreanizeArticleCategory('AI Security and Privacy') !== 'AI 보안·개인정보') throw new Error('Security category mapping regressed.');
+if (koreanizeArticleCategory('Open Source Self Hosted AI') !== '셀프호스팅 AI') throw new Error('Self-hosted category mapping regressed.');
 
 let chatCalls = 0;
 let firstRequest;
@@ -117,7 +154,7 @@ try {
   }
   const systemPrompt = firstRequest?.messages?.[0]?.content || '';
   if (!systemPrompt.includes('Korean-first publication language policy')) throw new Error('Korean-first system policy was not applied to the model call.');
-  console.log('Korean-first language policy OK: discovery candidates normalize locally without blocking, while article publication remains hard-gated.');
+  console.log('Korean-first language policy OK: discovery candidates and low-entropy draft categories normalize locally without blocking, while substantive article fields remain hard-gated.');
 } finally {
   await new Promise((resolve) => server.close(resolve));
 }
