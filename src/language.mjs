@@ -101,6 +101,20 @@ export function koreanizeSelectedTopic(candidate, audienceLabel = AUDIENCE_LABEL
   };
 }
 
+export function koreanizeArticleCategory(value) {
+  const category = String(value || '').trim();
+  if (koreanEnough(category, { minHangul: 2, minShare: 0.35 })) return category;
+
+  const normalized = category.toLowerCase();
+  if (/privacy|security|cyber|safety/.test(normalized)) return 'AI 보안·개인정보';
+  if (/self[- ]?host|open[ -]?source|local ai|ollama/.test(normalized)) return '셀프호스팅 AI';
+  if (/developer|coding|code|programming|software/.test(normalized)) return '개발·AI 도구';
+  if (/content|creator|marketing|social|seo/.test(normalized)) return '콘텐츠·마케팅';
+  if (/spreadsheet|office|productivity|calendar|task|document|knowledge/.test(normalized)) return '업무 생산성';
+  if (/automation|workflow|agent|ai/.test(normalized)) return 'AI 자동화';
+  return 'AI 활용';
+}
+
 function normalizeTopicCandidatesInPlace(data) {
   if (!Array.isArray(data?.candidates)) return;
   data.candidates = data.candidates.map((candidate) => {
@@ -110,6 +124,16 @@ function normalizeTopicCandidatesInPlace(data) {
     }
     return normalized;
   });
+}
+
+function normalizeArticleMetadataInPlace(data) {
+  if (!data || typeof data !== 'object') return;
+  const originalCategory = String(data.category || '').trim();
+  const normalizedCategory = koreanizeArticleCategory(originalCategory);
+  if (normalizedCategory !== originalCategory) {
+    data.category = normalizedCategory;
+    console.warn(`[language] normalized draft category locally: ${originalCategory || '(empty)'} -> ${normalizedCategory}`);
+  }
 }
 
 export function koreanLanguageIssues(schema, data) {
@@ -122,7 +146,13 @@ export function koreanLanguageIssues(schema, data) {
     return [];
   }
   if (properties.revisedTitle && properties.revisedDescription && properties.revisedSections) return qaIssues(data);
-  if (properties.title && properties.description && properties.category && properties.sections) return articleIssues(data);
+  if (properties.title && properties.description && properties.category && properties.sections) {
+    // Category is low-entropy metadata. A single English category should never trigger a
+    // full article regeneration on the CPU runner: normalize it deterministically first,
+    // then keep hard-gating every substantive reader-facing field.
+    normalizeArticleMetadataInPlace(data);
+    return articleIssues(data);
+  }
   return [];
 }
 
