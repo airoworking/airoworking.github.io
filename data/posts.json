@@ -1,5 +1,58 @@
 [
   {
+    "title": "소규모 사업자에게 AI 예약 관리 도구 선택 가이드",
+    "slug": "ai-appointment-scheduling-tools-for-small-businesses",
+    "description": "소규모 사업자가 AI 예약 관리 도구를 실제 업무에 적용할 때 어떤 기능을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이에 따라, AI 예약 관리 도구의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있는 가이드를 제시합니다.",
+    "category": "소규모 사업자 가이드",
+    "tags": [
+      "AI 예약 관리 도구",
+      "소규모 사업자",
+      "업무 효율성",
+      "예약 관리",
+      "비용 절감"
+    ],
+    "date": "2026-09-19",
+    "primaryKeyword": "AI appointment scheduling tools for small businesses",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "affiliate",
+    "readerProblem": "소규모 사업자가 AI appointment scheduling tools for small businesses를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI appointment scheduling tools for small businesses의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 64,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 2063자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "10 Best AI Appointment Scheduling Tools for Small Business in 2026",
+        "url": "https://www.vellum.ai/blog/best-ai-appointment-scheduling-tools"
+      },
+      {
+        "title": "The Best Scheduling Tools for Small Businesses",
+        "url": "https://www.salesforce.com/blog/small-business/best-scheduling-software/"
+      },
+      {
+        "title": "AI Appointment Booking for Small Businesses: The Complete Guide | Wellgrow Blog | Wellgrow",
+        "url": "https://www.usewellgrow.com/blog/ai-appointment-booking-small-business"
+      },
+      {
+        "title": "AI for Appointment Scheduling in Small Business: The Complete Guide to Doubling Efficiency and Client Satisfaction - Done With You",
+        "url": "https://donewithyou.com/ai-appointment-scheduling-small-business-guide/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-appointment-scheduling-tools-for-small-businesses-cover.svg",
+      "summary": "assets/posts/ai-appointment-scheduling-tools-for-small-businesses-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "self-hosted AI tools의 개발자·AI 실무자에게 필요한 선택 기준과 실행 단계",
     "slug": "self-hosted-ai-tools",
     "description": "개발자 및 AI 실무자가 self-hosted AI tools를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 self-hosted AI tools의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 제공합니다.",
