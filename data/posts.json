@@ -1,5 +1,54 @@
 [
   {
+    "title": "프리랜서·1인 사업자가 AI 도구를 실전 활용하는 가이드",
+    "slug": "ai-tools-for-freelancers",
+    "description": "프리랜서 및 1인 사업자가 AI 도구를 실제 업무에 적용할 때 선택 기준과 실행 단계를 이해하고 실제 활용할 수 있도록 가이드를 제공합니다.",
+    "category": "프리랜서·1인 사업자 가이드",
+    "tags": [
+      "프리랜서",
+      "1인 사업자",
+      "AI 도구",
+      "실전 활용",
+      "업무 관리"
+    ],
+    "date": "2026-09-22",
+    "primaryKeyword": "AI tools for freelancers",
+    "audienceSegment": "freelancer",
+    "contentRole": "authority",
+    "monetizationRoute": "digital-product",
+    "readerProblem": "프리랜서·1인 사업자가 AI tools for freelancers를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI tools for freelancers의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 69,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 1809자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "10 Best AI Tools for Freelancers in 2026 (Tested Picks)",
+        "url": "https://digitaltaskcompass.com/best-ai-tools-for-freelancers/"
+      },
+      {
+        "title": "Top 10 AI Tools for Freelancers in 2026 | Knup",
+        "url": "https://knup.com/blog/top-ai-tools-for-freelancers/"
+      },
+      {
+        "title": "10 Best AI Tools for Solopreneurs & Freelancers (2026): Tested & Ranked - SoloToolkit",
+        "url": "https://solotoolkit.tools/10-best-ai-tools-for-solopreneurs-freelancers-2026-tested-ranked/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-tools-for-freelancers-cover.svg",
+      "summary": "assets/posts/ai-tools-for-freelancers-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 콘텐츠 제작 플랫폼 활용 가이드: 구글 E-E-A-T 기준으로 분석한 TOP 14 추천",
     "slug": "ai-e-e-a-t-top-14",
     "description": "AI 콘텐츠 제작 도구의 선택 전략은 기술, 효율, 품질, 사용성, 가격 등 다维度 평가 필요하지만, 구글 E-E-A-T 기준으로 분석한 TOP 14 추천은 아직 공개되지 않았습니다. 이 가이드는 실전 적용 전략, 선택 기준, 비용 절감, 성과 향상 방법을 체계적으로 제시합니다.",
