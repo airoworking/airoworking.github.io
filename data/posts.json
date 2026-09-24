@@ -1,5 +1,54 @@
 [
   {
+    "title": "AI 도구 활용법 - 직장인 실전 가이드 2026",
+    "slug": "ai-for-office-productivity-2026-09-24",
+    "description": "AI 도구 활용법 - 직장인 실전 가이드 2026",
+    "category": "AI 생산성 가이드",
+    "tags": [
+      "AI 툴",
+      "직장인",
+      "지식근로자",
+      "생산성",
+      "2026년"
+    ],
+    "date": "2026-09-24",
+    "primaryKeyword": "직장인·지식근로자을 위한 AI for Office Productivity 실전 활용 가이드",
+    "audienceSegment": "knowledge-worker",
+    "contentRole": "reach",
+    "monetizationRoute": "adsense",
+    "readerProblem": "직장인·지식근로자가 AI for Office Productivity를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI for Office Productivity의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 78,
+    "qualityScore": 100,
+    "verificationSummary": "AI 도구 활용법 - 직장인 실전 가이드 2026는 AI 도구 사용 시 가장 중요한 원칙인 '초안을 만들고, 사람은 사실·권한·리스크를 확인한 뒤 발송하거나 실행합니다'를 강조하며, 보안과 신뢰, 사용 기준, 사용자 습관 등을 체계적으로 정리하여 실무 적용에 유리한 가이드를 제공합니다.",
+    "sources": [
+      {
+        "title": "AI 에이전트 업무 자동화 2026 — 직장인 실전 도입 가이드 | ThorKit(토르킷)",
+        "url": "https://thorkit.kr/guides/ai-agent-office-automation-2026/"
+      },
+      {
+        "title": "AI 도구 활용법 — 직장인·자영업자·투자자별 실전 가이드 | 레오의 지식채널",
+        "url": "https://gilzabi.com/economy/ai-tools-by-job-type/"
+      },
+      {
+        "title": "직장인 AI 도구 추천 2026: 문서·회의·자동화 업무별 실전 비교 - 기술 | Daylongs",
+        "url": "https://daylongs.com/blog/ko/best-ai-tools-for-workers-2026/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-for-office-productivity-2026-09-24-cover.svg",
+      "summary": "assets/posts/ai-for-office-productivity-2026-09-24-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "프리랜서·1인 사업자가 AI 도구를 실전 활용하는 가이드",
     "slug": "ai-tools-for-freelancers",
     "description": "프리랜서 및 1인 사업자가 AI 도구를 실제 업무에 적용할 때 선택 기준과 실행 단계를 이해하고 실제 활용할 수 있도록 가이드를 제공합니다.",
