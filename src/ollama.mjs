@@ -451,14 +451,16 @@ export async function structuredResponse(args) {
         instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.${reviewInstruction}`
       });
     } catch (error) {
-      if (!(useDeltaReview && error?.code === 'OLLAMA_REQUEST_TIMEOUT')) throw error;
+      const recoverableQaFailure = error?.code === 'OLLAMA_REQUEST_TIMEOUT' || error instanceof SyntaxError;
+      if (!(useDeltaReview && recoverableQaFailure)) throw error;
       const minimumQaScore = minimumQaScoreFromInput(args.input);
       const fallbackData = buildQaTimeoutFallback({
         seedDraft,
         minimumQaScore,
         adaptiveRepairedFloor
       });
-      console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
+      const failureKind = error?.code === 'OLLAMA_REQUEST_TIMEOUT' ? 'timeout' : 'invalid structured JSON';
+      console.warn(`[quality] primary QA ended with recoverable ${failureKind} after bounded retries; using deterministic QA fallback with the evidence-grounded draft instead of failing the entire publish run.`);
       console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
       assertQaLanguage(args.schema, fallbackData);
       return {
@@ -467,7 +469,7 @@ export async function structuredResponse(args) {
           totalDuration: null,
           evalCount: null,
           wallSeconds: Math.round(primaryTimeoutMs / 1000),
-          fallback: 'qa-timeout'
+          fallback: error?.code === 'OLLAMA_REQUEST_TIMEOUT' ? 'qa-timeout' : 'qa-structured-json'
         }
       };
     }
