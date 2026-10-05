@@ -170,6 +170,14 @@ const ollamaBaseSource = await readFile(new URL('../src/ollama-base.mjs', import
 const pipelineSource = await readFile(new URL('../src/pipeline.mjs', import.meta.url), 'utf8');
 
 assert(
+  ollamaSource.includes("error?.code === 'OLLAMA_REQUEST_TIMEOUT' || error instanceof SyntaxError"),
+  'Publication QA must recover after repeated structured JSON truncation.'
+);
+assert(
+  ollamaSource.includes("'qa-structured-json'"),
+  'Structured JSON fallback should be visible in diagnostics.'
+);
+assert(
   ollamaSource.includes('allowRepairedFloor: useDeltaReview && round > 1'),
   'QA expansion loop must enable the adaptive repaired floor only after one real targeted repair.'
 );
