@@ -1,5 +1,58 @@
 [
   {
+    "title": "소규모 사업자에게 AI 일정 및 예약 자동화 도구 선택 전략: 10 도구",
+    "slug": "ai-scheduling-and-booking-automation-10-tools-for-small-businesses",
+    "description": "소규모 사업자들이 AI 일정 및 예약 자동화 도구를 선택할 때 가장 중요한 고려 사항과 효과성을 분석한 가이드를 제공합니다. 실제 적용 사례와 기준을 기반으로 도구 선택 전략을 제안합니다.",
+    "category": "소규모 사업자, AI 자동화, 도구 선택",
+    "tags": [
+      "소규모 사업자",
+      "AI 자동화",
+      "도구 선택",
+      "예약 관리",
+      "실전 활용"
+    ],
+    "date": "2026-10-09",
+    "primaryKeyword": "AI Scheduling and Booking Automation: 10 Tools for Small Businesses",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "affiliate",
+    "readerProblem": "소규모 사업자에게 AI 일정 및 예약 자동화 도구 선택 전략 찾기",
+    "expectedOutcome": "AI 일정 및 예약 자동화 도구 선택 및 구매 전략 제공",
+    "opportunityScore": 81,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 2892자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "AI Scheduling and Booking Automation: 10 Tools for Small Businesses - oTechWorld",
+        "url": "https://otechworld.com/ai-scheduling-and-booking-automation-10-tools-for-small-businesses/"
+      },
+      {
+        "title": "10 Best AI Appointment Scheduling Tools for Small Business in 2026",
+        "url": "https://www.vellum.ai/blog/best-ai-appointment-scheduling-tools"
+      },
+      {
+        "title": "Best AI Scheduling Tools for Small Business (2026)",
+        "url": "https://bestaiapp.co/blog/best-ai-scheduling-tools-small-business"
+      },
+      {
+        "title": "10 Best AI Scheduling Assistants I Actually Tested in 2026",
+        "url": "https://www.sparrowcrm.com/blogs/ai-scheduling-assistant"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-scheduling-and-booking-automation-10-tools-for-small-businesses-cover.svg",
+      "summary": "assets/posts/ai-scheduling-and-booking-automation-10-tools-for-small-businesses-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "직장인·지식근로자에게 No-Code AI Tools",
     "slug": "no-code-ai-tools-for-knowledge-workers-2026-10-08",
     "description": "직장인 및 지식근로자에게 No-Code AI Tools의 실전 활용 및 선택 기준을 정리한 가이드입니다. AI 도구는 반복적인 인지 작업을 자동화하고, 정보를 종합하며, 콘텐츠를 생성하고 의사결정을 지원함으로써 전문 생산성을 증대시킵니다. 이 가이드에서는 AI 도구를 활용하는 방법, 주요 도구, 그리고 실제 활용 사례를 정리합니다.",
