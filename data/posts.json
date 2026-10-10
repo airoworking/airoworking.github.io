@@ -1,5 +1,66 @@
 [
   {
+    "title": "소규모 사업자에게 AI-First CRM 도구 선택 전략 및 실전 적용 가이드 2026",
+    "slug": "ai-first-crm-for-small-business-automation-2026",
+    "description": "소규모 사업자가 AI-First CRM 도구를 선택할 때의 실전 문제를 해결하기 위한 가이드를 제공합니다. AI-First CRM 도구의 선택 전략과 실전 적용 방법을 분석하여 소규모 사업자들이 효과적으로 CRM을 활용할 수 있도록 지원합니다.",
+    "category": "소규모 사업자 가이드",
+    "tags": [
+      "AI-First CRM",
+      "소규모 사업자",
+      "CRM 도구",
+      "실전 적용",
+      "도구 비교"
+    ],
+    "date": "2026-10-10",
+    "primaryKeyword": "AI-First CRM for Small Business Automation 2026",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "소규모 사업자가 AI-First CRM 도구를 선택할 때의 실전 문제",
+    "expectedOutcome": "AI-First CRM 도구 선택 전략 및 실전 적용 가이드",
+    "opportunityScore": 71,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 6개 출처와 2384자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "Best AI-First CRM for Small Business Automation 2026",
+        "url": "https://www.coffee.ai/articles/best-ai-crm-small-business"
+      },
+      {
+        "title": "12 Best AI CRM For Small Business to Automate Sales (2026)",
+        "url": "https://vedain.com/blog/12-best-ai-crm-for-small-business-to-automate-sales-2026"
+      },
+      {
+        "title": "Best AI CRM Tools for Small Business in 2026: 7 Picks That Can Stop Leads From Going Cold | GrowthQuanticAI",
+        "url": "https://growthquanticai.com/articles/best-ai-crm-tools-for-small-business-2026"
+      },
+      {
+        "title": "18 Best AI Tools for Small Business Growth in 2026 | Salesforce",
+        "url": "https://www.salesforce.com/artificial-intelligence/ai-for-small-business/best-ai-tools/"
+      },
+      {
+        "title": "AI Automation for Small Business: 15 Workflows (2026)",
+        "url": "https://www.taskade.com/blog/ai-automation-small-business"
+      },
+      {
+        "title": "Small Business CRM & Automation | Keap",
+        "url": "https://keap.com/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-first-crm-for-small-business-automation-2026-cover.svg",
+      "summary": "assets/posts/ai-first-crm-for-small-business-automation-2026-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자에게 AI 일정 및 예약 자동화 도구 선택 전략: 10 도구",
     "slug": "ai-scheduling-and-booking-automation-10-tools-for-small-businesses",
     "description": "소규모 사업자들이 AI 일정 및 예약 자동화 도구를 선택할 때 가장 중요한 고려 사항과 효과성을 분석한 가이드를 제공합니다. 실제 적용 사례와 기준을 기반으로 도구 선택 전략을 제안합니다.",
