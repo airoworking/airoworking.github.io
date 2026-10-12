@@ -1,5 +1,54 @@
 [
   {
+    "title": "AI 콘텐츠 자동화 콘텐츠 제작자에게 필요한 전략과 단계",
+    "slug": "ai-content-creation-platforms-2026-10-12",
+    "description": "2026년 AI 콘텐츠 자동화는 ChatGPT, Claude, Gemini 3종 조합 워크플로우를 통해 실전 적용 가능한 최고의 콘텐츠 제작 전략을 소개합니다. 이 가이드는 콘텐츠 제작자가 AI 도구를 선택하고 실행하는 데 필요한 단계와 기준, 성과 측정 방법 등을 체계적으로 설명하며, 실제 업무에 적용할 수 있도록 구성되었습니다.",
+    "category": "콘텐츠 제작자 가이드",
+    "tags": [
+      "AI 콘텐츠 자동화",
+      "콘텐츠 제작 전략",
+      "프롬프트 엔지니어링",
+      "AI 도구 선택",
+      "실전 활용 가이드"
+    ],
+    "date": "2026-10-12",
+    "primaryKeyword": "콘텐츠 제작자을 위한 AI content creation platforms 실전 활용 가이드",
+    "audienceSegment": "creator",
+    "contentRole": "reach",
+    "monetizationRoute": "none",
+    "readerProblem": "콘텐츠 제작자가 AI content creation platforms를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI content creation platforms의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 56,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 2647자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "2026년 AI 콘텐츠 자동화 완벽 가이드 — ChatGPT·Claude·Gemini 3종 조합 워크플로우 - 감자나라ai",
+        "url": "https://potato-ai.xyz/ai-content-automation-2026-guide/"
+      },
+      {
+        "title": "AI로 블로그/유튜브 콘텐츠 만드는 완전 가이드 — 아이디어에서 발행까지 | AIHub Korea",
+        "url": "https://aihubkorea.kr/blog/ai-writing-content-guide"
+      },
+      {
+        "title": "2026년 콘텐츠 기획부터 발행까지! AI 자동화 실전 가이드 5단계로 업무 생산성 3배 높이기 | 엘리의 AI웍스 블로그",
+        "url": "https://blog.ellijobs.com/posts/ai-automation-practical-guide-content-triple-productivity"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-content-creation-platforms-2026-10-12-cover.svg",
+      "summary": "assets/posts/ai-content-creation-platforms-2026-10-12-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "직장인·지식근로자에게 AI 뉴스레터 자동화 가이드",
     "slug": "article-2026-10-11",
     "description": "2026년 직장인 AI 업무 자동화 도구 10가지 추천 및 실무 활용 가이드를 제공합니다. 직장인과 지식근로자가 AI 뉴스레터 자동화를 실전 적용할 때의 고려 사항과 실무 활용 사례를 설명합니다.",
