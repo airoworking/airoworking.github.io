@@ -1,5 +1,54 @@
 [
   {
+    "title": "소규모 사업자에게 AI-First CRM",
+    "slug": "ai-first-crm-2026-10-20",
+    "description": "소규모 사업자가 AI-First CRM를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI-First CRM의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 설명합니다.",
+    "category": "소규모 사업자, AI-First CRM, 실전 활용 가이드",
+    "tags": [
+      "소규모 사업자",
+      "AI-First CRM",
+      "실전 활용",
+      "업무 효율성",
+      "비용 절감"
+    ],
+    "date": "2026-10-20",
+    "primaryKeyword": "AI-First CRM",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "소규모 사업자가 AI-First CRM를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI-First CRM의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 71,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 2783자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "8 Best AI-First CRM Software in 2026",
+        "url": "https://www.folk.app/articles/ai-first-crm"
+      },
+      {
+        "title": "What is an AI-First CRM? | HelloLeads CRM Blogs & Insights",
+        "url": "https://www.helloleads.io/blog/all/product/what-is-an-ai-first-crm/"
+      },
+      {
+        "title": "Best AI-First CRM for Small Business Automation 2026",
+        "url": "https://www.coffee.ai/articles/ai-powered-automation-best-ai-first-crm-for-small-to-mid-sized-businesses"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-first-crm-2026-10-20-cover.svg",
+      "summary": "assets/posts/ai-first-crm-2026-10-20-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자가 AI Automation for Small Businesses를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 가이드",
     "slug": "ai-automation-for-small-businesses",
     "description": "소규모 사업자가 AI Automation for Small Businesses를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI Automation for Small Businesses의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 지원합니다.",
