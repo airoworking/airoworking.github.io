@@ -1,5 +1,58 @@
 [
   {
+    "title": "AI 툴을 실제 업무에 적용하는 실전 가이드: 콘텐츠 제작자에게 필요한 선택 기준과 실행 단계",
+    "slug": "ai-tools-for-content-creation-and-automation",
+    "description": "콘텐츠 제작자가 AI 툴을 실제 업무에 적용할 때 어떤 기준을 고려해야 하나요? 어떤 단계를 따라야 하나요? 이 가이드는 AI 툴의 선택 기준, 실행 단계, 장애물, 효율성, 시간 절감, 콘텐츠 형식에 따른 제한, 그리고 실제 적용 시의 주요 고려 사항을 체계적으로 설명합니다.",
+    "category": "콘텐츠 제작자 가이드",
+    "tags": [
+      "AI 툴",
+      "콘텐츠 제작",
+      "업무 효율성",
+      "시간 절감",
+      "비용 절감"
+    ],
+    "date": "2026-10-25",
+    "primaryKeyword": "AI tools for content creation and automation",
+    "audienceSegment": "creator",
+    "contentRole": "reach",
+    "monetizationRoute": "adsense",
+    "readerProblem": "콘텐츠 제작자가 AI tools for content creation and automation를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI tools for content creation and automation의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 78,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 3162자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "15 best AI content creation tools for 2026 by use case - Guideflow Blog",
+        "url": "https://www.guideflow.com/blog/ai-content-creation-tools"
+      },
+      {
+        "title": "Best AI content creation tools for 2026: Tested picks",
+        "url": "https://blog.hootsuite.com/ai-content-creation-tools/"
+      },
+      {
+        "title": "12 Best AI Tools for Content Creation in 2026",
+        "url": "https://visme.co/blog/ai-tools-for-content-creation/"
+      },
+      {
+        "title": "The 7 Best Automated Content Creation Tools in 2026: Tested & Reviewed",
+        "url": "https://www.simular.ai/alternatives/automated-content-creation"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-tools-for-content-creation-and-automation-cover.svg",
+      "summary": "assets/posts/ai-tools-for-content-creation-and-automation-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "직장인·지식근로자에게 최적의 AI 자동화 도구 선택 및 실전 적용 가이드",
     "slug": "maximize-productivity-with-ai-automation",
     "description": "직장인 및 지식근로자가 AI 자동화 도구를 실제 업무에 적용할 때, 어떤 도구를 선택해야 하는지, 어떻게 시작해야 하는지, 그리고 어떤 장애물이 있을지에 대한 구체적인 가이드를 제공합니다. 이 가이드는 AI 도구의 선택 기준, 실행 단계, 성능 비교, 비용 절감 전략, 데이터 보안 정책, 그리고 실무 적용 전략을 체계적으로 설명합니다.",
