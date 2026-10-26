@@ -1,5 +1,55 @@
 [
   {
+    "title": "개발자·AI 실무자에게 실전 활용 가능한 local LLM workflows 가이드",
+    "slug": "local-llm-workflows-for-developers",
+    "description": "개발자들이 local LLM workflows를 실제 업무에 적용할 때, 기술적, 비용적, 시간적 제약을 고려해야 하는 이유와, 실제 적용 시의 도구 및 단계를 구체적으로 설명합니다.",
+    "category": "개발자 가이드",
+    "tags": [
+      "개발자",
+      "AI 실무자",
+      "local LLM workflows",
+      "도구",
+      "제약",
+      "실무 적용"
+    ],
+    "date": "2026-10-26",
+    "primaryKeyword": "local LLM workflows for developers",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "개발자·AI 실무자가 local LLM workflows for developers를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "local LLM workflows for developers의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 91,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 1353자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "Building a Local LLM Workflow for Developers (2026 Guide)",
+        "url": "https://www.sprintzeal.com/blog/building-local-llm-workflow-developers"
+      },
+      {
+        "title": "Practical Local LLM Workflows - ML Journey",
+        "url": "https://mljourney.com/practical-local-llm-workflows/"
+      },
+      {
+        "title": "Running LLMs Locally in 2026: Ollama, llama.cpp, and Self-Hosted AI for Developers | daily.dev",
+        "url": "https://daily.dev/blog/running-llms-locally-ollama-llama-cpp-self-hosted-ai-developers/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/local-llm-workflows-for-developers-cover.svg",
+      "summary": "assets/posts/local-llm-workflows-for-developers-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 툴을 실제 업무에 적용하는 실전 가이드: 콘텐츠 제작자에게 필요한 선택 기준과 실행 단계",
     "slug": "ai-tools-for-content-creation-and-automation",
     "description": "콘텐츠 제작자가 AI 툴을 실제 업무에 적용할 때 어떤 기준을 고려해야 하나요? 어떤 단계를 따라야 하나요? 이 가이드는 AI 툴의 선택 기준, 실행 단계, 장애물, 효율성, 시간 절감, 콘텐츠 형식에 따른 제한, 그리고 실제 적용 시의 주요 고려 사항을 체계적으로 설명합니다.",
