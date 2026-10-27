@@ -70,6 +70,7 @@ jobs:
       - run: node scripts/test-slug-policy.mjs
       - run: node scripts/test-editorial-style-policy.mjs
       - run: node scripts/test-adaptive-qa-depth-policy.mjs
+      - run: node scripts/test-qa-json-truncation-recovery.mjs
       - run: node scripts/test-render-policy.mjs
       - run: node scripts/test-design-policy.mjs
       - run: npm run validate
