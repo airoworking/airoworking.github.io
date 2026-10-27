@@ -483,24 +483,24 @@ export async function structuredResponse(args) {
         });
       } else {
         if (!(useDeltaReview && error?.code === 'OLLAMA_REQUEST_TIMEOUT')) throw error;
-      const minimumQaScore = minimumQaScoreFromInput(args.input);
-      const fallbackData = buildQaTimeoutFallback({
-        seedDraft,
-        minimumQaScore,
-        adaptiveRepairedFloor
-      });
-      console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
-      console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
-      assertQaLanguage(args.schema, fallbackData);
-      return {
-        data: fallbackData,
-        metrics: {
-          totalDuration: null,
-          evalCount: null,
-          wallSeconds: Math.round(primaryTimeoutMs / 1000),
-          fallback: 'qa-timeout'
-        }
-      };
+        const minimumQaScore = minimumQaScoreFromInput(args.input);
+        const fallbackData = buildQaTimeoutFallback({
+          seedDraft,
+          minimumQaScore,
+          adaptiveRepairedFloor
+        });
+        console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
+        console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
+        assertQaLanguage(args.schema, fallbackData);
+        return {
+          data: fallbackData,
+          metrics: {
+            totalDuration: null,
+            evalCount: null,
+            wallSeconds: Math.round(primaryTimeoutMs / 1000),
+            fallback: 'qa-timeout'
+          }
+        };
       }
     }
 
