@@ -157,6 +157,25 @@ function qaDeltaReviewSchema(schema) {
   };
 }
 
+function qaVerdictOnlySchema(schema) {
+  const deltaSchema = qaDeltaReviewSchema(schema);
+  return {
+    ...deltaSchema,
+    properties: {
+      ...deltaSchema.properties,
+      sectionRevisions: {
+        ...deltaSchema.properties.sectionRevisions,
+        minItems: 0,
+        maxItems: 0
+      }
+    }
+  };
+}
+
+function isTruncatedQaJson(error) {
+  return error instanceof SyntaxError && /Unterminated string in JSON/.test(error.message);
+}
+
 function extractQaDraft(input) {
   const text = String(input || '');
   const draftMarker = '\nDraft: ';
@@ -441,35 +460,48 @@ export async function structuredResponse(args) {
       ? `\n\nSlow-runner delta review requirement: Do NOT regenerate the complete article. The field 'sectionRevisions' is a patch list, not the final sections array. Preserve every supplied Draft section that is already factually defensible, useful, and well written. Return a replacement only for a section that has a consequential factual, clarity, structure, or reader-value problem. Each replacement must include the original zero-based sectionIndex plus the complete replacement heading, paragraphs, and bullets for that one section. Preserve every supported useful point from the original section; do not compress a section merely to be concise. Unless unsupported or repetitive material must be removed, keep the replacement roughly comparable in useful depth to the section it replaces. Return an empty sectionRevisions array when no body section needs replacement. You may replace at most ${QA_MAX_SECTION_REVISIONS} sections. If more than ${QA_MAX_SECTION_REVISIONS} body sections require substantial correction, set approved=false and explain why in warnings instead of attempting a whole-article rewrite. Prefer sectionRevisions=[] when the draft is already defensible; do not rewrite sections for style alone. approved=true is allowed only when every omitted Draft section is safe to preserve unchanged and the returned replacements resolve all consequential issues. Keep revisedTitle, revisedDescription, revisedFaq, verifiedSources, warnings, verificationSummary, and visualPlan concise and complete.`
       : `\n\nThe JSON schema calls the final article sections field 'sections' for this QA pass. Treat it exactly as the final revisedSections. Aim for at least ${QA_PRIMARY_TARGET_PARAGRAPH_CHARS} Korean paragraph characters across those sections, but never pad with repetition or unsupported claims. The preferred publication depth is ${QA_PREFERRED_PARAGRAPH_CHARS}; depth alone must not override factual quality or reader usefulness.`;
 
+    const reviewRequest = {
+      ...args,
+      schema: primarySchema,
+      maxOutputTokens: primaryMaxOutputTokens,
+      timeoutMs: primaryTimeoutMs,
+      instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.${reviewInstruction}`
+    };
     let primary;
     try {
-      primary = await baseStructuredResponse({
-        ...args,
-        schema: primarySchema,
-        maxOutputTokens: primaryMaxOutputTokens,
-        timeoutMs: primaryTimeoutMs,
-        instructions: `${args.instructions}\n\n${HUMAN_EDITORIAL_RULES}\n\nFinal edit requirement: actively rewrite any sentence that reads like generic AI copy, repeated boilerplate, a translated product description, or an SEO template. Remove repeated paragraphs and artificial character-count notes. Make headings shorter and more conversational while retaining search intent. Keep facts conservative and traceable to supplied evidence. Make revisedDescription work as a human lede as well as metadata: normally two compact Korean sentences, first naming the reader situation or decision and second stating the useful outcome.${reviewInstruction}`
-      });
+      primary = await baseStructuredResponse(reviewRequest);
     } catch (error) {
-      if (!(useDeltaReview && error?.code === 'OLLAMA_REQUEST_TIMEOUT')) throw error;
-      const minimumQaScore = minimumQaScoreFromInput(args.input);
-      const fallbackData = buildQaTimeoutFallback({
-        seedDraft,
-        minimumQaScore,
-        adaptiveRepairedFloor
-      });
-      console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
-      console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
-      assertQaLanguage(args.schema, fallbackData);
-      return {
-        data: fallbackData,
-        metrics: {
-          totalDuration: null,
-          evalCount: null,
-          wallSeconds: Math.round(primaryTimeoutMs / 1000),
-          fallback: 'qa-timeout'
-        }
-      };
+      if (useDeltaReview && isTruncatedQaJson(error)) {
+        // Run #74: three full delta reviews ended mid-string at the output-token cap.
+        // Retry with an independent, smaller verdict. Never manufacture approval or
+        // silently preserve a section that the reviewer says needs correction.
+        console.warn('[quality] delta QA exhausted JSON-truncation retries; requesting one compact independent verdict-only review.');
+        primary = await baseStructuredResponse({
+          ...reviewRequest,
+          schema: qaVerdictOnlySchema(args.schema),
+          instructions: `${reviewRequest.instructions}\n\nJSON truncation recovery: Return sectionRevisions=[] (the schema permits zero revisions only). Independently verify all consequential claims against the supplied PUBLIC EVIDENCE. Do not rewrite any body section. If ANY section needs factual, clarity, or structural corrections before publication, set approved=false, provide a score below the publication threshold, and explain the problem in warnings. Approve only if every original Draft section can safely be published unchanged. Do not invent evidence or treat this as an automatic approval fallback. Keep all other fields short but fully verified.`
+        });
+      } else {
+        if (!(useDeltaReview && error?.code === 'OLLAMA_REQUEST_TIMEOUT')) throw error;
+        const minimumQaScore = minimumQaScoreFromInput(args.input);
+        const fallbackData = buildQaTimeoutFallback({
+          seedDraft,
+          minimumQaScore,
+          adaptiveRepairedFloor
+        });
+        console.warn(`[quality] primary QA exceeded the bounded ${Math.round(primaryTimeoutMs / 60_000)}-minute budget; using deterministic QA timeout fallback with the evidence-grounded draft instead of failing the entire publish run.`);
+        console.warn(`[quality] timeout fallback approved=${fallbackData.approved} score=${fallbackData.score} depth=${paragraphChars(fallbackData.revisedSections)} verifiedSources=${fallbackData.verifiedSources.length}.`);
+        assertQaLanguage(args.schema, fallbackData);
+        return {
+          data: fallbackData,
+          metrics: {
+            totalDuration: null,
+            evalCount: null,
+            wallSeconds: Math.round(primaryTimeoutMs / 1000),
+            fallback: 'qa-timeout'
+          }
+        };
+      }
     }
 
     let data;
