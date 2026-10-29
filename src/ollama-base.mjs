@@ -327,6 +327,60 @@ export async function removeModel({ baseUrl, model }) {
   }
 }
 
+async function repairArticleHeadings({ baseUrl, model, data, temperature, contextWindow, maxOutputTokens, timeoutMs }) {
+  const sections = data.sections;
+  if (!Array.isArray(sections) || sections.length === 0) throw new Error('Heading repair requires existing article sections.');
+  const headingSchema = {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      headings: {
+        type: 'array',
+        minItems: sections.length,
+        maxItems: sections.length,
+        items: { type: 'string' }
+      }
+    },
+    required: ['headings']
+  };
+  const response = await localHttpJson({
+    url: `${cleanBase(baseUrl)}/api/chat`,
+    method: 'POST',
+    body: {
+      model,
+      stream: false,
+      think: false,
+      keep_alive: '30s',
+      format: headingSchema,
+      messages: [
+        {
+          role: 'system',
+          content: `Rewrite ONLY article section headings into concise, natural Korean. Keep the original meaning, ordering, proper names and technical identifiers. Do not add claims or change article content. Return exactly one heading per input heading. ${KOREAN_FIRST_SYSTEM_RULES}`
+        },
+        {
+          role: 'user',
+          content: `Article title: ${data.title}\nOriginal section headings (in order):\n${JSON.stringify(sections.map((section) => section.heading))}\nReturn only the headings JSON object.`
+        }
+      ],
+      options: {
+        temperature: Math.min(temperature, 0.1),
+        num_ctx: contextWindow,
+        num_predict: Math.min(maxOutputTokens, 1200)
+      }
+    },
+    timeoutMs: Math.min(timeoutMs, 300_000)
+  });
+  const parsed = parseStructuredPayload(response, headingSchema);
+  const headings = parsed.data.headings.map((heading) => heading.trim());
+  if (headings.some((heading) => !heading || heading.length > 150)) {
+    throw new Error('Targeted Korean heading repair returned an empty or excessively long heading.');
+  }
+  return {
+    ...data,
+    sections: sections.map((section, index) => ({ ...section, heading: headings[index] }))
+  };
+}
+
 export async function structuredResponse({
   baseUrl = 'http://127.0.0.1:11434',
   model,
@@ -341,6 +395,7 @@ export async function structuredResponse({
   const started = Date.now();
   const depthPolicy = articleDepthPolicy(schema);
   let languageRepairRounds = 0;
+  let headingRepairAttempted = false;
   const body = {
     model,
     stream: false,
@@ -373,7 +428,28 @@ export async function structuredResponse({
       const parsed = parseStructuredPayload(response, schema);
       let data = parsed.data;
 
-      const languageIssues = koreanLanguageIssues(schema, data);
+      let languageIssues = koreanLanguageIssues(schema, data);
+      if (languageIssues.length && !headingRepairAttempted &&
+          languageIssues.every((issue) => issue.startsWith('article.sectionHeadings')) &&
+          Array.isArray(data.sections)) {
+        headingRepairAttempted = true;
+        console.warn('[language] only article headings failed Korean-first policy; attempting bounded headings-only repair.');
+        try {
+          const repaired = await repairArticleHeadings({
+            baseUrl, model, data, temperature, contextWindow, maxOutputTokens, timeoutMs
+          });
+          const remaining = koreanLanguageIssues(schema, repaired);
+          if (!remaining.length) {
+            data = repaired;
+            languageIssues = [];
+            console.log('[language] headings-only repair passed without regenerating article body.');
+          } else {
+            console.warn(`[language] headings-only repair did not pass: ${remaining.join(' | ')}`);
+          }
+        } catch (error) {
+          console.warn(`[language] headings-only repair unavailable: ${error.message}`);
+        }
+      }
       if (languageIssues.length) {
         console.warn(`[language] Korean-first policy failed: ${languageIssues.join(' | ')}`);
         if (languageRepairRounds >= MAX_LANGUAGE_REPAIR_ROUNDS) {
