@@ -164,6 +164,7 @@ try {
 // costly full-article rewrite that still failed the Korean-first gate.
 // Repair only headings and preserve every paragraph, citation, and metadata field.
 const run76Draft = structuredClone(run30Article);
+run76Draft.category = '업무 생산성';
 run76Draft.sections[0].heading = '도구 선택 기준 ' + 'AI Tools for Freelancers and Solo Business Owners '.repeat(4);
 run76Draft.sections[1].heading = '실무 적용 순서 ' + 'Practical Automation Workflow and Productivity Tools '.repeat(4);
 const run76Issues = koreanLanguageIssues(articleLikeSchema, structuredClone(run76Draft));
