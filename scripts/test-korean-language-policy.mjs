@@ -158,3 +158,62 @@ try {
 } finally {
   await new Promise((resolve) => server.close(resolve));
 }
+
+// Regression for Automated Blog Publisher run #76 (2026-10-29): the draft body
+// was Korean, but English-heavy section headings (17% Hangul) triggered a
+// costly full-article rewrite that still failed the Korean-first gate.
+// Repair only headings and preserve every paragraph, citation, and metadata field.
+const run76Draft = structuredClone(run30Article);
+run76Draft.sections[0].heading = '도구 선택 기준 ' + 'AI Tools for Freelancers and Solo Business Owners '.repeat(4);
+run76Draft.sections[1].heading = '실무 적용 순서 ' + 'Practical Automation Workflow and Productivity Tools '.repeat(4);
+const run76Issues = koreanLanguageIssues(articleLikeSchema, structuredClone(run76Draft));
+if (run76Issues.length !== 1 || !run76Issues[0].startsWith('article.sectionHeadings')) {
+  throw new Error(`Run #76 fixture must fail only the heading language gate: ${run76Issues.join(' | ')}`);
+}
+let headingRepairCalls = 0;
+const headingServer = http.createServer((req, res) => {
+  let raw = '';
+  req.setEncoding('utf8');
+  req.on('data', (chunk) => { raw += chunk; });
+  req.on('end', () => {
+    const request = JSON.parse(raw);
+    headingRepairCalls += 1;
+    let output;
+    if (headingRepairCalls === 1) {
+      output = run76Draft;
+    } else if (headingRepairCalls === 2) {
+      if (request.format?.properties?.headings?.minItems !== 2 ||
+          request.format?.properties?.headings?.maxItems !== 2 ||
+          request.format?.properties?.sections) {
+        throw new Error('Run #76 repair must request exactly two headings, not the whole article.');
+      }
+      output = { headings: ['프리랜서가 AI 도구를 선택하는 기준', '업무 자동화를 실제로 적용하는 순서'] };
+    } else {
+      throw new Error('Run #76 should not regenerate the full article.');
+    }
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ message: { content: JSON.stringify(output) }, eval_count: 100 }));
+  });
+});
+await new Promise((resolve) => headingServer.listen(0, '127.0.0.1', resolve));
+try {
+  const result = await structuredResponse({
+    baseUrl: `http://127.0.0.1:${headingServer.address().port}`,
+    model: 'run76-heading-test',
+    schema: articleLikeSchema,
+    instructions: 'Write a Korean article.',
+    input: 'Use only supplied evidence.',
+    timeoutMs: 3000,
+    maxOutputTokens: 500,
+    contextWindow: 2048
+  });
+  if (headingRepairCalls !== 2) throw new Error(`Expected one draft and one targeted repair, got ${headingRepairCalls} calls.`);
+  if (koreanLanguageIssues(articleLikeSchema, result.data).length) throw new Error('Run #76 heading repair did not pass the Korean-first policy.');
+  const unchanged = { ...result.data, sections: result.data.sections.map((section, index) => ({ ...section, heading: run76Draft.sections[index].heading })) };
+  if (JSON.stringify(unchanged) !== JSON.stringify(run76Draft)) {
+    throw new Error('Headings-only repair changed article body or metadata.');
+  }
+  console.log('Run #76 headings-only repair regression OK: Korean headings pass while article body remains unchanged.');
+} finally {
+  await new Promise((resolve) => headingServer.close(resolve));
+}
