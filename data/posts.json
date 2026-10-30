@@ -1,5 +1,62 @@
 [
   {
+    "title": "소규모 사업자에게 최적화된 AI-First CRM 도입 전략과 실전 가이드",
+    "slug": "ai-first-crm-2026-10-30",
+    "description": "소규모 기업의 CRM 도입 전략, AI 자동화, 고객 데이터 기반 영업 혁신을 중심으로 실전 가이드를 제공합니다.",
+    "category": "소규모 기업, AI-First CRM, 실전 활용 가이드",
+    "tags": [
+      "소규모 사업자",
+      "AI-First CRM",
+      "실전 활용",
+      "성과지표",
+      "비용 관리"
+    ],
+    "date": "2026-10-30",
+    "primaryKeyword": "소규모 사업자을 위한 AI-First CRM 실전 활용 가이드",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "소규모 사업자가 AI-First CRM를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI-First CRM의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 55,
+    "qualityScore": 95,
+    "verificationSummary": "본 가이드는 소규모 기업의 CRM 도입 전략, AI 자동화, 고객 데이터 기반 영업 혁신을 중심으로 실전 가이드를 제공하며, 다양한 소스를 통한 검증을 통해 신뢰성을 높였습니다.",
+    "sources": [
+      {
+        "title": "CRM 시스템 도입 전략: 고객 데이터 기반 영업 혁신과 AI 자동화 활용 가이드",
+        "url": "https://kisdi.org/crm-system-implementation-strategy-ai-automation-guide"
+      },
+      {
+        "title": "소규모 사업자를 위한 CRM 소프트웨어 활용 가이드",
+        "url": "https://kdb007.tistory.com/entry/%EC%86%8C%EA%B7%9C%EB%AA%A8-%EC%82%AC%EC%97%85%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-CRM-%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4-%ED%99%9C%EC%9A%A9-%EA%B0%80%EC%9D%B4%EB%93%9C"
+      },
+      {
+        "title": "사업자를 위한 AI 활용 가이드 | 들로우에이아이 사업자 정보허브",
+        "url": "https://dlrow-ai.com/business-info/ai-guide"
+      },
+      {
+        "title": "에이전틱 AI 도입 실전 가이드: 소규모 기업을 위한 5단계 로드맵",
+        "url": "https://tech.kpark.co.kr/p/%EC%97%90%EC%9D%B4%EC%A0%84%ED%8B%B1-ai-%EB%8F%84%EC%9E%85-5%EB%8B%A8%EA%B3%84-%EC%8B%A4%EC%A0%84-%EB%A1%9C%EB%93%9C%EB%A7%B5"
+      },
+      {
+        "title": "2026 소규모 비즈니스 최고의 CRM 5선",
+        "url": "https://www.ionized.pro/ko/guide/best-crm-for-small-business"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-first-crm-2026-10-30-cover.svg",
+      "summary": "assets/posts/ai-first-crm-2026-10-30-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자가 AI 자동화 도구 선택 시의 실전 기준과 비용 효율성 비교",
     "slug": "ai-automation-tools-comparison",
     "description": "소규모 사업자가 AI 자동화 도구를 선택할 때 가장 중요한 기준과 비용 효율성에 대한 구체적인 정보를 제공합니다. 이 글은 실전에서 적용 가능한 전략, 비용 비교, 사용 편의성, 그리고 실제 업무에서의 적용 가능성에 초점을 맞춥니다.",
