@@ -1,5 +1,58 @@
 [
   {
+    "title": "개발자·AI 실무자에게 AI 콘텐츠 마케팅 자동화",
+    "slug": "ai-content-marketing-automation",
+    "description": "AI 콘텐츠 마케팅 자동화는 마케팅 효율성과 확장성을 높이기 위한 핵심 전략으로, 개발자 및 AI 실무자에게 실용적인 구현 방법과 제약 조건을 설명합니다.",
+    "category": "마케팅 전략",
+    "tags": [
+      "AI 콘텐츠 마케팅 자동화",
+      "개발자",
+      "AI 실무자",
+      "마케팅 효율성",
+      "자동화 전략"
+    ],
+    "date": "2026-10-31",
+    "primaryKeyword": "AI Content Marketing Automation",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "AI Content Marketing Automation을 실전 적용하여 마케팅 효율성 향상",
+    "expectedOutcome": "AI Content Marketing Automation을 실전 적용하여 마케팅 효율성 향상",
+    "opportunityScore": 73,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 1990자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "AI Marketing Automation: The Complete 2026 Implementation Guide | Automarck",
+        "url": "https://automarck.com/ai-marketing-automation-guide"
+      },
+      {
+        "title": "AI Content Marketing Automation: The 2026 Complete Guide",
+        "url": "https://creativemarketing.ai/blog/ai-content-marketing-automation-guide-2026"
+      },
+      {
+        "title": "Best AI content marketing automation tools to scale your website in 2026",
+        "url": "https://blog.hubspot.com/website/ai-content-marketing-automation-tools"
+      },
+      {
+        "title": "Utilizing AI in Marketing Automation | IBM",
+        "url": "https://www.ibm.com/think/topics/ai-marketing-automation"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-content-marketing-automation-cover.svg",
+      "summary": "assets/posts/ai-content-marketing-automation-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자에게 최적화된 AI-First CRM 도입 전략과 실전 가이드",
     "slug": "ai-first-crm-2026-10-30",
     "description": "소규모 기업의 CRM 도입 전략, AI 자동화, 고객 데이터 기반 영업 혁신을 중심으로 실전 가이드를 제공합니다.",
