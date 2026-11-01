@@ -81,47 +81,81 @@ const rejectedVerdict = {
   visualPlan: { photoNeeded: false, photoSearchQuery: '', photoReason: '사진이 필요하지 않습니다.' },
   sectionRevisions: []
 };
-const seenSchemas = [];
-const server = createServer(async (req, res) => {
-  if (req.method === 'GET' && req.url === '/api/tags') {
+const truncationCases = [
+  {
+    label: 'Run #74: unterminated JSON string',
+    responses: Array(3).fill('{"score":0,"approved":false,"sectionRevisions":[{"sectionIndex":0,"heading":"수정이 필요한 문단'),
+    expectRecovery: true
+  },
+  {
+    label: 'Run #79: array boundary and unexpected end of JSON',
+    responses: [
+      '{"score":0,"approved":false,"sectionRevisions":[{"sectionIndex":0,"heading":"수정"}\n',
+      '{"score":0,"approved":false,"sectionRevisions":[{"sectionIndex":',
+      '{"score":0,"approved":false,"sectionRevisions":[{"sectionIndex":'
+    ],
+    expectRecovery: true
+  },
+  {
+    label: 'Unrelated malformed JSON must not trigger fallback',
+    responses: Array(3).fill('{"score":not-json}'),
+    expectRecovery: false
+  }
+];
+
+for (const testCase of truncationCases) {
+  const seenSchemas = [];
+  const server = createServer(async (req, res) => {
+    if (req.method === 'GET' && req.url === '/api/tags') {
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ models: [] }));
+      return;
+    }
+    assert.equal(req.url, '/api/chat');
+    let body = '';
+    for await (const chunk of req) body += chunk;
+    const payload = JSON.parse(body);
+    seenSchemas.push(payload.format);
+    const content = seenSchemas.length <= 3
+      ? testCase.responses[seenSchemas.length - 1]
+      : JSON.stringify(rejectedVerdict);
     res.writeHead(200, { 'content-type': 'application/json' });
-    res.end(JSON.stringify({ models: [] }));
-    return;
-  }
-  assert.equal(req.url, '/api/chat');
-  let body = '';
-  for await (const chunk of req) body += chunk;
-  const payload = JSON.parse(body);
-  seenSchemas.push(payload.format);
-  const content = seenSchemas.length <= 3
-    ? '{"score":0,"approved":false,"sectionRevisions":[{"sectionIndex":0,"heading":"수정이 필요한 문단'
-    : JSON.stringify(rejectedVerdict);
-  res.writeHead(200, { 'content-type': 'application/json' });
-  res.end(JSON.stringify({ message: { content }, eval_count: 1600 }));
-});
-await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-try {
-  const address = server.address();
-  const result = await structuredResponse({
-    baseUrl: `http://127.0.0.1:${address.port}`,
-    model: 'qa-test-model',
-    schema,
-    instructions: '독립적으로 원고의 사실관계를 검토하고 근거 없는 주장은 승인하지 마세요.',
-    input: `Minimum passing score: 85\nDraft: ${JSON.stringify(draft)}\n\nPUBLIC EVIDENCE:\n공식 자료에서 검증할 수 있는 내용만 허용합니다.`,
-    timeoutMs: 10_000,
-    maxOutputTokens: 1600
+    res.end(JSON.stringify({ message: { content }, eval_count: 1600 }));
   });
-  assert.equal(seenSchemas.length, 4, 'Three truncated full reviews must lead to one compact review.');
-  for (const fullSchema of seenSchemas.slice(0, 3)) {
-    assert.equal(fullSchema.properties.sectionRevisions.maxItems, 2, 'Normal QA may revise two sections.');
+
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const address = server.address();
+    const request = {
+      baseUrl: 'http://127.0.0.1:' + address.port,
+      model: 'qa-test-model',
+      schema,
+      instructions: '독립적으로 원고의 사실관계를 검토하고 근거 없는 주장은 승인하지 마세요.',
+      input: 'Minimum passing score: 85\nDraft: ' + JSON.stringify(draft) + '\n\nPUBLIC EVIDENCE:\n공식 자료에서 검증할 수 있는 내용만 허용합니다.',
+      timeoutMs: 10_000,
+      maxOutputTokens: 1600
+    };
+
+    if (!testCase.expectRecovery) {
+      await assert.rejects(structuredResponse(request), SyntaxError,
+        'Unrelated malformed JSON must remain a hard failure.');
+      assert.equal(seenSchemas.length, 3, 'Unrelated syntax errors must not trigger a verdict fallback.');
+      continue;
+    }
+
+    const result = await structuredResponse(request);
+    assert.equal(seenSchemas.length, 4, 'Three truncated full reviews must lead to one compact review.');
+    for (const fullSchema of seenSchemas.slice(0, 3)) {
+      assert.equal(fullSchema.properties.sectionRevisions.maxItems, 2, 'Normal QA may revise two sections.');
+    }
+    assert.equal(seenSchemas[3].properties.sectionRevisions.maxItems, 0, 'Recovery must prohibit body rewrites.');
+    assert.equal(seenSchemas[3].properties.sectionRevisions.minItems, 0, 'Recovery must require an empty revision list.');
+    assert.equal(result.data.approved, false, 'Recovery must honor the independent rejected verdict.');
+    assert.equal(result.data.score, 0, 'Recovery must never fabricate a passing QA score.');
+    assert.deepEqual(result.data.revisedSections.map((s) => s.heading), draft.sections.map((s) => s.heading));
+    assert.equal(result.data.verifiedSources.length, 3, 'Recovery must preserve the actual reviewer source verdict.');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
   }
-  assert.equal(seenSchemas[3].properties.sectionRevisions.maxItems, 0, 'Recovery must prohibit body rewrites.');
-  assert.equal(seenSchemas[3].properties.sectionRevisions.minItems, 0, 'Recovery must require an empty revision list.');
-  assert.equal(result.data.approved, false, 'Recovery must honor the independent rejected verdict.');
-  assert.equal(result.data.score, 0, 'Recovery must never fabricate a passing QA score.');
-  assert.deepEqual(result.data.revisedSections.map((s) => s.heading), draft.sections.map((s) => s.heading));
-  assert.equal(result.data.verifiedSources.length, 3, 'Recovery must preserve the actual reviewer source verdict.');
-  console.log('Run #74 QA JSON-truncation recovery: compact independent rejection and fail-closed policy OK.');
-} finally {
-  await new Promise((resolve) => server.close(resolve));
+  console.log(testCase.label + ': compact independent rejection and fail-closed policy OK.');
 }
