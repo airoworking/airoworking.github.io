@@ -177,7 +177,9 @@ function isTruncatedQaJson(error) {
   // A token-capped JSON response can end between fields or array items, not
   // only inside a string (run #79). The fallback still requires an independent
   // fact-checking verdict and never treats a partial response as approval.
-  return /Unterminated string in JSON|Unexpected end of JSON input|Expected ',' or '\\]' after array element in JSON/.test(error.message);
+  return error.message.includes('Unterminated string in JSON') ||
+    error.message.includes('Unexpected end of JSON input') ||
+    error.message.includes("Expected ',' or ']' after array element in JSON");
 }
 
 function extractQaDraft(input) {
