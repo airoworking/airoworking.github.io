@@ -1,5 +1,54 @@
 [
   {
+    "title": "소규모 사업자가 AI tools를 실전 활용하는 방법: 선택 기준과 실행 단계",
+    "slug": "ai-tools",
+    "description": "소규모 사업자가 AI tools를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI tools의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있는 방법을 제시합니다.",
+    "category": "AI tools 활용 가이드",
+    "tags": [
+      "소규모 사업자",
+      "AI 도구",
+      "실전 활용",
+      "선택 기준",
+      "실행 단계"
+    ],
+    "date": "2026-11-03",
+    "primaryKeyword": "AI tools",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "adsense",
+    "readerProblem": "소규모 사업자가 AI tools를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI tools의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 0,
+    "qualityScore": 92,
+    "verificationSummary": "본 가이드는 소규모 사업자가 AI tools를 선택하고 실행하는 데 필요한 기초 지식과 실제 적용 방법에 대한 구체적인 정보를 제공합니다. 모든 정보는 공개된 자료와 실전 적용 사례를 바탕으로 작성되었습니다.",
+    "sources": [
+      {
+        "title": "60 Best AI Tools to Know | Built In",
+        "url": "https://builtin.com/artificial-intelligence/ai-tools"
+      },
+      {
+        "title": "AI Tools List: 50+ Top Picks - GeeksforGeeks",
+        "url": "https://www.geeksforgeeks.org/websites-apps/ai-tools-directory/"
+      },
+      {
+        "title": "12 Best AI Tools for Small Business in 2026 (Free & Paid)",
+        "url": "https://techjournal.org/best-ai-tools-for-small-business"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-tools-cover.svg",
+      "summary": "assets/posts/ai-tools-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "개발자·AI 실무자에게 RAG",
     "slug": "ai-rag",
     "description": "RAG은 대규모 언어 모델(LLM)을 외부 지식 소스와 결합하여 정확한 답변을 제공하는 기술입니다. 이 가이드에서는 개발자들이 RAG를 실제 업무에 적용할 때 선택해야 할 요소와 실행 단계를 체계적으로 설명합니다.",
