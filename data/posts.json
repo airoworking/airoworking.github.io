@@ -1,5 +1,58 @@
 [
   {
+    "title": "소규모 사업자가 위한 No-Code AI Tools",
+    "slug": "no-code-ai-tools",
+    "description": "소규모 사업자가 No-Code AI Tools를 선택할 때 기능적 기준과 비용 효율성을 명확히 이해하는 것이 중요합니다. 이 가이드는 실전에서 실제 적용 가능한 단계와 시간·비용 절감 관점을 중심으로, 소규모 사업자에게 유용한 정보를 제공합니다.",
+    "category": "소규모 사업자, No-Code AI Tools, 비용 효율성, 기능적 기준",
+    "tags": [
+      "소규모 사업자",
+      "No-Code AI Tools",
+      "비용 효율성",
+      "기능적 기준",
+      "실전 활용"
+    ],
+    "date": "2026-11-04",
+    "primaryKeyword": "No-Code AI Tools",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "affiliate",
+    "readerProblem": "소규모 사업자가 No-Code AI Tools를 선택할 때 기능적 기준과 비용 효율성을 명확히 이해하는 것이 중요하다",
+    "expectedOutcome": "소규모 사업자가 No-Code AI Tools를 선택할 때 기능적 기준과 비용 효율성을 명확히 이해할 수 있다",
+    "opportunityScore": 72,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 1587자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "Best No-Code AI Tools 2026: Build Apps | Replit",
+        "url": "https://replit.com/discover/best-no-code-ai-tool"
+      },
+      {
+        "title": "31 best low-code/no-code ai tools for startups (2026) • Anything",
+        "url": "https://www.anything.com/blog/low-code-no-code-ai"
+      },
+      {
+        "title": "Show HN: MicroBuilder – Describe your idea, get it built fast (no agency needed)",
+        "url": "https://microbuilder.dev/"
+      },
+      {
+        "title": "Documentation - Claude Platform Docs",
+        "url": "https://platform.claude.com/docs/en/home"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/no-code-ai-tools-cover.svg",
+      "summary": "assets/posts/no-code-ai-tools-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자가 AI tools를 실전 활용하는 방법: 선택 기준과 실행 단계",
     "slug": "ai-tools",
     "description": "소규모 사업자가 AI tools를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI tools의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있는 방법을 제시합니다.",
