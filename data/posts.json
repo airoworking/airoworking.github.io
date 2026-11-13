@@ -1,5 +1,59 @@
 [
   {
+    "title": "AI Reply Tool for X 직장인·지식근로자에게 필요한 선택 기준과 실행 단계",
+    "slug": "ai-reply-tool-for-x",
+    "description": "직장인·지식근로자가 AI Reply Tool for X를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI Reply Tool for X의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 돕는 데 기여합니다.",
+    "category": "AI 도구 활용",
+    "tags": [
+      "AI Reply Tool for X",
+      "직장인",
+      "지식근로자",
+      "업무 효율성",
+      "시간 절감",
+      "비용 절감"
+    ],
+    "date": "2026-11-13",
+    "primaryKeyword": "AI Reply Tool for X",
+    "audienceSegment": "knowledge-worker",
+    "contentRole": "reach",
+    "monetizationRoute": "none",
+    "readerProblem": "직장인·지식근로자가 AI Reply Tool for X를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI Reply Tool for X의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 78,
+    "qualityScore": 85,
+    "verificationSummary": "AI Reply Tool for X의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 돕는 데 기여했습니다. 사용자의 언어 스타일, 업무 유형, 대상 독자에 따라 달라지는 제약과 한계, 실제 사용 사례의 부족 등이 확인되었습니다.",
+    "sources": [
+      {
+        "title": "Free AI Reply Generator for X (Twitter) | ReplyFrog",
+        "url": "https://replyfrog.com/tools/x-reply-generator"
+      },
+      {
+        "title": "XReply — AI Reply Generator for X | Chrome Extension",
+        "url": "https://xreply.net/"
+      },
+      {
+        "title": "Instant AI Replies for X (Twitter) and LinkedIn”",
+        "url": "https://www.qura.ai/"
+      },
+      {
+        "title": "ReplyX AI - Replies for X and Reddit - Chrome Web Store",
+        "url": "https://chromewebstore.google.com/detail/replyx-ai-replies-for-x-a/gpnikcomphickdggplnpbgnhpjeacmfn"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-reply-tool-for-x-cover.svg",
+      "summary": "assets/posts/ai-reply-tool-for-x-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI Agent 개발자 가이드 및 도구 비교: 실무에서의 전략과 실천",
     "slug": "ai-agent-developer-guide",
     "description": "AI Agent 개발자 가이드 및 도구 비교는 실무에서의 전략적 고려 사항을 다루며, 개발자의 문제를 해결하는 데 도움을 줄 수 있는 구체적인 정보를 제공합니다. 이 글은 개발자들이 AI Agent 개발에 필요한 도구와 가이드를 비교하고, 실무에서의 제약, 보안, 운영의 전략적 고려 사항을 설명합니다.",
