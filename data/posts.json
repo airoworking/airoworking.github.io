@@ -1,5 +1,54 @@
 [
   {
+    "title": "소규모 사업가들이 CRM 자동화 비용을 2026년에 적용할 때 필요한 선택 기준과 실행 단계",
+    "slug": "crm-automation-cost-for-small-businesses-2026",
+    "description": "소규모 사업가들이 CRM 자동화 비용을 2026년에 실제 업무에 적용할 때 필요한 선택 기준과 실행 단계를 이해하고 적용할 수 있는 가이드를 제공합니다. 이 가이드는 예산, 기술 스택, 비용 절감 전략, 실제 적용 사례 등을 다루며, 실제 업무에서 바로 따라 할 수 있는 단계와 시간·비용 절감 관점을 우선합니다.",
+    "category": "소규모 사업가 가이드",
+    "tags": [
+      "CRM 자동화 비용",
+      "소규모 사업가",
+      "2026년",
+      "비용 절감",
+      "실행 단계"
+    ],
+    "date": "2026-11-14",
+    "primaryKeyword": "CRM automation cost for small businesses 2026",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "digital-product",
+    "readerProblem": "소규모 사업자가 CRM automation cost for small businesses 2026를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "CRM automation cost for small businesses 2026의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 70,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 3개 출처와 2112자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "CRM Pricing Guide for Small Business (2026) - DecisionCircuit",
+        "url": "https://www.decisioncircuit.com/crm/guides/crm-pricing-guide-small-business/"
+      },
+      {
+        "title": "CRM Pricing in 2026: Per-Seat Costs & Total Ownership | CostChoices",
+        "url": "https://costchoices.com/guides/how-much-does-a-crm-cost"
+      },
+      {
+        "title": "Small Business CRM Automation Cost: Real Pricing [Guide]",
+        "url": "https://ustechautomations.com/resources/blog/how-much-does-small-business-crm-automation-cost-2026"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/crm-automation-cost-for-small-businesses-2026-cover.svg",
+      "summary": "assets/posts/crm-automation-cost-for-small-businesses-2026-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI Reply Tool for X 직장인·지식근로자에게 필요한 선택 기준과 실행 단계",
     "slug": "ai-reply-tool-for-x",
     "description": "직장인·지식근로자가 AI Reply Tool for X를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵습니다. 이 가이드는 AI Reply Tool for X의 적합한 활용 방식, 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있도록 돕는 데 기여합니다.",
