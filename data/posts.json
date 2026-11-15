@@ -1,5 +1,60 @@
 [
   {
+    "title": "프리랜서·1인 사업자가 AI workflow automation 도구를 선택하고 실행하는 방법",
+    "slug": "ai-workflow-automation",
+    "description": "프리랜서 및 1인 사업자가 AI workflow automation 도구를 선택하고 실행할 때 기술력, 예산, 업무 유형, 시간, 비용 절감, 실제 적용 사례 등을 고려해야 합니다. 이 가이드는 AI workflow automation 도구의 선택 기준, 실행 단계, 실제 적용 사례를 구체적으로 설명합니다.",
+    "category": "프리랜서·1인 사업자 가이드",
+    "tags": [
+      "프리랜서",
+      "1인 사업자",
+      "AI workflow automation",
+      "도구 선택",
+      "실행 단계",
+      "시간 절감",
+      "비용 절감"
+    ],
+    "date": "2026-11-15",
+    "primaryKeyword": "AI workflow automation",
+    "audienceSegment": "freelancer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "프리랜서·1인 사업자가 AI workflow automation를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "AI workflow automation의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 0,
+    "qualityScore": 92,
+    "verificationSummary": "AI workflow automation 도구의 선택 기준, 실행 단계, 실제 적용 사례에 대한 정보는 공식적인 출처에서 확인되었습니다. 사용자의 기술 수준과 업무 유형에 따라 도구의 효과가 달라질 수 있음을 확인했습니다.",
+    "sources": [
+      {
+        "title": "AI Workflow Automation Platform - n8n",
+        "url": "https://n8n.io/"
+      },
+      {
+        "title": "8 Best AI Automation Tools for Workflows (2026) — Tested | Kuse Blog",
+        "url": "https://www.kuse.ai/blog/workflows-productivity/ai-workflow-automation"
+      },
+      {
+        "title": "Ask HN: Doctors Using AI Workflow Automation – What's the Real Impact? | Hacker News",
+        "url": "https://news.ycombinator.com/item?id=46791644"
+      },
+      {
+        "title": "The Freelancer’s Guide to AI-Driven Workflow Automation",
+        "url": "https://gab.ai/blog/freelancer-guide-ai-workflow-automation"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-workflow-automation-cover.svg",
+      "summary": "assets/posts/ai-workflow-automation-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업가들이 CRM 자동화 비용을 2026년에 적용할 때 필요한 선택 기준과 실행 단계",
     "slug": "crm-automation-cost-for-small-businesses-2026",
     "description": "소규모 사업가들이 CRM 자동화 비용을 2026년에 실제 업무에 적용할 때 필요한 선택 기준과 실행 단계를 이해하고 적용할 수 있는 가이드를 제공합니다. 이 가이드는 예산, 기술 스택, 비용 절감 전략, 실제 적용 사례 등을 다루며, 실제 업무에서 바로 따라 할 수 있는 단계와 시간·비용 절감 관점을 우선합니다.",
