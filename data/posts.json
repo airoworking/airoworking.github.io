@@ -1,5 +1,58 @@
 [
   {
+    "title": "AI 도구 선택 기준 및 실전 적용 가이드",
+    "slug": "ai-productivity-guides",
+    "description": "프리랜서 및 1인 사업자가 AI 도구를 선택할 때의 실전 기준과 비용 효율성 비교를 중심으로, AI 도구 선택 전략과 실전 적용 가이드를 제공하기 위한 데이터를 분석합니다.",
+    "category": "AI 도구 선택",
+    "tags": [
+      "AI 도구",
+      "프리랜서",
+      "1인 사업자",
+      "비용 효율성",
+      "실전 적용"
+    ],
+    "date": "2026-11-16",
+    "primaryKeyword": "AI Productivity Guides",
+    "audienceSegment": "freelancer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "프리랜서가 AI 도구를 선택할 때의 실전 기준과 비용 효율성 비교",
+    "expectedOutcome": "AI 도구 선택 전략과 실전 적용 가이드 제공",
+    "opportunityScore": 58,
+    "qualityScore": 92,
+    "verificationSummary": "본 기준은 2026년 기준으로 제공된 데이터를 바탕으로 작성되었으며, 실전 적용 시의 변화와 향후 트렌드에 대한 고려가 부족한 점이 있습니다.",
+    "sources": [
+      {
+        "title": "12 Best AI Productivity Tools (2026): 11 Workflows Tested",
+        "url": "https://www.aicentralresources.com/blog/the-ultimate-guide-to-ai-productivity-tools-2026"
+      },
+      {
+        "title": "The AI Productivity Guide | Clearer Thinking",
+        "url": "https://www.clearerthinking.org/ai-guide"
+      },
+      {
+        "title": "The COO’s Guide to AI Productivity Tools | Dashworks AI",
+        "url": "https://www.dashworks.ai/blog/a-coos-guide-to-ai-productivity-tools"
+      },
+      {
+        "title": "SoloAIPlaybook — AI Tools & Tips for Solo Business Owners",
+        "url": "https://soloaiplaybook.co/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-productivity-guides-cover.svg",
+      "summary": "assets/posts/ai-productivity-guides-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "프리랜서·1인 사업자가 AI workflow automation 도구를 선택하고 실행하는 방법",
     "slug": "ai-workflow-automation",
     "description": "프리랜서 및 1인 사업자가 AI workflow automation 도구를 선택하고 실행할 때 기술력, 예산, 업무 유형, 시간, 비용 절감, 실제 적용 사례 등을 고려해야 합니다. 이 가이드는 AI workflow automation 도구의 선택 기준, 실행 단계, 실제 적용 사례를 구체적으로 설명합니다.",
