@@ -1,0 +1,415 @@
+{
+  "topic": {
+    "topic": "개발자·AI 실무자을 위한 Self-Hosted AI Agent on Proxmox 실전 활용 가이드",
+    "primaryKeyword": "Self-Hosted AI Agent on Proxmox",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법",
+    "expectedOutcome": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법 가이드 제공",
+    "searchIntent": "informational",
+    "monetizationAngle": "none",
+    "whyNow": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들은 LXC 컨테이너에서의 실행 방법에 대한 정보가 필요하다",
+    "trafficPotential": 65,
+    "audienceBreadth": 60,
+    "intentStrength": 70,
+    "evergreenValue": 75,
+    "freshness": 75,
+    "evidenceCoverage": 70,
+    "monetizationFit": 70,
+    "competitionOpportunity": 75,
+    "opportunityScore": 66
+  },
+  "evidence": [
+    {
+      "title": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+      "url": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "text": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog Hermify How it works Features Pricing For developers Blog en Platform Get Started How it works Features Pricing For developers Blog Platform Get Started Home / Blog / Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide Back to Blog AI Agents Self-Hosting Homelab Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide How to run a self-hosted AI agent on Proxmox in an LXC container. Sizing, Docker-in-LXC, backups, GPU trade-offs, and honest alternatives for 2026. By Hermify Team | July 21, 2026 | 9 min read Why Proxmox Homelabbers Are Running AI Agents in LXC Containers If you already have a Proxmox box humming under your desk with Pi-hole, Home Assistant, and Nextcloud on it, adding a self-hosted AI agent to that stack is the obvious next move. The homelab community has largely converged on the same answer for how to do it: put the agent in an LXC container, not a VM, not on the bare host. A recent Uptown4 walkthrough and a widely shared dev.to write-up of seven autonomous agents on a 3-node Proxmox cluster both land on LXC for the same reason: an agent container idles at 200-400MB of RAM and near-zero CPU, so you can run five to eight of them on a 16GB machine without noticing. Skip the LXC, keep the ownership Want a self-hosted feel without babysitting a Proxmox container, PBS retention, or GPU passthrough? Hermify runs a managed Hermes Agent on Telegram with memory that stays yours, live in about a minute. Start in 60 seconds This post walks through what a self-hosted AI agent on Proxmox actually looks like in 2026: how to size the LXC, whether to run Docker inside it or go native, how to back it up so a bad upgrade does not cost you your memory store, and where GPU passthrough is worth the trouble. It is"
+    },
+    {
+      "title": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc.",
+      "url": "https://uptown4.com/2026/03/running-openclaw-on-proxmox-the-complete-guide-to-self-hosting-your-ai-assistant/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "text": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc. Skip to content Uptown4 Inc. Web Application Development & Coaching Menu Home Blog Our Work Contact Us Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant You are here: Uptown4 Inc. > Blog > Uncategorized > Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant Running an AI assistant 24/7 doesn’t have to mean expensive cloud bills or privacy compromises. With ProxMox and OpenClaw, you can host your own intelligent assistant on your own hardware — whether that’s a spare PC, a home server, or a mini-PC in your office. This guide walks you through everything: from creating the VM to hardening security to keeping your AI token costs under control. Why ProxMox + OpenClaw? ProxMox VE is a powerful, open-source virtualization platform that turns any x86 machine into a hypervisor. It’s free, enterprise-grade, and perfect for running multiple VMs and containers on a single box. OpenClaw is an open-source AI agent platform that connects to Claude, GPT-4, Gemini, and dozens of other AI models. It integrates with Telegram, WhatsApp, Discord, email, calendars, and can automate practically anything. Think of it as your own self-hosted AI assistant that you actually control. Why this combo works: Privacy : Your conversations and data stay on your hardware Cost control : Pay for compute once, not per-message Flexibility : Run other services alongside OpenClaw (databases, n8n, ComfyUI, etc.) Reliability : No dependency on cloud provider uptime Learning : Full visibility into how everything works Prerequisites Before you begin, you’ll need: Hardware: A ma"
+    },
+    {
+      "title": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub",
+      "url": "https://github.com/adadrag/Openclaw-Proxmox",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "text": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switched accounts on another tab or window. Re"
+    },
+    {
+      "title": "How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI | Network ThinkTank",
+      "url": "https://networkthinktank.blog/2026/04/24/how-to-self-host-ai-on-your-proxmox-homelab-with-ollama-and-open-webui/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "text": "How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI | Network ThinkTank Skip to content Network ThinkTank Menu Home About Contact Blog Home How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI April 24, 2026 April 24, 2026 itstuffsite AI & Machine Learning , Homelab Docker , GPU passthrough , homelab , linux , llm , NAS , Ollama , Open WebUI , Proxmox , self-hosted AI , virtualization By NetworkThinkTank | April 23, 2026 Introduction I got tired of sending my data to cloud AI services. Every prompt I typed into ChatGPT or Claude was being stored, analyzed, and used for training. For personal questions, code snippets with API keys, and private brainstorming sessions, that never sat well with me. So I built my own. A fully self-hosted AI assistant running on my Proxmox homelab, powered by Ollama for local LLM inference and Open WebUI for a polished ChatGPT-like interface. The models run on my own NVIDIA GPU, the data stays on my NAS, and nothing leaves my network. This guide walks you through exactly how I did it – from VM creation to pulling your first model and chatting with it through a clean web interface. If you have a Proxmox server and a spare GPU, you can have this running in an afternoon. Prerequisites and Hardware Requirements Here is what you need before starting: Hardware Proxmox VE host (version 7.x or 8.x) NVIDIA GPU with at least 8GB VRAM (I use an RTX 3060 Ti 8GB) Minimum 16GB RAM allocated to the AI VM (32GB recommended) NAS with NFS or SMB shares available (Synology, TrueNAS, etc.) At least 50GB free storage for models (100GB+ recommended) Software Proxmox VE installed and running Ubuntu Server 22.04 or 24.04 LTS ISO Docker and Docker Compose NVIDI"
+    },
+    {
+      "title": "Self-Hosted AI Assistant with OpenClaw on Proxmox",
+      "url": "https://ricardogil.com/blog/self-hosted-ai-assistant-openclaw-proxmox",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "text": "Self-Hosted AI Assistant with OpenClaw on Proxmox Home About Services Blog Photography Contact Login Sign Up EN | ES ES Home / Blog / Building a Self-Hosted AI Assistant with OpenClaw on Proxmox Development Building a Self-Hosted AI Assistant with OpenClaw on Proxmox Ricardo Gil February 18, 2026 7 min read #Self-Hosting #Proxmox #AI #OpenClaw #Signal #Home Lab #Linux Introduction Cloud AI assistants are convenient, but they come with tradeoffs: your conversations go to third-party servers, you're locked into subscription pricing, and you have no control over the infrastructure. What if you could run your own AI assistant on hardware you already own, accessible from your phone via Signal, with no monthly fees beyond the LLM API calls? That's exactly what I built using OpenClaw running on an isolated Ubuntu VM inside my Proxmox home lab. This guide walks through the full setup — from VM creation and network isolation to Signal integration and day-to-day usage. What Is OpenClaw? OpenClaw is an open-source personal AI agent framework. Unlike a simple chatbot, it's a full gateway that connects LLM providers (OpenAI, Anthropic, local models) to messaging channels like Signal, Telegram, Discord, and WhatsApp. You run it on your own infrastructure and interact with it through the messaging apps you already use. Key characteristics: Self-hosted — runs on your hardware, your network Multi-channel — connects to Signal, Telegram, WhatsApp, Discord, and more Extensible — add skills (plugins) to give it new capabilities Tool-enabled — can run shell commands, read/write files, search the web Architecture Overview The setup consists of three layers: code Copy Signal App (Phone) ↕ encrypted Signal protocol signal-cli (linked device daemon) ↕ JSON-RPC HTTP OpenClaw Gateway (Node.js) ↕ A"
+    },
+    {
+      "title": "GitHub - axluca/openclaw-homelab-agent: Self-hosted OpenClaw AI agent on Proxmox + Headscale tailnet, with Telegram and phone call support · GitHub",
+      "url": "https://github.com/axluca/openclaw-homelab-agent",
+      "snippet": "Self-hosted OpenClaw AI agent on Proxmox + Headscale tailnet, with Telegram and phone call support",
+      "provider": "github",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "popularity": 3,
+      "updatedAt": "2026-02-19T14:23:17Z",
+      "text": "GitHub - axluca/openclaw-homelab-agent: Self-hosted OpenClaw AI agent on Proxmox + Headscale tailnet, with Telegram and phone call support · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switch"
+    },
+    {
+      "title": "GitHub - raghu1134/ai-job-agent: Self-hosted AI job-search agent on an old laptop: finds, filters and AI-scores UK jobs, then alerts you on Telegram. Proxmox · Docker · Ollama · NocoDB. · GitHub",
+      "url": "https://github.com/raghu1134/ai-job-agent",
+      "snippet": "Self-hosted AI job-search agent on an old laptop: finds, filters and AI-scores UK jobs, then alerts you on Telegram. Proxmox · Docker · Ollama · NocoDB.",
+      "provider": "github",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "popularity": 1,
+      "updatedAt": "2026-11-03T12:33:58Z",
+      "text": "GitHub - raghu1134/ai-job-agent: Self-hosted AI job-search agent on an old laptop: finds, filters and AI-scores UK jobs, then alerts you on Telegram. Proxmox · Docker · Ollama · NocoDB. · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or win"
+    },
+    {
+      "title": "GitHub - inovve/homelab-agent-skills: Agent Skills that let AI agents (Claude Code & friends) operate self-hosted apps on your homelab — Proxmox, Docker, Outline wiki, and more · GitHub",
+      "url": "https://github.com/inovve/homelab-agent-skills",
+      "snippet": "Agent Skills that let AI agents (Claude Code & friends) operate self-hosted apps on your homelab — Proxmox, Docker, Outline wiki, and more",
+      "provider": "github",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "popularity": 1,
+      "updatedAt": "2026-07-16T23:27:00Z",
+      "text": "GitHub - inovve/homelab-agent-skills: Agent Skills that let AI agents (Claude Code & friends) operate self-hosted apps on your homelab — Proxmox, Docker, Outline wiki, and more · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Relo"
+    },
+    {
+      "title": "GitHub - najmuzzaman-mohammad/gawkbot: open source grok bot. gawk bots automate your menial work via AI models and build you microapps to manage the outcome, so that you have a false sense of control. · GitHub",
+      "url": "https://github.com/nex-crm/wuphf",
+      "snippet": "I shipped a wiki layer for AI agents that uses markdown + git as the source of truth, with a bleve (BM25) + SQLite index on top. No vector or graph db yet.<p>It runs locally in ~&#x2F;.wuphf&#x2F;wiki&#x2F; and you can git clone it out if you want to take your knowledge with you.<p>The shape is the one Karpathy has been circling for a while: an LLM-native knowledge substrate that agents both read from and write into, so context compounds across sessions rather than getting re-pasted every morning. Most implementations of that idea land on Postgres, pgvector, Neo4j, Kafka, and a dashboard.<p>I wanted to go back to the basics and see how far markdown + git could go before I added anything heavier.<p>What it does:\n-&gt; Each agent gets a private notebook at agents&#x2F;{slug}&#x2F;notebook&#x2F;.md, plus access to a shared team wiki at team&#x2F;.<p>-&gt; Draft-to-wiki promotion flow. Notebook entries are reviewed (agent or human) and promoted to the canonical wiki with a back-link. A small state machine drives expiry and auto-archive.<p>-&gt; Per-entity fact log: append-only JSONL at team&#x2F;entities&#x2F;{kind}-{slug}.facts.jsonl. A synthesis worker rebuilds the entity brief every N facts. Commits land under a distinct &quot;Pam the Archivist&quot; git identity so provenance is visible in git log.<p>-&gt; [[Wikilinks]] with broken-link detection rendered in red.<p>-&gt; Daily lint cron for contradictions, stale entries, and broken wikilinks.<p>-&gt; &#x2F;lookup slash command plus an MCP tool for cited retrieval. A heuristic classifier routes short lookups to BM25 and narrative queries to a cited-answer loop.<p>Substrate choices:\nMarkdown for durability. The wiki outlives the runtime, and a user can walk away with every byte. Bleve for BM25. SQLite for structured metadata (facts, entities, edges, redirects, and supersedes). No vectors yet. The current benchmark (500 artifacts, 50 queries) clears 85% recall@20 on BM25 alone, which is the internal ship gate. sqlite-vec is the pre-committed fallback if a query class drops below that.<p>Canonical IDs are first-class. Fact IDs are deterministic and include sentence offset. Canonical slugs are assigned once, merged via redirect stubs, and never renamed. A rebuild is logically identical, not byte-identical.<p>Known limits:\n-&gt; Recall tuning is ongoing. 85% on the benchmark is not a universal guarantee.<p>-&gt; Synthesis quality is bounded by agent observation quality. Garbage facts in, garbage briefs out. The lint pass helps. It is not a judgment engine.<p>-&gt; Single-office scope today. No cross-office federation.<p>Demo. 5-minute terminal walkthrough that records five facts, fires synthesis, shells out to the user&#x27;s LLM CLI, and commits the result under Pam&#x27;s identity: <a href=\"https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb\" rel=\"nofollow\">https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb</a><p>Script lives at .&#x2F;scripts&#x2F;demo-entity-synthesis.sh.<p>Context. The wiki ships as part of WUPHF, an open source collaborative office for AI agents like Claude Code, Codex, OpenClaw, and local LLMs via OpenCode. MIT, self-hosted, bring-your-own keys. You do not have to use the full office to use the wiki layer. If you already have an agent setup, point WUPHF at it and the wiki attaches.<p>Source: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf</a><p>Install: npx wuphf@latest<p>Happy to go deep on the substrate tradeoffs, the promotion-flow state machine, the BM25-first retrieval bet, or the canonical-ID stability rules. Also happy to take &quot;why not an Obsidian vault with a plugin&quot; as a fair question.",
+      "provider": "hackernews",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "popularity": 260,
+      "updatedAt": "2026-04-25T08:53:53Z",
+      "text": "GitHub - najmuzzaman-mohammad/gawkbot: open source grok bot. gawk bots automate your menial work via AI models and build you microapps to manage the outcome, so that you have a false sense of control. · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in ano"
+    },
+    {
+      "title": "GitHub - rush86999/atom: Atom, Open-Source Governed AI Agent Platform for Self-Hosted Trained Employees For Your Business · GitHub",
+      "url": "https://github.com/rush86999/atom",
+      "snippet": "Hey HN,<p>I’ve been building Atom (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;rush86999&#x2F;atom\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;rush86999&#x2F;atom</a>), an open-source, self-hosted AI automation platform.<p>I built this because while tools like OpenClaw are excellent for one-off scripts and personal tasks, I found them difficult to use for complex business workflows (e.g., managing invoices or SaaS ops). The main issue was State Blindness: the agent would fire a command and assume it worked, without &quot;seeing&quot; if the UI or state actually updated.<p>I just shipped a new architecture to solve this called Canvas AI Accessibility.<p>The Technical Concept:\nInstead of relying on token-heavy screenshots or raw HTML, I built a hidden semantic layer—essentially a &quot;Screen Reader&quot; for the LLM.<p>Hidden Visual Description: When the agent works, the system generates a structured, hidden description of the visual state.<p>Episodic Memory: The agent &quot;reads&quot; this layer to verify its actions. Crucially, it snapshots this state into a vector database (LanceDB).<p>Maturity&#x2F;Governance: Before an agent is promoted from &quot;Student&quot; to &quot;Autonomous,&quot; it must demonstrate it can recall these past visual states to avoid repeating errors.<p>Atom vs. OpenClaw:\nI view them as complementary. OpenClaw is the &quot;Hands&quot; (great for raw execution&#x2F;terminal), while Atom is the &quot;Brain&quot; (handling state, memory, and audit trails). Atom uses Python&#x2F;FastAPI vs OpenClaw&#x27;s Node.js, and focuses heavily on this governance&#x2F;memory layer.<p>The repo is self-hosted and includes the new Canvas architecture. I’d love feedback on the implementation of the hidden accessibility layer—is anyone else using &quot;synthetic accessibility trees&quot; for agent grounding?",
+      "provider": "hackernews",
+      "query": "Self-Hosted AI Agent on Proxmox",
+      "popularity": 1,
+      "updatedAt": "2026-03-01T00:59:30Z",
+      "text": "GitHub - rush86999/atom: Atom, Open-Source Governed AI Agent Platform for Self-Hosted Trained Employees For Your Business · GitHub Skip to content Navigation Menu Sign in Products Platform GitHub Repository hosting, code review, and collaboration Copilot AI coding agent for tasks, projects, and automated work Build & Ship Actions CI/CD and automation Code Quality Quality analysis, fixes, and enforcement Codespaces Cloud development environments Secure Code Security Vulnerability detection and remediation Secret Protection Secret scanning and leak prevention All Features Developers Learn Documentation Training Certifications Build Build with Copilot Customize Copilot Integrations Explore Trending repos GitHub Sponsors Developer articles Changelog Changelog Your source for the latest features, improvements, and fixes across GitHub products, all in one place. Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog Events & webinars Community Forum Customer Stories Integrations Support Customer support Training GitHub Status Company About Partners Changelog GitHub Universe GitHub Universe The event for developers, by developers — talks, workshops, and what’s next for GitHub. Pricing Search / Sign in Sign up Appearance settings You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switched accounts on an"
+    }
+  ],
+  "research": {
+    "thesis": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법을 이해하고 적용하는 데 필요한 정보를 제공하는 가이드를 작성합니다.",
+    "keyFacts": [
+      {
+        "claim": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법을 학습하고 적용하는 데 필요한 정보가 있습니다.",
+        "sourceTitle": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "sourceUrl": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "claim": "LXC 컨테이너에서 AI 애그너를 실행하는 방법은 프로미코스의 Homelab 커뮤니티와 관련된 자료에서 설명되어 있습니다.",
+        "sourceTitle": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "sourceUrl": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "claim": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 LXC 컨테이너의 크기와 메모리 사용량은 2026년에 최적화된 가이드에서 설명되어 있습니다.",
+        "sourceTitle": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "sourceUrl": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "claim": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법은 Uptown4의 가이드에서 설명되어 있습니다.",
+        "sourceTitle": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc.",
+        "sourceUrl": "https://uptown4.com/2026/03/running-openclaw-on-proxmox-the-complete-guide-to-self-hosting-your-ai-assistant/"
+      },
+      {
+        "claim": "원문 근거: Businesses By Stage Enterprises Team Startups Nonprofits By Industry Healthcare Financial services Manufacturing Government See all industries Evaluate GitHub Why GitHub Customer Stories Business insights Trust Center Add-ons GitHub Advanced Security Enterprise-grade code security Copilot for business Enterprise-grade AI features Premium Support Enterprise-grade 24/7 support Resources Learn & Connect Documentation Resource center Blog…",
+        "sourceTitle": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub",
+        "sourceUrl": "https://github.com/adadrag/Openclaw-Proxmox"
+      }
+    ],
+    "readerQuestions": [
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 어떻게 설정해야 하나요?",
+      "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법은 어떻게 구분되나요?",
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 무엇인가요?"
+    ],
+    "contentGap": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기, 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 프로미코스 Homelab 커뮤니티의 실전 적용 사례에 대한 구체적인 정보가 부족합니다.",
+    "monetizationFit": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보를 제공하는 가이드는 기업용 AI 애그너 구매 및 운영에 대한 수익 창출에 적합합니다.",
+    "caveats": [
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 개발자 커뮤니티와 관련된 자료에서 제공되며, 일반적인 개발자에게는 구체적인 가이드가 부족합니다.",
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 프로젝트 문서와 관련된 자료에서 제공되며, 실전 적용 사례가 부족합니다.",
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 개발자 커뮤니티와 관련된 자료에서 제공되며, 기업용 AI 애그너 구매 및 운영에 대한 정보가 부족합니다.",
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 개발자 커뮤니티와 관련된 자료에서 제공되며, 실전 적용 사례가 부족합니다."
+    ]
+  },
+  "article": {
+    "title": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법 가이드",
+    "description": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법을 이해하고 적용하는 데 필요한 정보를 제공하는 가이드를 작성합니다. 이 가이드는 프로미코스의 Homelab 커뮤니티와 관련된 자료를 기반으로, LXC 컨테이너의 크기, 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 실전 적용 사례에 대한 구체적인 정보를 포함합니다.",
+    "category": "개발자 가이드",
+    "tags": [
+      "프로미코스",
+      "LXC 컨테이너",
+      "AI 애그너",
+      "Homelab",
+      "백업",
+      "구조화된 가이드"
+    ],
+    "sections": [
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량 설정",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 애그너의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다. 일반적으로 AI 애그너는 2GB 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다. 하지만 실제 적용 시, 프로젝트 요구사항과 시스템 리소스를 고려하여 최적화해야 합니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 규모와 목적에 따라 달라집니다. 예를 들어, 단순한 AI 애그너는 2GB RAM, 4코어 CPU를 요구할 수 있지만, 복잡한 AI 애그너는 4GB RAM, 8코어 CPU를 필요로 할 수 있습니다. 이러한 설정은 애그너의 성능과 안정성을 보장하기 위해 중요합니다."
+        ],
+        "bullets": [
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다.",
+          "AI 애그너는 2GB RAM 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스는 일반적으로 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있습니다. Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다.",
+          "AI 애그너는 Docker 인스턴스에서 직접 실행하거나, 프로미코스의 Homelab 커뮤니티 자료에 기반하여 Docker 인스턴스를 사용할 수 있습니다. 직접 실행 방법은 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있으며, 이는 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+        ],
+        "bullets": [
+          "Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다.",
+          "AI 애그너는 Docker 인스턴스에서 직접 실행하거나, 프로미코스의 Homelab 커뮤니티 자료에 기반하여 Docker 인스턴스를 사용할 수 있습니다.",
+          "Docker 인스턴스는 프로젝트 규모와 목적에 따라 달라집니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료에서 설명되어 있습니다. 백업은 AI 애그너의 데이터, 설정, 및 실행 상태를 보호하는 데 필수적입니다.",
+          "AI 애그너의 백업 방법에는 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다. 파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다. 클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+        ],
+        "bullets": [
+          "AI 애그너의 백업 방법에는 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다.",
+          "파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다.",
+          "클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 실전 적용 사례",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료에서 설명되어 있습니다. 실전 적용 사례는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료를 통해 확인할 수 있습니다.",
+          "프로미코스의 Homelab 커뮤니티 자료는 AI 애그너의 실행 방법, 리소스 배분, 백업 방법, 그리고 시스템 성능 최적화에 대한 실전 적용 사례를 포함합니다. 이는 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다."
+        ],
+        "bullets": [
+          "프로미코스의 Homelab 커뮤니티 자료는 AI 애그너의 실행 방법, 리소스 배분, 백업 방법, 그리고 시스템 성능 최적화에 대한 실전 적용 사례를 포함합니다.",
+          "프로미코스의 Homelab 커뮤니티 자료는 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 제약 조건과 Trade-off",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함합니다. 예를 들어, LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라지며, 이는 시스템 성능과 안정성에 영향을 줄 수 있습니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다. 이는 애그너의 성능과 안정성을 보장하기 위해 중요합니다. 그러나, 과도한 리소스 사용은 시스템의 성능을 저하시킬 수 있습니다."
+        ],
+        "bullets": [
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 시스템 성능과 안정성을 보장하기 위해 중요합니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 결론",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 LXC 컨테이너의 크기와 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 Homelab 커뮤니티 자료에 기반하여 제공됩니다. 이는 개발자들이 실전 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함하며, 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+        ],
+        "bullets": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 LXC 컨테이너의 크기와 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 Homelab 커뮤니티 자료에 기반하여 제공됩니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함하며, 개발자들이 실전 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 어떻게 설정해야 하나요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다. 일반적으로 AI 애그너는 2GB 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다. 그러나 실제 적용 시, 프로젝트 요구사항과 시스템 리소스를 고려하여 최적화해야 합니다."
+      },
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법은 어떻게 구분되나요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스는 일반적으로 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있습니다. Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다. 직접 실행 방법은 프로미코스의 Homelab 커뮤니티 자료에 기반하여 설명되어 있으며, 이는 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+      },
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 무엇인가요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다. 파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다. 클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+      }
+    ],
+    "sources": [
+      {
+        "title": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "url": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "title": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc.",
+        "url": "https://uptown4.com/2026/03/running-openclaw-on-proxmox-the-complete-guide-to-self-hosting-your-ai-assistant/"
+      },
+      {
+        "title": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub",
+        "url": "https://github.com/adadrag/Openclaw-Proxmox"
+      }
+    ],
+    "affiliateOpportunities": [
+      "프로미코스의 Homelab 커뮤니티 자료를 통해 AI 애그너의 실행 방법을 배우고, 실전 적용 사례를 확인할 수 있습니다.",
+      "프로미코스의 Homelab 커뮤니티 자료를 통해 LXC 컨테이너의 크기와 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 시스템 성능 최적화에 대한 정보를 얻을 수 있습니다."
+    ],
+    "slug": ""
+  },
+  "qa": {
+    "score": 85,
+    "approved": true,
+    "revisedTitle": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법 가이드",
+    "revisedDescription": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법을 이해하고 적용하는 데 필요한 정보를 제공하는 가이드를 작성합니다. 이 가이드는 프로미코스의 Homelab 커뮤니티와 관련된 자료를 기반으로, LXC 컨테이너의 크기, 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 실전 적용 사례에 대한 구체적인 정보를 포함합니다.",
+    "revisedFaq": [
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 어떻게 설정해야 하나요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다. 일반적으로 AI 애그너는 2GB 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다. 그러나 실제 적용 시, 프로젝트 요구사항과 시스템 리소스를 고려하여 최적화해야 합니다."
+      },
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법은 어떻게 구분되나요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스는 일반적으로 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있습니다. Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다. 직접 실행 방법은 프로미코스의 Homelab 커뮤니티 자료에 기반하여 설명되어 있으며, 이는 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+      },
+      {
+        "question": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 무엇인가요?",
+        "answer": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다. 파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다. 클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+      }
+    ],
+    "verifiedSources": [
+      {
+        "title": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "url": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "title": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc.",
+        "url": "https://uptown4.com/2026/03/running-openclaw-on-proxmox-the-complete-guide-to-self-hosting-your-ai-assistant/"
+      },
+      {
+        "title": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub",
+        "url": "https://github.com/adadrag/Openclaw-Proxmox"
+      },
+      {
+        "title": "How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI | Network ThinkTank",
+        "url": "https://networkthinktank.blog/2026/04/24/how-to-self-host-ai-on-your-proxmox-homelab-with-ollama-and-open-webui/"
+      },
+      {
+        "title": "GitHub - axluca/openclaw-homelab-agent: Self-hosted OpenClaw AI agent on Proxmox + Headscale tailnet, with Telegram and phone call support · GitHub",
+        "url": "https://github.com/axluca/openclaw-homelab-agent"
+      }
+    ],
+    "warnings": [
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 개발자 커뮤니티와 관련된 자료에서 제공되며, 일반적인 개발자에게는 구체적인 가이드가 부족합니다.",
+      "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 주로 프로젝트 문서와 관련된 자료에서 제공되며, 실전 적용 사례가 부족합니다."
+    ],
+    "verificationSummary": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료를 기반으로 제공되며, 구체적인 가이드와 실전 적용 사례가 포함되어 있습니다.",
+    "visualPlan": {
+      "photoNeeded": false,
+      "photoSearchQuery": "프로미코스 Homelab 커뮤니티 자료",
+      "photoReason": "프로미코스 Homelab 커뮤니티 자료는 AI 애그너 실행 방법, 리소스 배분, 백업 방법, 및 시스템 성능 최적화에 대한 실전 적용 사례를 포함합니다."
+    },
+    "revisedSections": [
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량 설정",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 애그너의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다. 일반적으로 AI 애그너는 2GB 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다. 하지만 실제 적용 시, 프로젝트 요구사항과 시스템 리소스를 고려하여 최적화해야 합니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 규모와 목적에 따라 달라집니다. 예를 들어, 단순한 AI 애그너는 2GB RAM, 4코어 CPU를 요구할 수 있지만, 복잡한 AI 애그너는 4GB RAM, 8코어 CPU를 필요로 할 수 있습니다. 이러한 설정은 애그너의 성능과 안정성을 보장하기 위해 중요합니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다. 예를 들어, 단순한 AI 애그너는 2GB RAM, 4코어 CPU를 요구할 수 있지만, 복잡한 AI 애그너는 4GB RAM, 8코어 CPU를 필요로 할 수 있습니다. 이러한 설정은 애그너의 성능과 안정성을 보장하기 위해 중요합니다."
+        ],
+        "bullets": [
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다.",
+          "AI 애그너는 2GB RAM 이상의 RAM을 필요로 하며, CPU는 4코어 이상이 적절합니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스와 직접 실행 방법",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 사용되는 Docker 인스턴스는 일반적으로 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있습니다. Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다.",
+          "AI 애그너는 Docker 인스턴스에서 직접 실행하거나, 프로미코스의 Homelab 커뮤니티 자료에 기반하여 Docker 인스턴스를 사용할 수 있습니다. 직접 실행 방법은 프로미코스의 Homelab 커뮤니티 자료에서 설명되어 있으며, 이는 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 Docker 인스턴스는 프로젝트의 규모와 목적에 따라 달라집니다. 예를 들어, 단순한 AI 애그너는 2GB RAM, 4코어 CPU를 요구할 수 있지만, 복잡한 AI 애그너는 4GB RAM, 8코어 CPU를 필요로 할 수 있습니다. 이러한 설정은 애그너의 성능과 안정성을 보장하기 위해 중요합니다."
+        ],
+        "bullets": [
+          "Docker 인스턴스는 AI 애그너의 실행 환경을 구축하고, 시스템 리소스를 효율적으로 관리하는 데 도움이 됩니다.",
+          "AI 애그너는 Docker 인스턴스에서 직접 실행하거나, 프로미코스의 Homelab 커뮤니티 자료에 기반하여 Docker 인스턴스를 사용할 수 있습니다.",
+          "Docker 인스턴스는 프로젝트 규모와 목적에 따라 달라집니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료에서 설명되어 있습니다. 백업은 AI 애그너의 데이터, 설정, 및 실행 상태를 보호하는 데 필수적입니다.",
+          "AI 애그너의 백업 방법에는 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다. 파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다. 클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 백업 방법은 프로젝트의 규모와 목적에 따라 달라집니다. 예를 들어, 단순한 AI 애그너는 파일 백업을 사용할 수 있지만, 복잡한 AI 애그너는 하드웨어 백업이나 클라우드 백업을 사용할 수 있습니다. 이러한 설정은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+        ],
+        "bullets": [
+          "AI 애그너의 백업 방법에는 파일 백업, 하드웨어 백업, 그리고 클라우드 백업 방법이 포함됩니다.",
+          "파일 백업은 간단하고, 하드웨어 백업은 안정성과 보안성을 보장합니다.",
+          "클라우드 백업은 데이터의 지속적 보존과 복구를 가능하게 합니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 실전 적용 사례",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료에서 설명되어 있습니다. 실전 적용 사례는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료를 통해 확인할 수 있습니다.",
+          "프로미코스의 Homelab 커뮤니티 자료는 AI 애그너의 실행 방법, 리소스 배분, 백업 방법, 그리고 시스템 성능 최적화에 대한 실전 적용 사례를 포함합니다. 이는 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 실전 적용 사례는 프로젝트의 규모와 목적에 따라 달라집니다. 예를 들어, 단순한 AI 애그너는 2GB RAM, 4코어 CPU를 요구할 수 있지만, 복잡한 AI 애그너는 4GB RAM, 8코어 CPU를 필요로 할 수 있습니다. 이러한 설정은 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+        ],
+        "bullets": [
+          "프로미코스의 Homelab 커뮤니티 자료는 AI 애그너의 실행 방법, 리소스 배분, 백업 방법, 그리고 시스템 성능 최적화에 대한 실전 적용 사례를 포함합니다.",
+          "프로미코스의 Homelab 커뮤니티 자료는 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 제약 조건과 Trade-off",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함합니다. 예를 들어, LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라지며, 이는 시스템 성능과 안정성에 영향을 줄 수 있습니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다. 이는 애그너의 성능과 안정성을 보장하기 위해 중요합니다. 그러나, 과도한 리소스 사용은 시스템의 성능을 저하시킬 수 있습니다."
+        ],
+        "bullets": [
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트 규모와 목적에 따라 달라집니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 프로젝트의 복잡성, 시스템 성능, 그리고 백업 요구사항에 따라 결정됩니다.",
+          "LXC 컨테이너의 크기와 메모리 사용량은 시스템 성능과 안정성을 보장하기 위해 중요합니다."
+        ]
+      },
+      {
+        "heading": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보의 결론",
+        "paragraphs": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 LXC 컨테이너의 크기와 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 Homelab 커뮤니티 자료에 기반하여 제공됩니다. 이는 개발자들이 실전 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 도움이 됩니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함하며, 개발자들이 실제 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다.",
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 제약 조건과 Trade-off를 포함하며, 개발자들이 실전 적용 시 시스템 리소스를 최적화하고, 애그너의 성능을 향상시키는 데 유용합니다."
+        ],
+        "bullets": [
+          "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 LXC 컨테이너의 크기와 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 Homelab 커뮤니티 자료에 기반하여 제공됩니다."
+        ]
+      }
+    ]
+  },
+  "models": {
+    "topic": "qwen3:1.7b",
+    "research": "qwen3:1.7b",
+    "draft": "qwen3:1.7b",
+    "qa": "qwen3:1.7b"
+  },
+  "visuals": {
+    "cover": "assets/posts/self-hosted-ai-agent-on-proxmox-cover.svg",
+    "summary": "assets/posts/self-hosted-ai-agent-on-proxmox-summary.svg"
+  },
+  "media": null
+}

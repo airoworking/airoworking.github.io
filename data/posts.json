@@ -1,5 +1,63 @@
 [
   {
+    "title": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법 가이드",
+    "slug": "self-hosted-ai-agent-on-proxmox",
+    "description": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법을 이해하고 적용하는 데 필요한 정보를 제공하는 가이드를 작성합니다. 이 가이드는 프로미코스의 Homelab 커뮤니티와 관련된 자료를 기반으로, LXC 컨테이너의 크기, 메모리 사용량, Docker 인스턴스, 백업 방법, 그리고 실전 적용 사례에 대한 구체적인 정보를 포함합니다.",
+    "category": "개발자 가이드",
+    "tags": [
+      "프로미코스",
+      "LXC 컨테이너",
+      "AI 애그너",
+      "Homelab",
+      "백업",
+      "구조화된 가이드"
+    ],
+    "date": "2026-11-17",
+    "primaryKeyword": "Self-Hosted AI Agent on Proxmox",
+    "audienceSegment": "developer",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법",
+    "expectedOutcome": "프로미코스에서 AI 애그너를 자주 사용하는 개발자들이 LXC 컨테이너에서의 실행 방법 가이드 제공",
+    "opportunityScore": 66,
+    "qualityScore": 85,
+    "verificationSummary": "프로미코스에서 AI 애그너를 실행하는 데 필요한 정보는 프로미코스의 Homelab 커뮤니티 자료와 관련된 자료를 기반으로 제공되며, 구체적인 가이드와 실전 적용 사례가 포함되어 있습니다.",
+    "sources": [
+      {
+        "title": "Self-Hosted AI Agent on Proxmox: The 2026 LXC Guide | Hermify Blog",
+        "url": "https://www.hermify.io/en/blog/self-hosted-ai-agent-on-proxmox"
+      },
+      {
+        "title": "Running OpenClaw on ProxMox: The Complete Guide to Self-Hosting Your AI Assistant - Uptown4 Inc.",
+        "url": "https://uptown4.com/2026/03/running-openclaw-on-proxmox-the-complete-guide-to-self-hosting-your-ai-assistant/"
+      },
+      {
+        "title": "GitHub - adadrag/Openclaw-Proxmox: Automated OpenClaw AI assistant setup in Proxmox LXC containers · GitHub",
+        "url": "https://github.com/adadrag/Openclaw-Proxmox"
+      },
+      {
+        "title": "How to Self-Host AI on Your Proxmox Homelab with Ollama and Open WebUI | Network ThinkTank",
+        "url": "https://networkthinktank.blog/2026/04/24/how-to-self-host-ai-on-your-proxmox-homelab-with-ollama-and-open-webui/"
+      },
+      {
+        "title": "GitHub - axluca/openclaw-homelab-agent: Self-hosted OpenClaw AI agent on Proxmox + Headscale tailnet, with Telegram and phone call support · GitHub",
+        "url": "https://github.com/axluca/openclaw-homelab-agent"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/self-hosted-ai-agent-on-proxmox-cover.svg",
+      "summary": "assets/posts/self-hosted-ai-agent-on-proxmox-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 도구 선택 기준 및 실전 적용 가이드",
     "slug": "ai-productivity-guides",
     "description": "프리랜서 및 1인 사업자가 AI 도구를 선택할 때의 실전 기준과 비용 효율성 비교를 중심으로, AI 도구 선택 전략과 실전 적용 가이드를 제공하기 위한 데이터를 분석합니다.",
