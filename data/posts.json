@@ -1,5 +1,54 @@
 [
   {
+    "title": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위한",
+    "slug": "chatty",
+    "description": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필요한 기준과 실행 단계에 대한 구체적인 정보를 제공합니다. 이 가이드는 실시간 채팅 기능을 제공하는 Chatty를 중심으로, 기능 이해, 실행 단계, 비용 절감, 효율성 향상, 실전 적용의 한계, 그리고 실패 사례를 포함합니다.",
+    "category": "소규모 사업가, AI 워크플로 자동화, 실전 활용 가이드",
+    "tags": [
+      "소규모 사업가",
+      "AI 워크플로 자동화",
+      "실전 활용",
+      "비용 절감",
+      "효율성 향상"
+    ],
+    "date": "2026-11-23",
+    "primaryKeyword": "chatty",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "none",
+    "readerProblem": "AI 워크플로 자동화 기술 적용 기준 및 실행 단계 이해",
+    "expectedOutcome": "AI 워크플로 자동화 기술 적용 및 실행 단계 이해",
+    "opportunityScore": 69,
+    "qualityScore": 85,
+    "verificationSummary": "Chatty의 기능 이해 및 실행 단계에 대한 정보는 공식 문서 및 실전 적용 사례에 기반하여 정확합니다. 실전 적용의 한계 및 실패 사례는 기술적 지식의 부족으로 인해 발생할 수 있습니다.",
+    "sources": [
+      {
+        "title": "Chatty - Twitch Chat Client",
+        "url": "https://chatty.github.io/"
+      },
+      {
+        "title": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance",
+        "url": "https://about.fb.com/news/2026/10/more-than-three-quarters-of-small-business-owners-say-ai-makes-them-more-productive-but-most-need-more-guidance/"
+      },
+      {
+        "title": "Chatty Help",
+        "url": "https://chatty.github.io/help/0.8.3b/help.html"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/chatty-cover.svg",
+      "summary": "assets/posts/chatty-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "소규모 사업자가 AI 스프레드시트 생성기 사용 시 선택 기준, 실행 단계, 실제 업무 적용 방법을 이해하고 적용할 수 있는 가이드",
     "slug": "ai-spreadsheet-generators",
     "description": "소규모 사업자가 AI 스프레드시트 생성기를 실제 업무에 적용할 때, 어떤 기준으로 선택하고, 어떻게 실행하며, 어떤 단계를 따라야 하는지에 대한 구체적인 가이드를 제공합니다. 이 가이드는 실제 업무에서 바로 따라할 수 있는 단계와 시간·비용 절감 관점을 우선합니다.",

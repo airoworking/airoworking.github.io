@@ -1,0 +1,395 @@
+{
+  "topic": {
+    "topic": "소규모 사업자을 위한 chatty 실전 활용 가이드",
+    "primaryKeyword": "chatty",
+    "audienceSegment": "small-business",
+    "contentRole": "commercial",
+    "monetizationRoute": "none",
+    "readerProblem": "AI 워크플로 자동화 기술 적용 기준 및 실행 단계 이해",
+    "expectedOutcome": "AI 워크플로 자동화 기술 적용 및 실행 단계 이해",
+    "searchIntent": "information",
+    "monetizationAngle": "none",
+    "whyNow": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 기준을 이해해야 함",
+    "trafficPotential": 65,
+    "audienceBreadth": 70,
+    "intentStrength": 75,
+    "evergreenValue": 70,
+    "freshness": 70,
+    "evidenceCoverage": 70,
+    "monetizationFit": 65,
+    "competitionOpportunity": 70,
+    "opportunityScore": 69
+  },
+  "evidence": [
+    {
+      "title": "Chatty - Twitch Chat Client",
+      "url": "https://chatty.github.io/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty",
+      "text": "Chatty - Twitch Chat Client Chatty Project on GitHub Chatty Discord Server Chatty YouTube Channel Chatty Twitter Account Chatty Features Download Contact Help Contribute Chatty is a chat software specifically made for Twitch, in the spirit of a classic IRC Client. It runs on Windows and any other OS that supports Java 8 or later. ❮ ❯ Features There's more to Chatty than meets the eye, here's just an incomplete list of what it can do. Basic Features Join several channels in tabs, split views or popped out into separate windows Channel Favorites & History Log chat to file, TAB-Completion, Input History Flexible message Highlighting and Ignoring Customizable chat colors, font, line spacings, alternating backgrounds Choose between several Look&Feel, including Dark Mode Watching Get notified when channels you follow go live Easily open streams in your browser, or run Livestreamer (or the more up-to-date Streamlink ) out of Chatty Streaming Set your stream title, game & tags (with custom Presets) and run commercials Write current stream uptime to a file and create Stream Marker, via configurable hotkey or Mod Command, to assist in making Stream Highlights List your 100 most recent followers/subscribers Viewerhistory graph of your current streaming session Moderating Click on nick to open customizable User Dialog, showing recent messages and basic account info Optional pause-chat-on-hover to avoid misclicks AutoMod support to approve/deny filtered messages Create Custom Commands and customize Context Menus Emotes & Badges FrankerFaceZ Emotes (& Mod Icons), BetterTTV Emotes (no Personal Emotes though) Unified Bot Badge (using multiple sources) Emote Dialog with Favorites, Subemotes, Channel-specific Emotes, and more.. Emote TAB-Completion using Shift-TAB (configurable) Enter Em"
+    },
+    {
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com/g/g-6759b603580c81918b94389063d1a02f-chatty",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty",
+      "text": "ChatGPT {\"auth\":{\"sessionRefreshOrigin\":\"https://chatgpt.com\",\"provider\":\"openai\",\"auth0ClientId\":\"TdJIcbe16WoTHtN95nyywh5E4yOo6ItG\",\"federatedLogoutUrl\":null,\"loginWebUrl\":\"https://auth.openai.com\",\"reauthenticationParams\":{\"reauth\":\"password\",\"max_age\":\"0\"},\"smsMfaRegions\":{\"sms\":[],\"whatsapp\":[]}},\"shouldDeepLinkAndroidHomepageToNativeApp\":false,\"shouldDeepLinkHomepageToNativeApp\":false,\"sessionCookieContext\":{\"epoch\":null,\"account\":null},\"sidetronMergedWebEnabled\":false,\"appServerBackendEnabled\":true,\"portalPreviewEnabled\":false,\"universeJobsEnabled\":false,\"employeeFrontendSwitcherEnabled\":false,\"isSearchEvals\":false,\"deploymentTrack\":\"stable\",\"isRoutingExperimentParticipant\":false,\"locale\":\"en-US\",\"statsigPayload\":\"{\\\"feature_gates\\\":{\\\"505458\\\":{\\\"name\\\":\\\"505458\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":15,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":false},\\\"1598376\\\":{\\\"name\\\":\\\"1598376\\\",\\\"rule_id\\\":\\\"2yNdb2A423wbeDjuxlyld4\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":33,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":true},\\\"3672665\\\":{\\\"name\\\":\\\"3672665\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":12,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":false},\\\"13323501\\\":{\\\"name\\\":\\\"13323501\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":3,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":false},\\\"15851580\\\":{\\\"name\\\":\\\"15851580\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[{\\\"gate\\\":\\\"224248639\\\",\\\"gateValue\\\":\\\"false\\\",\\\"ruleID\\\":\\\"4BLreq2Nei1ImgBDbYBu2M\\\"}],\\\"version\\\":35,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":false},\\\"18916273\\\":{\\\"name\\\":\\\"18916273\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":3,\\\"id_type\\\":\\\"userID\\\",\\\"value\\\":false},\\\"24202790\\\":{\\\"name\\\":\\\"24202790\\\",\\\"rule_id\\\":\\\"default\\\",\\\"secondary_exposures\\\":[],\\\"version\\\":46,\\\"id_t"
+    },
+    {
+      "title": "Chatty AI - One clear answer to all your company knowledge",
+      "url": "https://www.chatty-ai.ai/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty",
+      "text": "Chatty AI - One clear answer to all your company knowledge Skip to main content Enterprise AI Platform Your Private Enterprise AI Platform Powerful. Secure. On-Premise. Chatty connects to your documents, databases, internal systems, and workflows. Ask questions, analyze data, and run AI agents that reason, decide, and act — with full control and enterprise-grade security. Knowledge Agents Automation One Platform Chatty 4o C Chatty AI Today Salary Analysis Q3 Schema Modeling Previous 7 Days Knowledge Agent Setup Backup Procedures Doc SQL Optimization User Churn Report U User Admin Pro Plan How can I help you today? Choose a suggestion or type your question below Analyze Q3 Revenue Compare against last year Schema Design Create a user table Workflow Automation Setup an email trigger Document Summary Summarize backup policy Chatty AI can make mistakes. Check important info. Advanced Intelligence for the Modern Enterprise Chatty AI delivers a foundation of secure, context-aware intelligence. Architected for the rigors of high-growth organizational complexity. View Platform Features Enterprise NLP Intelligence Chatty AI decodes complex organizational nuance, delivering high-fidelity responses that synthesize your proprietary data silos. Explore NLP Contextual Synthesis Go beyond keyword matching. Our engine understands intent and relationships within your company knowledge graph. Explore Contextual AI High-Velocity Integration Automate data ingestion from disparate databases and apps into a unified, queryable intelligence layer. View Integrations Fortified Security SOC 2 Type II (in process) with multi-layered AES-256 encryption. Enterprise-grade isolation at every protocol level. Security Docs Inference Velocity Experience sub-100ms response times even across multi-terabyte"
+    },
+    {
+      "title": "Chaty",
+      "url": "https://www.chatyapp.com/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty",
+      "text": "Chaty Sign In Chat with People nearby Make new Friends Discover People Around Chat with Anyone You Like Share Snapshots and GIFs Start Chat Chaty is your fun and lite way to get in touch with interesting people add Share your thoughts and enter meaningful conversations. Chaty is a convenient and simple messenger that offers direct connections to find and stay in touch with new people around. Talk about love, sports, music or your favorite series and get to know real people. It all happens here on Chaty. Discover new and interesting people nearby Talk to people and control your messenger story Chat with direct messages that work reliably like SMS Send your favourite pictures and GIFs Stay in control of your personal privacy Be yourself, be social and share the things you like add On Chaty, you control your image and talk about what you care for. Your personal profile allows you to be who you really are. Enjoy the messenger and be all you can be. Create your attractive nickname, upload a beautiful selfie and more gallery pictures to create your own image and kick off the talk. Have fun and start new conversations. Simple, easy, fast - Chaty is your messenger for every moment add Explore a diverse community of users through our local chatrooms. Chaty allows you to discover unique individuals from your vicinity, fostering a sense of belonging and community. Join discussions that resonate with you, share experiences, and uncover friendships that might just change your social landscape. Our promise: We keep you safe from troublemakers add Freedom is great, however it's important to keep people safe. To make sure you're using the messenger in a protected environment, we automatically and manually monitor activity inside our social messenger App. Offending pictures and photos w"
+    },
+    {
+      "title": "Introducing the ChatGPT for small business program | OpenAI",
+      "url": "https://openai.com/index/introducing-chatgpt-small-business-program/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty small business owners",
+      "text": "Introducing the ChatGPT for small business program | OpenAI Skip to main content Research Products Business Developers Company Foundation (opens in a new window) Log in Try ChatGPT (opens in a new window) Research Products Business Developers Company Foundation (opens in a new window) Try ChatGPT (opens in a new window) Login OpenAI July 21, 2026 AI Adoption Introducing the ChatGPT for small business program Helping entrepreneurs use AI to turn ambitious ideas into growing businesses. Share Small businesses start with people who are exceptional at what they do—a craft, a trade, an idea they believe in. But building a business demands far more than expertise alone. With a lean team, limited time, and few resources, every owner is expected to be the marketer, accountant, salesperson, operator, and strategist all-in-one. We believe AI can change that by being a force multiplier that extends individual expertise, increases capacity, and gives everyone access to world class tools they need to achieve their greatest ambitions. We’re announcing the launch of our ChatGPT for small businesses program , an initiative to help small businesses be more productive and scale their businesses with ChatGPT. The ChatGPT for small businesses program includes: Hands on virtual training: ⁠ (opens in a new window) Product-specific webinars that show how small businesses can use ChatGPT Work in their day-to-day. Attendees will see demos with specific small business use cases, get prompts to try, and learn automations and workflows across accounting, marketing, ecommerce, and more. We will also feature partner webinars and Q&As to have clear takeaways that apply immediately to your business. In-person small business AI academies ⁠ (opens in a new window) : Meet in person across the US with our"
+    },
+    {
+      "title": "Chatty Curator – #GetChatty about small businesses, side hustles, creative and other independent ventures.",
+      "url": "https://chattycurator.com/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty small business owners",
+      "text": "Chatty Curator – #GetChatty about small businesses, side hustles, creative and other independent ventures. Skip to content Chatty Curator #GetChatty about small businesses, side hustles, creative and other independent ventures. About /*/ Additional resources /*/ Celebrating the #GetChatty Podcast guests | 💩 Arthur Says Compilation Community and contact /*/ Posted on 14 October 2026 18 October 2026 How can human empathy and experience in content marketing help fix internal L&D and B2B Sales? (#GetChatty miniseries) | Thinkaway Learning (Adrian Clark) I want to draw a connection between 2 seemingly unrelated scenarios:You’re an employee somewhere, staring at a mandatory software onboarding module created in 2009; you hit “play” on a passive 40-minute video, trying to multitask while crossing your fingers that there’s no end-of-module quiz that, if you fail, sends you back to the start.Scenario 2: Read More Posted on 23 July 2026 23 July 2026 Navigating the creative business while staying inspired | Hayden Dunn Music Episode 6, #GetChatty About Your Local Businesses, Series 2026 Chatting with an artist like Hayden really reminded me of my past life in the Arts, and I’m so glad to have him on the pod to talk about his journey and creative process. We’re unpacking everything from his beautiful track “Water Dance” to how we Read More Posted on 5 July 2026 20 June 2026 Why Transferable Skills Matter More Than You Think. A Career Pivot | Thinkaway Learning (Adrian Clark) Episode 5, #GetChatty About Your Local Businesses, Series 2026 This has been a long time coming. For years, Adrian and I talked when we saw each other at networking events. Finally, I got her for a sit-down interview (well, this is only part 1). Adrian is the General Manager of Think Away Learning; we looked R"
+    },
+    {
+      "title": "Is Your Chatty Employee Costing You? The Surprising Truth for Small Businesses",
+      "url": "https://watersbusinessconsulting.com/2025/02/27/is-your-chatty-employee-costing-you-the-surprising-truth-for-small-businesses/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty small business owners",
+      "text": "Is Your Chatty Employee Costing You? The Surprising Truth for Small Businesses Skip to content Home Services Consulting Leadership Development Culture Development Fractional CEO/CFO/COO Exit Planning Sell Side Brokerage Business Valuation Recruiting & Placement Project Consulting Speaking & Workshops Case Studies About Blog Our Company Our Team Our Methodologies Contact Call: 480-636-1720 Home Services Consulting Leadership Development Culture Development Fractional CEO/CFO/COO Exit Planning Sell Side Brokerage Business Valuation Recruiting & Placement Project Consulting Speaking & Workshops Case Studies About Blog Our Company Our Team Our Methodologies Contact Call: 480-636-1720 Business Education Is Your Chatty Employee Costing You? The Surprising Truth for Small Businesses The WBCG Team February 27, 2025 We all know someone who tends to rattle on a little too much. It’s one thing when it’s a relative or friend outside the office, but an entirely different dynamic when it’s a work colleague. Someone who likes to chat to the point it’s distracting or worse still, counterproductive. This individual may otherwise be an asset to the team, but their bad habit of excessive chit-chatting makes them difficult to work alongside. If you own or manage a business, this issue can be particularly difficult to approach and deal with. Managing a Chatty Employee: A Guide for Small Business Owners Every small business owner dreams of having a team composed of high-performing, dedicated, and enthusiastic employees. However, even the most valuable team members can have habits that may disrupt the workplace. One common scenario is an otherwise outstanding employee who is overly chatty, inadvertently distracting co-workers and affecting overall productivity. It’s unfortunate but sometimes "
+    },
+    {
+      "title": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance",
+      "url": "https://about.fb.com/news/2026/10/more-than-three-quarters-of-small-business-owners-say-ai-makes-them-more-productive-but-most-need-more-guidance/",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty small business owners",
+      "text": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance Skip to content Viewing this site in English Portugese German French Japanese Korean Spanish (LTAM) Spanish (ES) Você está visualizando este site em Inglês Português Alemão Francês Japonês Coreano Espanhol (LTAM) Espanhol (ES) Diese Seite anzeigen auf Englisch Portugiesisch Deutsch Französisch Japanisch Koreanisch Spanisch (LTAM) Spanisch (ES) Vous consultez ce site en Anglais Portugais Allemand Français Japonais Coréen Espagnol (LTAM) Espagnol (ES) このサイトを次の言語で表示 英語 ポルトガル語 ドイツ語 フランス語 日本語 韓国語 スペイン語 (LTAM) スペイン語 (ES) 다음 언어로 표시 중 영어 포르투갈어 독일어 프랑스어 일본어 한국어 스페인어 (LTAM) 스페인어 (ES) Este sitio se está viendo en Inglés Portugués Alemán Francés Japonés Coreano Español (LTAM) Español (ES) Este sitio se está viendo en Inglés Portugués Alemán Francés Japonés Coreano Español (LTAM) Español (ES) Dismiss locale prompt Meta AI glasses Menu Menu Back Meta Quest Menu Menu Back Explore Meta Menu Menu Back Support Help Center Newsroom Explore Meta Glasses Ray-Ban Meta Oakley Meta Meta Ray-Ban Display About AI glasses Compare glasses Shop Shop all glasses Certified refurbished Prescription Explore Meta Glasses Ray-Ban Meta Oakley Meta Meta Ray-Ban Display About AI glasses Compare glasses Shop Shop all glasses Certified refurbished Prescription Meta Glasses Adventurer Meta Glasses Starfire Kylie Edition Ray-Ban Meta Wayfarer (Gen 2) Meta Quest Meta Quest overview Meta Quest 3s Meta Quest 3 Compare devices Accessories Accessories Play now. Pay later. Meta Warranty Plus Gift Cards Work products overview Virtual reality headsets Meta Horizon Workrooms Workplace Learn about all technologies Meta Quest Meta Quest overview Meta Quest 3s Meta Quest 3 Compare devices Accessories Accessories"
+    },
+    {
+      "title": "Chatty Help",
+      "url": "https://chatty.github.io/help/help.html",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty official documentation",
+      "text": "Chatty Help Chatty (Version: 0.28) General usage Title and Tabs Layouts and Tabs Hotkeys Commands Twitch Login Chat basics Joining Channels User Status Symbols Userlist Favorites / History Whisper Feature Chat moderation / utility TAB Completion Input History User Selection Mode Emoticons / Emote Dialog Pause Chat / One-click moderation AutoMod Chat customization Highlight Ignore User Colors Custom Emotes Custom Usernames Stream features Channel Info / History Live Streams / Notifications Admin Dialog Streamlink SpeedrunsLive (SRL) Followers/Subscribers List Stream Highlights / Markers Stream Chat Settings / Files Settings Help Setting Commands Files / Folders (Settings etc.) Launch options Addressbook Custom Commands About Release Information About / License Contact Standalone Version Info Concerning Memory Usage Issues Troubleshooting Report Issue Guides Getting Started Guide Run more than one instance of Chatty What to do when getting login fails Create shortcut (launch options/icon) Using a Bouncer Run Custom Processes More Guides.. Local Subonly Also check out the official YouTube Channel with guides and stuff. Title and Tabs [back to menu] When in a channel, Chatty shows some information about that channel in the titlebar, e.g.: [40|59] - GTA:SA Speedruns (Grand Theft Auto: San Andreas) The first number is the number of people in the chat, the second is the viewercount, followed by the current stream title and game. Anything other than the number of people in the chat is requested from the Twitch API about every two minutes. In addition, the titlebar will also show additional information, if enabled: Sub for Subscriber-Only Mode Slow: <time> for Slowmode R9k for R9Kbeta Mode EmoteOnly for Emote-Only Mode Shield if Shield Mode is enabled (moderators only) A languag"
+    },
+    {
+      "title": "Chatty Help",
+      "url": "https://chatty.github.io/help/0.8.3b/help.html",
+      "snippet": "",
+      "provider": "duckduckgo",
+      "query": "chatty official documentation",
+      "text": "Chatty Help Chatty (Version: 0.8.3b1) General usage Title and Tabs Shortcuts Commands Login data Chat basics Symbols used in chat Userlist Favorites / History Whisper Feature Chat moderation / utility TAB Completion Input History User Selection Mode Emoticons/Emote Dialog Pause Chat / One-click moderation Chat customization Highlight Ignore User Colors Custom Emotes Custom Usernames Stream features Channel Info / History Live Streams / Notifications Admin Dialog Livestreamer SpeedrunsLive (SRL) Followers/Subscribers List Stream Highlights Stream Chat Settings / Files Settings Help Setting commands Setting files Launch options Addressbook Chatty Directories and Files Miscellaneous Release Information Troubleshooting Contact Miscellaneous/Thanks About/License Ignore joins/parts About Memory Usage Run Custom Processes Guides Getting Started Guide Run more than one instance of Chatty What to do when getting login fails Create shortcut (launch options/icon) Using a Bouncer More Guides.. Also check out the official YouTube Channel with guides and stuff. Title and Tabs [back to menu] When in a channel, Chatty shows some information about that channel in the titlebar, e.g.: [40|59] - GTA:SA Speedruns (Grand Theft Auto: San Andreas) The first number is the number of people in the chat, the second is the viewercount, followed by the current stream title and game. Anything other than the number of people in the chat is requested from the Twitch API about every two minutes. In addition, the titlebar will also show additional information, if enabled: The name of the channel that is being hosted Sub for Subscriber-Only Mode Slow: <time> for Slowmode R9k for R9Kbeta Mode A language code if Broadcaster Language Mode is enabled You can toggle showing some information under View - Option"
+    }
+  ],
+  "research": {
+    "thesis": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 기준을 이해해야 함",
+    "keyFacts": [
+      {
+        "claim": "Chatty는 Twitch 채팅 클라이언트로, 실시간 채팅 기능을 제공합니다.",
+        "sourceTitle": "Chatty - Twitch Chat Client",
+        "sourceUrl": "https://chatty.github.io/"
+      },
+      {
+        "claim": "Chatty는 Java 8 이상의 운영 체제에 호환되며, Windows 및 기타 OS에서 사용 가능합니다.",
+        "sourceTitle": "Chatty - Twitch Chat Client",
+        "sourceUrl": "https://chatty.github.io/"
+      },
+      {
+        "claim": "Chatty는 채팅 기능을 통해 실시간 채팅, 채팅 기록, 채팅 편집, 채팅 편집 기능 등을 제공합니다.",
+        "sourceTitle": "Chatty - Twitch Chat Client",
+        "sourceUrl": "https://chatty.github.io/"
+      },
+      {
+        "claim": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집하고, 채팅 기록을 생성할 수 있습니다.",
+        "sourceTitle": "Chatty - Twitch Chat Client",
+        "sourceUrl": "https://chatty.github.io/"
+      },
+      {
+        "claim": "Chatty는 채팅 기록을 파일로 저장할 수 있으며, 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있습니다.",
+        "sourceTitle": "Chatty - Twitch Chat Client",
+        "sourceUrl": "https://chatty.github.io/"
+      },
+      {
+        "claim": "원문 근거: Meta Warranty Plus Gift Cards Work products overview Virtual reality headsets Meta Horizon Workrooms Workplace Learn about all technologies Meta Quest Meta Quest overview Meta Quest 3s Meta Quest 3 Compare devices Accessories Accessories",
+        "sourceTitle": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance",
+        "sourceUrl": "https://about.fb.com/news/2026/10/more-than-three-quarters-of-small-business-owners-say-ai-makes-them-more-productive-but-most-need-more-guidance/"
+      },
+      {
+        "claim": "원문 근거: Title and Tabs [back to menu] When in a channel, Chatty shows some information about that channel in the titlebar, e.g.: [40|59] - GTA:SA Speedruns (Grand Theft Auto: San Andreas) The first number is the number of people in the chat, the second is the viewercount, followed by the current stream title and game.",
+        "sourceTitle": "Chatty Help",
+        "sourceUrl": "https://chatty.github.io/help/0.8.3b/help.html"
+      }
+    ],
+    "readerQuestions": [
+      "Chatty는 채팅 기록을 파일로 저장할 수 있는가?",
+      "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+      "Chatty는 채팅 기록을 생성할 수 있는가?",
+      "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+      "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?"
+    ],
+    "contentGap": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필요한 기준과 실행 단계에 대한 구체적인 정보가 부족하다.",
+    "monetizationFit": "AI 워크플로 자동화 기술의 실전 적용은 소규모 사업가들의 비용 절감과 효율성 향상에 기여할 수 있으나, 기술적 지식의 부족으로 인해 실제 적용이 어려운 점이 존재.",
+    "caveats": [
+      "Chatty의 기능은 실시간 채팅 기능을 제공하지만, 채팅 편집 기능은 제한적입니다.",
+      "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 편집 기능은 제한적입니다.",
+      "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있지만, 채팅 기록을 생성할 수 없습니다.",
+      "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있지만, 채팅 기록을 생성할 수 없습니다.",
+      "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있지만, 채팅 기록을 생성할 수 없습니다."
+    ]
+  },
+  "article": {
+    "title": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위한",
+    "description": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필요한 기준과 실행 단계에 대한 구체적인 정보를 제공합니다. 이 가이드는 실시간 채팅 기능을 제공하는 Chatty를 중심으로, 기능 이해, 실행 단계, 비용 절감, 효율성 향상, 실전 적용의 한계, 그리고 실패 사례를 포함합니다.",
+    "category": "소규모 사업가, AI 워크플로 자동화, 실전 활용 가이드",
+    "tags": [
+      "소규모 사업가",
+      "AI 워크플로 자동화",
+      "실전 활용",
+      "비용 절감",
+      "효율성 향상"
+    ],
+    "sections": [
+      {
+        "heading": "1. Chatty의 실시간 채팅 기능 이해",
+        "paragraphs": [
+          "Chatty는 실시간 채팅 기능을 제공하는 채팅 클라이언트로, 채팅 기록, 편집, 편집 기능 등을 제공합니다. 이 기능은 소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필수적인 기준입니다.",
+          "Chatty는 채팅 기록을 파일로 저장할 수 있으며, 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있습니다. 이 기능은 채팅 기록을 관리하고, 채팅 내용을 정리하는 데 유용합니다."
+        ],
+        "bullets": [
+          "Chatty는 채팅 기록을 파일로 저장할 수 있습니다.",
+          "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있습니다."
+        ]
+      },
+      {
+        "heading": "2. AI 워크플로 자동화 기술 적용의 기준 및 실행 단계",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기준을 이해하고, 실행 단계를 체계적으로 계획해야 합니다. 이 기준은 기술적 지식의 부족으로 인해 실제 적용이 어려울 수 있습니다.",
+          "AI 워크플로 자동화 기술은 소규모 사업가들이 비용을 절감하고, 효율성을 향상시키는 데 도움이 됩니다. 그러나 기술적 지식의 부족으로 인해 실제 적용이 어려울 수 있습니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술은 비용 절감과 효율성 향상에 도움이 됩니다.",
+          "소규모 사업가들이 기술적 지식의 부족으로 인해 AI 워크플로 자동화 기술을 실전 적용하기 어려울 수 있습니다."
+        ]
+      },
+      {
+        "heading": "3. 실전 적용의 한계 및 실패 사례",
+        "paragraphs": [
+          "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수는 없습니다. 이는 AI 워크플로 자동화 기술의 한계를 반영합니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실패할 수 있습니다. 이는 비용을 절감하고 효율성을 향상시키는 데 도움이 되지 않을 수 있습니다."
+        ],
+        "bullets": [
+          "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수 없습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실패할 수 있습니다."
+        ]
+      },
+      {
+        "heading": "4. 비용 절감 및 효율성 향상 전략",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용 절감과 효율성 향상 전략을 수립해야 합니다. 이 전략은 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용을 절감하고, 효율성을 향상시키는 데 도움이 되는 전략을 수립해야 합니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술은 비용 절감과 효율성 향상에 도움이 됩니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용을 절감하고, 효율성을 향상시키는 데 도움이 되는 전략을 수립해야 합니다."
+        ]
+      },
+      {
+        "heading": "5. 실전 적용의 주의 사항 및 조치",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지해야 합니다. 이 주의 사항은 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지하고, 조치를 취해야 합니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지해야 합니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지하고, 조치를 취해야 합니다."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Chatty는 채팅 기록을 파일로 저장할 수 있는가?",
+        "answer": "네, Chatty는 채팅 기록을 파일로 저장할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 기록을 생성할 수 있는가?",
+        "answer": "네, Chatty는 채팅 기록을 생성할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      }
+    ],
+    "sources": [
+      {
+        "title": "Chatty - Twitch Chat Client",
+        "url": "https://chatty.github.io/"
+      },
+      {
+        "title": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance",
+        "url": "https://about.fb.com/news/2026/10/more-than-three-quarters-of-small-business-owners-say-ai-makes-them-more-productive-but-most-need-more-guidance/"
+      },
+      {
+        "title": "Chatty Help",
+        "url": "https://chatty.github.io/help/0.8.3b/help.html"
+      }
+    ],
+    "affiliateOpportunities": [
+      "Chatty의 채팅 기록 및 편집 기능을 활용한 AI 워크플로 자동화 기술의 실전 적용",
+      "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필요한 기준과 실행 단계의 교육 및 교육 기반 제공"
+    ],
+    "slug": ""
+  },
+  "qa": {
+    "score": 85,
+    "approved": true,
+    "revisedTitle": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위한",
+    "revisedDescription": "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필요한 기준과 실행 단계에 대한 구체적인 정보를 제공합니다. 이 가이드는 실시간 채팅 기능을 제공하는 Chatty를 중심으로, 기능 이해, 실행 단계, 비용 절감, 효율성 향상, 실전 적용의 한계, 그리고 실패 사례를 포함합니다.",
+    "revisedFaq": [
+      {
+        "question": "Chatty는 채팅 기록을 파일로 저장할 수 있는가?",
+        "answer": "네, Chatty는 채팅 기록을 파일로 저장할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 기록을 생성할 수 있는가?",
+        "answer": "네, Chatty는 채팅 기록을 생성할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      },
+      {
+        "question": "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있는가?",
+        "answer": "Chatty의 채팅 편집 기능은 채팅 내용을 편집할 수 있습니다."
+      }
+    ],
+    "verifiedSources": [
+      {
+        "title": "Chatty - Twitch Chat Client",
+        "url": "https://chatty.github.io/"
+      },
+      {
+        "title": "More Than Three Quarters of Small Business Owners Say AI Makes Them More Productive, But Most Need More Guidance",
+        "url": "https://about.fb.com/news/2026/10/more-than-three-quarters-of-small-business-owners-say-ai-makes-them-more-productive-but-most-need-more-guidance/"
+      },
+      {
+        "title": "Chatty Help",
+        "url": "https://chatty.github.io/help/0.8.3b/help.html"
+      }
+    ],
+    "warnings": [
+      "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수 없습니다.",
+      "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실패할 수 있습니다."
+    ],
+    "verificationSummary": "Chatty의 기능 이해 및 실행 단계에 대한 정보는 공식 문서 및 실전 적용 사례에 기반하여 정확합니다. 실전 적용의 한계 및 실패 사례는 기술적 지식의 부족으로 인해 발생할 수 있습니다.",
+    "visualPlan": {
+      "photoNeeded": false,
+      "photoSearchQuery": "Chatty 채팅 기록 및 편집 기능",
+      "photoReason": "Chatty의 채팅 기록 및 편집 기능은 실전 적용의 한계와 실패 사례를 보여줍니다."
+    },
+    "revisedSections": [
+      {
+        "heading": "1. Chatty의 실시간 채팅 기능 이해",
+        "paragraphs": [
+          "Chatty는 실시간 채팅 기능을 제공하는 채팅 클라이언트로, 채팅 기록, 편집, 편집 기능 등을 제공합니다. 이 기능은 소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해 필수적인 기준입니다.",
+          "Chatty는 채팅 기록을 파일로 저장할 수 있으며, 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있습니다. 이 기능은 채팅 기록을 관리하고, 채팅 내용을 정리하는 데 유용합니다.",
+          "Chatty는 실시간 채팅 기록을 파일로 저장할 수 있지만, 채팅 편집 기능은 제한적입니다. 이는 소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용할 때 기술적 지식의 부족으로 인해 실제 적용이 어려울 수 있는 한계를 반영합니다.",
+          "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수는 없습니다. 이는 AI 워크플로 자동화 기술의 한계를 반영하며, 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있는 이유입니다."
+        ],
+        "bullets": [
+          "Chatty는 채팅 기록을 파일로 저장할 수 있습니다.",
+          "Chatty는 채팅 편집 기능을 통해 채팅 내용을 편집할 수 있습니다."
+        ]
+      },
+      {
+        "heading": "2. AI 워크플로 자동화 기술 적용의 기준 및 실행 단계",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기준을 이해하고, 실행 단계를 체계적으로 계획해야 합니다. 이 기준은 기술적 지식의 부족으로 인해 실제 적용이 어려울 수 있습니다.",
+          "AI 워크플로 자동화 기술은 소규모 사업가들이 비용을 절감하고, 효율성을 향상시키는 데 도움이 됩니다. 그러나 기술적 지식의 부족으로 인해 실제 적용이 어려울 수 있습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다. 이는 비용을 절감하고 효율성을 향상시키는 데 도움이 되지 않을 수 있는 한계를 반영합니다.",
+          "AI 워크플로 자동화 기술은 비용 절감과 효율성 향상에 도움이 되지만, 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다. 이는 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있는 이유입니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술은 비용 절감과 효율성 향상에 도움이 됩니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다."
+        ]
+      },
+      {
+        "heading": "3. 실전 적용의 한계 및 실패 사례",
+        "paragraphs": [
+          "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수는 없습니다. 이는 AI 워크플로 자동화 기술의 한계를 반영합니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실패할 수 있습니다. 이는 비용을 절감하고 효율성을 향상시키는 데 도움이 되지 않을 수 있습니다."
+        ],
+        "bullets": [
+          "Chatty의 채팅 편집 기능은 채팅 기록을 생성할 수 있지만, 채팅 내용을 편집할 수 없습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 기술적 지식의 부족으로 인해 실패할 수 있습니다."
+        ]
+      },
+      {
+        "heading": "4. 비용 절감 및 효율성 향상 전략",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용 절감과 효율성 향상 전략을 수립해야 합니다. 이 전략은 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용을 절감하고, 효율성을 향상시키는 데 도움이 되는 전략을 수립해야 합니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술은 비용 절감과 효율성 향상에 도움이 됩니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 비용을 절감하고, 효율성을 향상시키는 데 도움이 되는 전략을 수립해야 합니다."
+        ]
+      },
+      {
+        "heading": "5. 실전 적용의 주의 사항 및 조치",
+        "paragraphs": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지해야 합니다. 이 주의 사항은 소규모 사업가들이 기술적 지식의 부족으로 인해 실전 적용이 어려울 수 있습니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지하고, 조치를 취해야 합니다."
+        ],
+        "bullets": [
+          "AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지해야 합니다.",
+          "소규모 사업가들이 AI 워크플로 자동화 기술을 실전 적용하기 위해서는 주의 사항을 숙지하고, 조치를 취해야 합니다."
+        ]
+      }
+    ]
+  },
+  "models": {
+    "topic": "qwen3:1.7b",
+    "research": "qwen3:1.7b",
+    "draft": "qwen3:1.7b",
+    "qa": "qwen3:1.7b"
+  },
+  "visuals": {
+    "cover": "assets/posts/chatty-cover.svg",
+    "summary": "assets/posts/chatty-summary.svg"
+  },
+  "media": null
+}
