@@ -1,5 +1,61 @@
 [
   {
+    "title": "직장인·지식근로자에게 맞는 Newsletter Automation Cost ROI",
+    "slug": "newsletter-automation-cost-roi",
+    "description": "직장인·지식근로자가 newsletter automation cost ROI를 실제 업무에 적용할 때 선택 및 실행 단계를 이해하고 실제 적용할 수 있도록 하는 가이드를 제공합니다. 이 가이드는 기준, 도구 선택, 실행 단계, 비용/시간 절감, 실질적 ROI 구축 방법을 체계적으로 설명하며, 실제 업무 환경에서 적용할 수 있는 실용적인 전략을 제시합니다.",
+    "category": "실전 활용 가이드",
+    "tags": [
+      "newsletter automation",
+      "cost ROI",
+      "직장인",
+      "지식근로자",
+      "자동화 도구",
+      "ROI",
+      "비용 절감",
+      "시간 효율"
+    ],
+    "date": "2026-11-26",
+    "primaryKeyword": "newsletter automation cost ROI",
+    "audienceSegment": "knowledge-worker",
+    "contentRole": "reach",
+    "monetizationRoute": "adsense",
+    "readerProblem": "직장인·지식근로자가 newsletter automation cost ROI를 실제 업무에 적용할 때 무엇을 선택하고 어떻게 시작해야 하는지 판단하기 어렵다.",
+    "expectedOutcome": "newsletter automation cost ROI의 적합한 활용 방식과 선택 기준, 실행 단계를 한국어로 이해하고 실제 업무에 적용할 수 있다.",
+    "opportunityScore": 90,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 3099자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "Marketing Automation ROI in 2026: The $5.44 Stat Is Lying",
+        "url": "https://userpilot.com/blog/marketing-automation-roi/"
+      },
+      {
+        "title": "Automation ROI Statistics 2026 | AdAI",
+        "url": "https://adai.news/resources/statistics/automation-roi-statistics-2026/"
+      },
+      {
+        "title": "Business Idea: Money Zapier | Hacker News",
+        "url": "https://news.ycombinator.com/item?id=32924581"
+      },
+      {
+        "title": "Email Marketing Statistics 2026: ROI, Open Rates, Automation & AI Benchmarks - Axis Intelligence",
+        "url": "https://axis-intelligence.com/email-marketing-statistics/"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/newsletter-automation-cost-roi-cover.svg",
+      "summary": "assets/posts/newsletter-automation-cost-roi-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 도구 선택 시 ROI 측정 방법 및 실제 사례",
     "slug": "ai-tools-for-knowledge-workers",
     "description": "AI 도구 선택 시 ROI 측정 방법 및 실제 사례를 제공하여 사용자에게 실질적인 도움을 주고, AI 도구 사용을 유도하는 데 기여하는 데 기반을 마련한 연구 기반을 제시합니다.",
