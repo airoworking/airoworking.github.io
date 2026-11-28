@@ -1,5 +1,58 @@
 [
   {
+    "title": "소규모 사업가들이 AI 워크플로 보안 및 문서 자동화 관리에 대한",
+    "slug": "ai-workflow-security",
+    "description": "소규모 사업가들이 AI 워크플로 보안 및 문서 자동화 관리에 대한 실전 적용을 위해 필요한 단계와 전략을 설명합니다. 이 가이드는 기술적 조치, 정책적 관리, 비용 절감, 그리고 실전 적용 사례를 포함하여, 소규모 사업가들이 쉽게 적용할 수 있는 방법을 제시합니다.",
+    "category": "AI 워크플로 보안, 문서 자동화, 소규모 사업가",
+    "tags": [
+      "AI 워크플로 보안",
+      "소규모 사업가",
+      "문서 자동화",
+      "비용 절감",
+      "실전 적용"
+    ],
+    "date": "2026-11-28",
+    "primaryKeyword": "AI Workflow Security",
+    "audienceSegment": "small-business",
+    "contentRole": "authority",
+    "monetizationRoute": "none",
+    "readerProblem": "AI 워크플로 보안 및 문서 자동화 관리",
+    "expectedOutcome": "AI 워크플로 보안 및 문서 자동화 관리 가이드 제공",
+    "opportunityScore": 58,
+    "qualityScore": 85,
+    "verificationSummary": "QA 모델 시간 초과로 섹션 재작성은 생략했습니다. 공개 근거와 연구 브리프만 사용하도록 생성된 원문을 유지했고, 4개 출처와 1318자의 본문 깊이를 후속 게시 검증에서 다시 확인합니다.",
+    "sources": [
+      {
+        "title": "AI Workflow Automation Security Best Practices - Cflow",
+        "url": "https://www.cflowapps.com/ai-workflow-automation-security-best-practices/"
+      },
+      {
+        "title": "AI Workflow Security: How to Keep Automated Processes Safe",
+        "url": "https://alicelabs.ai/en/insights/ai-workflow-security"
+      },
+      {
+        "title": "Autonomous Workflow Security: Beginner's Guide (2026) — AIZA-HexTyx",
+        "url": "https://www.hextyx.com/autonomous-workflow-security.html"
+      },
+      {
+        "title": "AI Security Best Practices: The Complete Guide | Cyberhaven",
+        "url": "https://www.cyberhaven.com/blog/ai-security-best-practices"
+      }
+    ],
+    "models": {
+      "topic": "qwen3:1.7b",
+      "research": "qwen3:1.7b",
+      "draft": "qwen3:1.7b",
+      "qa": "qwen3:1.7b"
+    },
+    "researchMode": "free-public-web",
+    "visuals": {
+      "cover": "assets/posts/ai-workflow-security-cover.svg",
+      "summary": "assets/posts/ai-workflow-security-summary.svg"
+    },
+    "media": null
+  },
+  {
     "title": "AI 워크플로 자동화 기술의 실용적 적용: 프리랜서의 실무 전략 구축 가이드",
     "slug": "ai-workflow-automation-in-practice",
     "description": "프리랜서가 AI 워크플로 자동화 기술을 실무에서 적용할 때 필요한 기술적 가이드와 사례를 제공하여 실무 전략 구축을 지원합니다. 이 가이드는 프리랜서가 사용하는 다양한 도구와 플랫폼에서 실현 가능하며, 비용 절감과 효율성 향상에 도움을 줍니다.",
